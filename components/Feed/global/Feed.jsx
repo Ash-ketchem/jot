@@ -6,6 +6,8 @@ import globalPostStore from "@/stores/posts/globalPostStore";
 import axios from "axios";
 import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
+import scrollStore from "@/stores/ScrollStore";
+import { usePathname } from "next/navigation";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
   const globalPosts = globalPostStore((state) => state.posts);
@@ -14,9 +16,12 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   const addPosts = globalPostStore((state) => state.addPosts);
   const addBookmarkIds = bookmarkStore((state) => state.addBookmarkIds);
 
+  const paths = scrollStore((state) => state.paths);
+
   const [loading, setLoading] = useState(false);
 
   const trackerRef = useRef(null);
+  const scrollRef = useRef(null);
   const newCursor = useRef(null);
   const observer = useRef(null);
   const allDataFetched = useRef(false);
@@ -25,6 +30,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
 
   // ref to hold a function
   const beautifyRef = useRef(null);
+
+  const pathname = usePathname();
 
   const checkLiked = useCallback((likeIds) => {
     return likeIds.includes(loggedUserId);
@@ -156,8 +163,6 @@ const Feed = ({ initialPosts, loggedUserId }) => {
     // fetchposts so the new definition is stored in a ref when
     // dependencies changes
     beautifyRef.current = beautify;
-
-    return () => {};
   }, [bookmarkIds]);
 
   useEffect(() => {
@@ -181,7 +186,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   return (
     <div className="sm:px-2 px w-full h-fit rounded-box py-4">
       <motion.div
-        className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2"
+        className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto"
         variants={variants}
         initial="hide"
         animate="show"
@@ -206,14 +211,13 @@ const Feed = ({ initialPosts, loggedUserId }) => {
             )}
           </div>
         )}
-
         {loading ? (
           <div className="flex justify-center items-center">
             <span className="loading loading-dots loading-lg "></span>
           </div>
         ) : (
           <div
-            className="h-[1px] bg-white border-0 w-full invisible"
+            className="h-[1px] bg-white border-4 w-full z-50"
             ref={trackerRef}
           />
         )}

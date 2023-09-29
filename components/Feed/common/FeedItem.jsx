@@ -9,11 +9,6 @@ import { AnimatePresence, motion } from "framer-motion";
 const FeedItem = ({ post, loggedUserId, global = true }) => {
   const cardStyle = post?.images?.length ? "vertical" : "horizontal";
 
-  const cloudinaryPublicIdPattern = /v.*\/(.*?)\..{3,4}$/;
-  const imgPublicIds = post?.images.map(
-    (img) => img.match(cloudinaryPublicIdPattern)[1] || null
-  );
-
   const variants = {
     show: {
       y: 0,
@@ -35,7 +30,7 @@ const FeedItem = ({ post, loggedUserId, global = true }) => {
 
   return (
     <div>
-      <Link href={`/post/${post?.id}`} prefetch={false}>
+      <Link href={`/post/${post?.id}`}>
         <AnimatePresence>
           <motion.div
             className="card card-compact bg-base-100 shadow-xl h-auto p-2 pb-4"
@@ -58,8 +53,8 @@ const FeedItem = ({ post, loggedUserId, global = true }) => {
             >
               <div className=" flex flex-col items-start card-body w-full">
                 <UserSection user={post?.user} createdAt={post?.createdAt} />
-                {imgPublicIds?.length > 0 && (
-                  <ImagesSection images={imgPublicIds} />
+                {post?.images?.length > 0 && (
+                  <ImagesSection images={post?.images} />
                 )}
                 <BodySection body={post.body} />
               </div>

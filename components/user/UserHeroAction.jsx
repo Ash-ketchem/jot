@@ -5,8 +5,15 @@ import modalStore from "@/stores/modalStore";
 import axios from "axios";
 import { useCallback, useState, useEffect } from "react";
 
-const UserHeroAction = ({ buttonLabel, loggedUser, userId, isFollowing }) => {
-  // console.log(isFollowing, " is following");
+const UserHeroAction = ({
+  buttonLabel,
+  loggedUser,
+  userId,
+  isFollowing,
+  followingCount,
+  followersCount,
+  loggedUserId,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const followState = followStore(
@@ -27,6 +34,7 @@ const UserHeroAction = ({ buttonLabel, loggedUser, userId, isFollowing }) => {
     : "follow";
 
   const addUser = followStore((state) => state.addUser);
+  const setLoggedUserId = followStore((state) => state.setLoggedUserId);
   const setFollow = followStore((state) => state.setFollow);
 
   const handleClick = useCallback(async () => {
@@ -43,8 +51,6 @@ const UserHeroAction = ({ buttonLabel, loggedUser, userId, isFollowing }) => {
           throw new Error("Something went wrong");
         }
 
-        setFollow(userId, followState?.following ? false : true);
-
         const res = await axios.post("/api/follow", {
           id: userId,
         });
@@ -52,18 +58,24 @@ const UserHeroAction = ({ buttonLabel, loggedUser, userId, isFollowing }) => {
         if (res?.status !== 200) {
           throw new Error("Something went wrong");
         }
+        console.log(userId, followState?.following ? false : true, loggedUser);
+        setFollow(userId, followState?.following ? false : true, loggedUser);
       }
     } catch (error) {
       console.log(error?.message);
-      setFollow(userId, followState?.following ? true : false);
     } finally {
       setIsLoading(false);
     }
   }, [loggedUser, followState?.following, openEditModal]);
 
   useEffect(() => {
-    addUser(userId);
-    setFollow(userId, isFollowing ? true : false);
+    addUser(
+      userId,
+      followingCount || 0,
+      followersCount || 0,
+      followState ? followState.following : isFollowing
+    );
+    setLoggedUserId(loggedUserId);
   }, [userId]);
 
   return (

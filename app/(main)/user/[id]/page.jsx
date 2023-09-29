@@ -128,6 +128,7 @@ const page = async ({ params }) => {
           loggedUser={false}
           buttonLabel="Follow"
           isFollowing={loggedUser?.followingIds?.includes(user?.id)}
+          loggedUserId={loggedUser?.id}
         />
 
         <div className="mt-4">

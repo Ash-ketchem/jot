@@ -14,6 +14,7 @@ const SideBarRight = async () => {
         name: true,
         username: true,
         profileImage: true,
+        // followingIds: true,
       },
     });
 

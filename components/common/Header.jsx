@@ -17,7 +17,7 @@ const Header = (showBackArrow, loggedUserId) => {
   }, [router]);
 
   return (
-    <div className="navbar bg-base-100  sticky top-0  z-50 flex  gap-4 py-3.5 items-center backdrop-filter  h-[10vh]">
+    <div className="navbar bg-base-100  sticky top-0  z-40 flex  gap-4 py-3.5 items-center backdrop-filter  h-[10vh]">
       {/* backdrop-blur-lg bg-opacity-30 */}
       <div className="navbar-start  justify-start items-center">
         <div

@@ -32,8 +32,8 @@ const LoginAction = ({ label }) => {
       router.refresh();
       router.push("/");
     } catch (error) {
-      console.log(error);
-      addToast("something went wrong");
+      // console.log(error);
+      addToast(error?.response?.data?.error || "something went wrong");
     } finally {
       setIsLoading(false);
     }

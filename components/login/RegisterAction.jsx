@@ -23,8 +23,8 @@ const RegisterAction = ({ label }) => {
         password,
       });
 
-      if (!res.data.res.id) {
-        throw new Error("something went wrong");
+      if (!res?.data?.res?.id) {
+        throw new Error(res?.data?.error || "something went wrong");
       }
 
       addToast("Loggin in...");
@@ -38,8 +38,8 @@ const RegisterAction = ({ label }) => {
         throw new Error("Signup success but login failed");
       }
     } catch (error) {
-      console.log(error);
-      addToast("something went wrong");
+      // console.log(error?.response?.data?.error);
+      addToast(error?.response?.data?.error || "something went wrong");
     } finally {
       setIsLoading(false);
     }

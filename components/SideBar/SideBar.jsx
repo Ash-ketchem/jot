@@ -13,6 +13,7 @@ const SideBar = ({ loggedUserId }) => {
         (item) => (
           <li className="rounded-full" key={item?.label}>
             <SideBarItem
+              key={item?.label}
               label={item.label}
               auth={item.auth}
               href={item.href}

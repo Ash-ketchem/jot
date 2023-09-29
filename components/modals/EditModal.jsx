@@ -1,10 +1,12 @@
 "use client";
 
 import modalStore from "@/stores/modalStore";
+import toastStore from "@/stores/toastStore";
 import userStore from "@/stores/userStore";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -27,6 +29,7 @@ const EditModal = () => {
 
   const loggedUser = userStore((state) => state.loggedUser);
   const closeEditModal = modalStore((state) => state.closeEditModal);
+  const addToast = toastStore((state) => state.addToast);
 
   const router = useRouter();
 
@@ -67,10 +70,17 @@ const EditModal = () => {
         setProfileImage(null);
         setCoverImage(null);
 
+        addToast("Updated succesfully");
+
+        // if (res?.data?.login) {
+        //   await signOut();
+        // }
+
         closeEditModal();
         router.refresh();
       } catch (error) {
         console.log(error);
+        addToast(error?.response?.data?.error || "something went wrong");
       } finally {
         setIsLoading(false);
       }
@@ -195,6 +205,7 @@ const EditModal = () => {
               className="file-input file-input-bordered file-input-accent w-full max-w-xs"
             />
           </div>
+
           <div
             className={`h-24 w-full border-2 border-dotted relative ${
               profileImage ? "" : "opacity-25"
@@ -267,11 +278,11 @@ const EditModal = () => {
     <div className="flex flex-col gap-4">
       <div className="form-control w-full">
         <label className="label">
-          <span className="label-text">Old password</span>
+          <span className="label-text">currrent password</span>
         </label>
         <input
           type="text"
-          placeholder="old password"
+          placeholder="current password"
           className="input input-bordered w-full "
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
@@ -311,7 +322,7 @@ const EditModal = () => {
       >
         <form
           method="dialog"
-          className="modal-box  md:max-w-2xl h-afituto w-[95%] flex items-center flex-col"
+          className="modal-box  md:max-w-2xl  w-[95%] flex items-center flex-col overflow-x-hidden transition-all h-fit"
         >
           <div className="right-2 top-2 h-auto py-2 flex justify-end items-center w-full -mt-4 ">
             <button
@@ -322,8 +333,8 @@ const EditModal = () => {
               <XCircleIcon className="w-8 h-8" />
             </button>
           </div>
-          <div className="h-full w-full flex flex-col gap-2">
-            <main className="">
+          <div className="h-full w-full flex flex-col gap-2 justify-evenly">
+            <main className=" transition-[height] duration-75 ease-in-out overflow-y-auto">
               <div className="tabs tabs-boxed mb-3 p-2">
                 {["Info", "Media", "Password"].map((value, index) => (
                   <span
@@ -339,22 +350,38 @@ const EditModal = () => {
               </div>
               <AnimatePresence mode="await">
                 <motion.div
+                  layout
+                  className=""
                   key={bodyContent}
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    x: 0,
-                    opacity: 1,
+                  initial={{
+                    opacity: 0,
+                    height: 0,
+                    zIndex: 99999,
                   }}
-                  exit={{ x: "100%", opacity: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.1,
-                    x: { stiffness: 1000, velocity: -50 },
+                  animate={{
+                    opacity: 1,
+                    height: "auto",
+                    zIndex: 9999,
+                    transition: {
+                      duration: 0.5,
+                    },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    height: 0,
+                    zIndex: 0,
+                    transition: {
+                      duration: 0.3,
+                      height: {
+                        stiffness: 1000,
+                        velocity: 100,
+                      },
+                    },
                   }}
                 >
                   {!loggedUser?.id ? (
-                    <div className="h-full w-full flex justify-center items-center">
-                      <span className="loading loading-spinner text-primary p=4"></span>
+                    <div className=" w-full flex justify-center items-center">
+                      <span className="loading loading-spinner text-primary p-4"></span>
                     </div>
                   ) : (
                     contents[bodyContent]
@@ -362,9 +389,9 @@ const EditModal = () => {
                 </motion.div>
               </AnimatePresence>
 
-              <div className="mt-6 flex justify-center items-center">
+              <div className="mt-6 flex justify-center items-center relative ">
                 <button
-                  className="btn btn-primary text-primary-content w-full"
+                  className="btn btn-primary text-primary-content w-full "
                   onClick={handleSubmit}
                   disabled={
                     (oldPassword && !newPassword) ||

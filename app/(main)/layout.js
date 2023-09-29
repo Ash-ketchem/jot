@@ -14,6 +14,7 @@ import PostDeleteModal from "@/components/modals/PostDeleteModal";
 import EditModal from "@/components/modals/EditModal";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Toaster from "@/components/Toaster";
+import Scroller from "@/components/Feed/common/Scroller";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,7 +49,7 @@ export default async function RootLayout({ children }) {
                 {/* sidebar */}
                 <SideBar loggedUserId={loggedUserId} />
               </div>
-              <div className="basis-2/3 flex-1 h-full overflow-auto bg-base-200 rounded-box pb-4 xl:px-[2%] lg:px-[1%] md:px-2 sm:px-4">
+              <div className="basis-2/3 flex-1 overflow-y-auto  h-full  bg-base-200 rounded-box pb-4 xl:px-[2%] lg:px-[1%] md:px-2 sm:px-4">
                 {children}
               </div>
               <div className="xl:flex hidden basis-1/3 overflow-auto bg-base-200 rounded-box">

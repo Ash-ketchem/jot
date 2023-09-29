@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
 
-const UserCard = ({ user, isFollowing }) => {
+const UserCard = ({ user, isFollowing, loggedUser }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const followState = followStore(
@@ -15,6 +15,7 @@ const UserCard = ({ user, isFollowing }) => {
   );
 
   const addUser = followStore((state) => state.addUser);
+  const setLoggedUserId = followStore((state) => state.setLoggedUserId);
   const setFollow = followStore((state) => state.setFollow);
 
   const UpdatedbuttonLabel = followState
@@ -35,8 +36,6 @@ const UserCard = ({ user, isFollowing }) => {
         throw new Error("Something went wrong");
       }
 
-      setFollow(user?.id, followState?.following ? false : true);
-
       const res = await axios.post("/api/follow", {
         id: user?.id,
       });
@@ -44,17 +43,33 @@ const UserCard = ({ user, isFollowing }) => {
       if (res?.status !== 200) {
         throw new Error("Something went wrong");
       }
+
+      console.log(
+        user?.id,
+        followState?.following ? false : true,
+        loggedUser?.id === user?.id
+      );
+
+      setFollow(
+        user?.id,
+        followState?.following ? false : true,
+        loggedUser?.id === user?.id
+      );
     } catch (error) {
       console.log(error?.message);
-      setFollow(user?.id, followState?.following ? true : false);
     } finally {
       setIsLoading(false);
     }
   }, [user?.id, followState?.following]);
 
   useEffect(() => {
-    addUser(user?.id);
-    setFollow(user?.id, isFollowing ? true : false);
+    addUser(
+      user?.id,
+      user?.follwingIds?.length || 0,
+      user?.followersCount || 0,
+      followState ? followState.following : isFollowing
+    );
+    setLoggedUserId(loggedUser?.id);
   }, [user?.id]);
 
   return (

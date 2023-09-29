@@ -19,6 +19,7 @@ export async function POST(req) {
 
     let profileImageUrl = null;
     let coverImageUrl = null;
+    let updatedHashedPassword = null;
 
     if (
       (name && typeof name !== "string") ||
@@ -64,13 +65,31 @@ export async function POST(req) {
       coverImageUrl = res.secure_url;
     }
 
+    if (oldPassword && newPassword) {
+      const isCorrectPassword = await bcrypt.compare(
+        oldPassword,
+        hashedPassword
+      );
+
+      if (isCorrectPassword) {
+        updatedHashedPassword = await bcrypt.hash(newPassword, 12);
+      }
+    }
+
     const updateFields = {
       ...(name ? { name } : {}),
       ...(username ? { username } : {}),
       ...(bio ? { bio } : {}),
       ...(profileImage ? { profileImage: profileImageUrl } : {}),
       ...(coverImage ? { coverImage: coverImageUrl } : {}),
+      ...(updatedHashedPassword
+        ? { hashedPassword: updatedHashedPassword }
+        : {}),
     };
+
+    if (oldPassword && newPassword && !updatedHashedPassword) {
+      throw new Error("current password is incorrect");
+    }
 
     if (!Object.keys(updateFields).length) {
       throw new Error("Nothing to update");
@@ -86,34 +105,16 @@ export async function POST(req) {
       },
     });
 
-    if (oldPassword && newPassword) {
-      const isCorrectPassword = await bcrypt.compare(
-        oldPassword,
-        hashedPassword
-      );
-
-      if (!isCorrectPassword) {
-        throw new Error("Passwords doesnt match");
-      }
-
-      const updatedHashedPassword = await bcrypt.hash(newPassword, 12);
-
-      updatedUser = await client.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          hashedPassword: updatedHashedPassword,
-        },
-        select: {
-          id: true,
-        },
-      });
+    if (!updatedUser?.id) {
+      throw new Error("something went wrong");
     }
 
-    return NextResponse.json(updatedUser, {
-      status: 200,
-    });
+    return NextResponse.json(
+      { ...updatedUser, login: updatedHashedPassword ? true : false },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.log("error while updating profile", error);
     return NextResponse.json(

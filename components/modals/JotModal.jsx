@@ -8,7 +8,6 @@ import axios from "axios";
 import globalPostStore from "@/stores/posts/globalPostStore";
 import userPostStore from "@/stores/posts/userPostStore";
 import modalStore from "@/stores/modalStore";
-import { motion } from "framer-motion";
 import toastStore from "@/stores/toastStore";
 
 const JotModal = ({ label }) => {

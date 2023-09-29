@@ -100,8 +100,6 @@ const page = async ({ params }) => {
     console.log(error);
   }
 
-  const cloudinaryPublicIdPattern = /v.*\/(.*?)\..{3,4}$/;
-
   return (
     <div className=" h-fit p-2 pb-4 ">
       <div className="flex justify-center items-center">
@@ -113,11 +111,7 @@ const page = async ({ params }) => {
             <div className=" rounded-lg  py-1 flex flex-col gap-4">
               <BodySection body={post?.body} />
               {post?.images.length > 0 && (
-                <ImagesSection
-                  images={post?.images?.map(
-                    (img) => img.match(cloudinaryPublicIdPattern)?.[1] || null
-                  )}
-                />
+                <ImagesSection images={post?.images} />
               )}
             </div>
             <div className="w-full mt-2">

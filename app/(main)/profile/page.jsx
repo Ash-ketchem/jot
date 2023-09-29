@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import UserHero from "@/components/user/UserHero";
 import UserFeed from "@/components/user/UserFeed";
+import Scroller from "@/components/Feed/common/Scroller";
 
 const page = async () => {
   const postsNum = 5;
@@ -101,7 +102,7 @@ const page = async () => {
       }
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.message === "user not authenticated") {
       redirect("/login");
     }
@@ -109,17 +110,24 @@ const page = async () => {
 
   return (
     <>
-      <div className="p-2">
-        <UserHero user={loggedUser} buttonLabel="Edit" loggedUser={true} />
-
-        <div className="mt-4">
-          <UserFeed
+      <Scroller>
+        <div className="p-2">
+          <UserHero
+            user={loggedUser}
+            buttonLabel="Edit"
+            loggedUser={true}
             loggedUserId={loggedUser?.id}
-            initialPosts={latestPosts}
-            userId={loggedUser?.id}
           />
+
+          <div className="mt-4">
+            <UserFeed
+              loggedUserId={loggedUser?.id}
+              initialPosts={latestPosts}
+              userId={loggedUser?.id}
+            />
+          </div>
         </div>
-      </div>
+      </Scroller>
     </>
   );
 };

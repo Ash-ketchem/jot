@@ -4,6 +4,7 @@ import client from "@/libs/prismaClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import getUserId from "@/libs/getUserId";
+import Scroller from "@/components/Feed/common/Scroller";
 
 export default async function Home() {
   const postsNum = 10;
@@ -71,13 +72,15 @@ export default async function Home() {
   }
   return (
     <>
-      <div className="relative h-full">
-        {/* main */}
-        <Stories />
+      <Scroller>
+        <div className="relative h-full">
+          {/* main */}
+          <Stories />
 
-        {/* global feed */}
-        <Feed initialPosts={latestPosts} loggedUserId={loggedUserId} />
-      </div>
+          {/* global feed */}
+          <Feed initialPosts={latestPosts} loggedUserId={loggedUserId} />
+        </div>
+      </Scroller>
     </>
   );
 }

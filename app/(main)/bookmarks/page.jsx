@@ -140,7 +140,7 @@ const page = () => {
       variants={variants}
       initial="hide"
       animate="show"
-      className="md:px-2 px w-auto h-fit rounded-box py-4  container mx-auto"
+      className="md:px-2 px w-auto h-fit rounded-box py-4  container mx-auto overflow-y-auto"
     >
       <div className="px-2 lg:px-[5%] xl:px-[0%] h-full  flex flex-col gap-3  lg:container lg:mx-auto relative">
         <AnimatePresence>

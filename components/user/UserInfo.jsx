@@ -2,16 +2,33 @@
 
 import followStore from "@/stores/followStore";
 
-const UserInfo = ({ followingCount, followersCount }) => {
-  let followersCountFromStore = followStore((state) => state.users);
+const UserInfo = ({ id, followingCount, followersCount, loggedUser }) => {
+  let followData = followStore((state) => state.users);
 
-  followersCountFromStore =
-    followersCountFromStore.filter((user) => user?.following)?.length || null;
+  let followingCountNew = 0;
+
+  if (loggedUser) {
+    followingCountNew = followData?.filter((user) => user?.following)?.length;
+  }
+
+  followData = followData?.find((user) => user?.id === id);
 
   return (
     <>
-      <p>following {followersCountFromStore ?? followingCount}</p>
-      <p>followers {followersCount}</p>
+      <p>
+        following{" "}
+        {loggedUser
+          ? followingCountNew
+          : followData?.followingCount
+          ? followData?.followingCount
+          : followingCount}
+      </p>
+      <p>
+        followers{" "}
+        {followData?.followersCount
+          ? followData?.followersCount
+          : followersCount}
+      </p>
     </>
   );
 };

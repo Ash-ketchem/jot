@@ -2,7 +2,14 @@ import Image from "next/image";
 import UserHeroAction from "./UserHeroAction";
 import UserInfo from "./UserInfo";
 
-const UserHero = ({ user, buttonLabel, loggedUser = false, isFollowing }) => {
+const UserHero = ({
+  user,
+  buttonLabel,
+  loggedUser = false,
+  isFollowing,
+  loggedUserId,
+}) => {
+  console.log(user);
   return (
     <div className="px-2 z-40 bg-base-300 rounded-b-xl pb-4">
       {/* sticky top-0  */}
@@ -35,8 +42,11 @@ const UserHero = ({ user, buttonLabel, loggedUser = false, isFollowing }) => {
           <UserHeroAction
             buttonLabel={buttonLabel}
             loggedUser={loggedUser}
+            loggedUserId={loggedUserId}
             userId={user?.id}
             isFollowing={isFollowing}
+            followingCount={user?.followingIds.length || 0}
+            followersCount={user?.followersCount || 0}
           />
         </div>
       </div>
@@ -50,8 +60,10 @@ const UserHero = ({ user, buttonLabel, loggedUser = false, isFollowing }) => {
         </div>
         <div className="flex  gap-4">
           <UserInfo
+            loggedUser={loggedUser}
             followingCount={user?.followingIds.length || 0}
             followersCount={user?.followersCount || 0}
+            id={user?.id}
           />
         </div>
       </div>

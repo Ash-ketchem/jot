@@ -16,20 +16,27 @@ export const POST = async (req) => {
       throw new Error("invalid email ");
     }
 
-    const existingUserNames = await client.user
-      .findMany({
-        select: {
-          username: true,
-        },
-      })
-      ?.map((user) => user?.username);
+    let existingUserNames = await client.user.findMany({
+      select: {
+        username: true,
+        email: true,
+      },
+    });
+
+    const emailAlreadyExists = existingUserNames.find(
+      (user) => user?.email === email
+    );
+
+    if (emailAlreadyExists) {
+      throw new Error("email already exits");
+    }
 
     const usernameAlreadyExists = existingUserNames.find(
-      (name) => name === username
+      (user) => user?.username === username
     );
 
     if (usernameAlreadyExists) {
-      throw new Error("user name already exixts");
+      throw new Error("user name already exists");
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -51,6 +58,6 @@ export const POST = async (req) => {
     return NextResponse.json({ res }, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error }, { status: 400 });
+    return NextResponse.json({ error: error?.message }, { status: 400 });
   }
 };
