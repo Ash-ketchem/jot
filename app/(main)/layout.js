@@ -14,7 +14,7 @@ import PostDeleteModal from "@/components/modals/PostDeleteModal";
 import EditModal from "@/components/modals/EditModal";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Toaster from "@/components/Toaster";
-import Scroller from "@/components/Feed/common/Scroller";
+import Scroller from "@/components/common/Scroller";
 
 const inter = Inter({ subsets: ["latin"] });
 

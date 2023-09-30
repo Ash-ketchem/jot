@@ -15,6 +15,7 @@ import {
 import userStore from "@/stores/userStore";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import followingPostStore from "@/stores/posts/followingPostStore";
 
 const CommentFeed = ({ comments, postId, totalcomments }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
   const setComment = postStore((state) => state.setComment);
   const setCommentGlobal = globalPostStore((state) => state.setComment);
   const setCommentUser = userPostStore((state) => state.setComment);
+  const setCommentFollowing = followingPostStore((state) => state.setComment);
 
   const addComment = commentStore((state) => state.addComment);
   const addComments = commentStore((state) => state.addComments);
@@ -52,6 +54,7 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
       setComment(postId, "add");
       setCommentGlobal(postId, "add");
       setCommentUser(postId, "add");
+      setCommentFollowing(postId, "add");
 
       try {
         setIsLoading(true);
@@ -69,6 +72,7 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
         setComment(postId, "remove");
         setCommentGlobal(postId, "remove");
         setCommentUser(postId, "remove");
+        setCommentFollowing(postId, "add");
       } finally {
         setIsLoading(false);
       }
@@ -95,6 +99,7 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
         setComment(postId, "remove");
         setCommentGlobal(postId, "remove");
         setCommentUser(postId, "remove");
+        setCommentFollowing(postId, "remove");
 
         if (commentCount.current === 1) {
           // if its the last comment

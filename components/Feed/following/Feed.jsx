@@ -1,22 +1,28 @@
 "use client";
 
-import userPostStore from "@/stores/posts/userPostStore";
 import FeedItem from "../common/FeedItem";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import followingPostStore from "@/stores/posts/followingPostStore";
 import axios from "axios";
 import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
+import followStore from "@/stores/followStore";
+import userStore from "@/stores/userStore";
 
-const Feed = ({ userId, initialPosts, loggedUserId }) => {
-  let posts = userPostStore((state) => state.posts);
-  posts = posts.filter((post) => post?.user?.id === userId);
-
+const Feed = ({ initialPosts, loggedUserId }) => {
+  const globalPosts = followingPostStore((state) => state.posts);
+  const removeAll = followingPostStore((state) => state.removeAll);
   const bookmarkIds = bookmarkStore((state) => state.bookmarkIds);
-  const addPosts = userPostStore((state) => state.addPosts);
-  const removePosts = userPostStore((state) => state.removePosts);
+
+  const addPosts = followingPostStore((state) => state.addPosts);
   const addBookmarkIds = bookmarkStore((state) => state.addBookmarkIds);
 
+  const currentUser = userStore((state) => state.loggedUser);
+  const setUser = userStore((state) => state.setUser);
+
   const [loading, setLoading] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
 
   const trackerRef = useRef(null);
   const newCursor = useRef(null);
@@ -33,7 +39,7 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
   }, []);
 
   const beautify = useCallback(
-    (posts) => {
+    (posts = []) => {
       return posts.map((post) => ({
         ...post,
         liked: checkLiked(post?.likeIds || []),
@@ -69,9 +75,9 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
     try {
       setLoading(true);
 
-      if (!newCursor.current || !userId || typeof userId !== "string") return;
+      if (!newCursor.current) return;
 
-      const url = `/api/posts/${userId}?cursor=${newCursor.current}`;
+      const url = `/api/posts/following?cursor=${newCursor.current}`;
 
       const res = await axios.get(url);
 
@@ -92,6 +98,59 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
     }
   }, [addPosts]);
 
+  let followingUsers = followStore((state) => state.users);
+  followingUsers = followingUsers
+    ?.filter((user) => user?.following)
+    ?.map((user) => user?.id);
+
+  async function initialFetch() {
+    try {
+      const url = "/api/posts/following";
+      const latestPosts = await axios.get(url);
+      newCursor.current = latestPosts.data[latestPosts.data.length - 1]?.id;
+
+      if (latestPosts.status !== 200) {
+        throw new Error("something went wrong");
+      }
+
+      if (latestPosts?.data?.length === 0) {
+        allDataFetched.current = true;
+      }
+
+      addPosts(beautify(latestPosts.data));
+    } catch (error) {
+      console.log("failed to get latest posts");
+    }
+  }
+
+  const handleLoadMoreUserPosts = useCallback(async () => {
+    try {
+      setLoadMore(false);
+
+      allDataFetched.current = false;
+      newCursor.current = null;
+
+      setUser({
+        ...currentUser,
+        followingIds: followingUsers,
+      });
+
+      console.log("initialFetch");
+
+      removeAll();
+      await initialFetch();
+    } catch (error) {
+    } finally {
+    }
+  }, [initialFetch, currentUser, followingUsers]);
+
+  useEffect(() => {
+    if (currentUser && followingUsers) {
+      if (followingUsers?.length !== currentUser?.followingIds?.length)
+        setLoadMore(true);
+    }
+  }, [followingUsers, currentUser, setLoadMore]);
+
   // infinite scroll setup
   useEffect(() => {
     if (!observer.current) {
@@ -99,11 +158,13 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
         if (entries[0].isIntersecting) {
           if (!loading) {
             // fetch new posts
+
             fetchPosts();
           }
         }
       });
     }
+
     const currentObserver = observer.current;
 
     if (trackerRef.current) {
@@ -119,31 +180,22 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
   }, [loading]);
 
   useEffect(() => {
+    if (globalPosts?.length) {
+      return;
+    }
+
     if (initialPosts?.length) {
       newCursor.current = initialPosts[initialPosts.length - 1]?.id;
       addPosts(beautify(initialPosts));
     } else {
       // get initial posts
 
-      async function initialFetch() {
-        try {
-          if (!userId || typeof userId !== "string") return;
-          const url = `/api/posts/latest/${userId}`;
-          const latestPosts = await axios.get(url);
-          newCursor.current = latestPosts.data[latestPosts.data.length - 1]?.id;
-
-          addPosts(beautify(latestPosts.data));
-        } catch (error) {
-          console.log("failed to get latest posts");
-        }
-      }
-
       initialFetch();
     }
   }, [initialPosts]);
 
   useEffect(() => {
-    if (!bookmarkIds.length) {
+    if (!bookmarkIds?.length) {
       getBookmarks();
     }
 
@@ -156,8 +208,8 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
   }, [bookmarkIds]);
 
   useEffect(() => {
-    if (posts?.length) {
-      newCursor.current = posts[posts.length - 1]?.id;
+    if (globalPosts?.length) {
+      newCursor.current = globalPosts[globalPosts.length - 1]?.id;
     }
   }, []);
 
@@ -167,48 +219,59 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.3,
+        delay: 0.3,
+        duration: 0.5,
         staggerChildren: 0.15,
+        ease: "easeInOut",
       },
     },
   };
 
   return (
-    <div className="md:px-2 px w-auto h-fit rounded-box py-4  container mx-auto">
+    <div className="sm:px-2 px w-full h-fit rounded-box py-4 relative">
+      {loadMore && (
+        <div className="w-full flex justify-center items-center py-2">
+          <button
+            className="btn btn-primary btn-xs rounded-full lowercase"
+            onClick={handleLoadMoreUserPosts}
+          >
+            manage updates
+          </button>
+        </div>
+      )}
       <motion.div
+        className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto"
         variants={variants}
         initial="hide"
         animate="show"
-        className="px-2 lg:px-[5%] xl:px-[0%] h-full  flex flex-col gap-3  lg:container lg:mx-auto"
       >
-        {posts?.length ? (
+        {globalPosts?.length ? (
           <>
-            {posts.map((post) => (
+            {globalPosts.map((post) => (
               <FeedItem
                 post={post}
                 key={post.id}
-                type="user"
                 loggedUserId={loggedUserId}
+                type="following"
               />
             ))}
           </>
         ) : (
           <div className="flex justify-center items-center h-32 w-full  ">
-            {initialPosts?.length ? (
+            {!allDataFetched?.current ? (
               <span className="loading loading-spinner text-primary loading-lg"></span>
             ) : (
-              <p>No posts found!!</p>
+              <p>follow someone</p>
             )}
           </div>
         )}
-
         {loading ? (
           <div className="flex justify-center items-center">
             <span className="loading loading-dots loading-lg "></span>
           </div>
         ) : (
           <div
-            className="h-[1px] bg-transparent border-1 w-full invisible"
+            className="h-[1px] bg-white border-0 w-full z-50 invisible"
             ref={trackerRef}
           />
         )}

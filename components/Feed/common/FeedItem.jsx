@@ -5,8 +5,9 @@ import UserActionUser from "../user/UserAction";
 import UserSection from "./UserSection";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import UserActionFollowing from "../following/UserAction";
 
-const FeedItem = ({ post, loggedUserId, global = true }) => {
+const FeedItem = ({ post, loggedUserId, type = "global" }) => {
   const cardStyle = post?.images?.length ? "vertical" : "horizontal";
 
   const variants = {
@@ -59,13 +60,20 @@ const FeedItem = ({ post, loggedUserId, global = true }) => {
                 <BodySection body={post.body} />
               </div>
 
-              {global ? (
+              {type === "global" && (
                 <UserActionGlobal
                   postId={post.id}
                   self={loggedUserId === post?.user?.id}
                 />
-              ) : (
+              )}
+              {type === "user" && (
                 <UserActionUser
+                  postId={post.id}
+                  self={loggedUserId === post?.user?.id}
+                />
+              )}
+              {type === "following" && (
+                <UserActionFollowing
                   postId={post.id}
                   self={loggedUserId === post?.user?.id}
                 />

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import UserHero from "@/components/user/UserHero";
 import UserFeed from "@/components/user/UserFeed";
-import Scroller from "@/components/Feed/common/Scroller";
+import Scroller from "@/components/common/Scroller";
 
 const page = async () => {
   const postsNum = 5;

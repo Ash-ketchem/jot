@@ -16,12 +16,9 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   const addPosts = globalPostStore((state) => state.addPosts);
   const addBookmarkIds = bookmarkStore((state) => state.addBookmarkIds);
 
-  const paths = scrollStore((state) => state.paths);
-
   const [loading, setLoading] = useState(false);
 
   const trackerRef = useRef(null);
-  const scrollRef = useRef(null);
   const newCursor = useRef(null);
   const observer = useRef(null);
   const allDataFetched = useRef(false);
@@ -30,8 +27,6 @@ const Feed = ({ initialPosts, loggedUserId }) => {
 
   // ref to hold a function
   const beautifyRef = useRef(null);
-
-  const pathname = usePathname();
 
   const checkLiked = useCallback((likeIds) => {
     return likeIds.includes(loggedUserId);
@@ -177,8 +172,10 @@ const Feed = ({ initialPosts, loggedUserId }) => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.3,
+        delay: 0.3,
+        duration: 0.5,
         staggerChildren: 0.15,
+        ease: "easeInOut",
       },
     },
   };
@@ -198,7 +195,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
                 post={post}
                 key={post.id}
                 loggedUserId={loggedUserId}
-                global={true}
+                type="global"
               />
             ))}
           </>
@@ -217,7 +214,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
           </div>
         ) : (
           <div
-            className="h-[1px] bg-white border-4 w-full z-50"
+            className="h-[1px] bg-white border-0 w-full z-50 invisible"
             ref={trackerRef}
           />
         )}

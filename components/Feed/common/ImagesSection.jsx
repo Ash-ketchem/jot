@@ -30,7 +30,7 @@ const ImagesSection = ({ images }) => {
           onClick={(e) => e.preventDefault()}
           className="w-full h-full  flex justify-center items-center  relative"
         >
-          <CldVideoPlayer src={media} className="rounded-xl  w-full  !h-72" />
+          {/* <CldVideoPlayer src={media} className="rounded-xl  w-full  !h-72" /> */}
         </div>
       )}
     </div>

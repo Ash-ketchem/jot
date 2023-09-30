@@ -5,29 +5,30 @@ import modalStore from "@/stores/modalStore";
 import postStore from "@/stores/postStore";
 import globalPostStore from "@/stores/posts/globalPostStore";
 import userPostStore from "@/stores/posts/userPostStore";
-import bookmarkStore from "@/stores/bookmarkStore";
 import axios from "axios";
+
 import { useCallback } from "react";
 import CardAction from "../common/CardAction";
+import bookmarkStore from "@/stores/bookmarkStore";
 import followingPostStore from "@/stores/posts/followingPostStore";
 
 const UserAction = ({ postId, self }) => {
-  const setLike = userPostStore((state) => state.setLike);
   const setLikeGlobal = globalPostStore((state) => state.setLike);
-  const setLikeFollowing = followingPostStore((state) => state.setLike);
+  const setLikeUser = userPostStore((state) => state.setLike);
   const setLikePost = postStore((state) => state.setLike);
+  const setLikeFollowing = followingPostStore((state) => state.setLike);
 
   const setBookmark = globalPostStore((state) => state.setBookmark);
   const setBookmarkUser = userPostStore((state) => state.setBookmark);
-  const setBookmarkFollowing = followingPostStore((state) => state.setLike);
   const setBookmarkPost = postStore((state) => state.setBookmark);
+  const setBookmarkFollowing = followingPostStore((state) => state.setLike);
 
   const addBookmarkId = bookmarkStore((state) => state.addBookmarkId);
   const addBookmark = bookmarkStore((state) => state.addBookmark);
   const removeBookmark = bookmarkStore((state) => state.removeBookmark);
   const removeBookmarkId = bookmarkStore((state) => state.removeBookmarkId);
 
-  const currentPost = userPostStore(
+  const currentPost = followingPostStore(
     (state) => state.posts.find((post) => post.id === postId),
     postId
   );
@@ -43,10 +44,13 @@ const UserAction = ({ postId, self }) => {
   const setLikeLocal = useCallback(
     async (e) => {
       e.preventDefault();
-      setLike(postId);
+
+      // updating likes on both stores
       setLikeGlobal(postId);
+      setLikeUser(postId);
       setLikePost(postId);
       setLikeFollowing(postId);
+
       try {
         const likeEndpoint = "/api/like";
 
@@ -57,41 +61,17 @@ const UserAction = ({ postId, self }) => {
         console.log(error);
 
         // resetting likes
-        setLike(postId);
         setLikeGlobal(postId);
+        setLikeUser(postId);
         setLikePost(postId);
         setLikeFollowing(postId);
       }
     },
-    [setLike, setLikeGlobal, setLikePost]
-  );
-
-  const handleComment = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      setPostId(currentPost?.id);
-
-      openCommentModal();
-    },
-    [currentPost]
-  );
-
-  const handleDelete = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      if (!self) return;
-
-      setPostId(currentPost?.id);
-      openDeletePostModal();
-    },
-    [openCommentModal, setPostId, currentPost?.id, self]
+    [setLikeGlobal, setLikeUser, setLikePost]
   );
 
   const setBookmarkLocal = useCallback(
     async (e) => {
-      console.log(e);
       e.preventDefault();
 
       const action = currentPost?.bookmarked ? "remove" : "add";
@@ -152,21 +132,46 @@ const UserAction = ({ postId, self }) => {
     ]
   );
 
+  const handleComment = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      setPostId(currentPost?.id);
+
+      openCommentModal();
+    },
+    [currentPost]
+  );
+
+  const handleDelete = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (!self) return;
+
+      setPostId(currentPost?.id);
+      openDeletePostModal();
+    },
+    [openCommentModal, self, currentPost?.id, setPostId]
+  );
+
   return (
-    <CardAction
-      cardStyle={cardStyle}
-      handleLike={setLikeLocal}
-      handleComment={handleComment}
-      handleBookmark={setBookmarkLocal}
-      handleDelete={handleDelete}
-      currentPost={{
-        liked: currentPost?.liked,
-        likeCount: currentPost?.likeCount,
-        commentCount: currentPost?.commentCount,
-        bookmarked: currentPost?.bookmarked,
-      }}
-      self={self}
-    />
+    <>
+      <CardAction
+        cardStyle={cardStyle}
+        handleLike={setLikeLocal}
+        handleComment={handleComment}
+        handleBookmark={setBookmarkLocal}
+        currentPost={{
+          liked: currentPost?.liked,
+          likeCount: currentPost?.likeCount,
+          commentCount: currentPost?.commentCount,
+          bookmarked: currentPost?.bookmarked,
+        }}
+        self={self}
+        handleDelete={handleDelete}
+      />
+    </>
   );
 };
 

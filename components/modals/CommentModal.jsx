@@ -10,6 +10,7 @@ import userPostStore from "@/stores/posts/userPostStore";
 import globalPostStore from "@/stores/posts/globalPostStore";
 import commentStore from "@/stores/commentStore";
 import modalStore from "@/stores/modalStore";
+import followingPostStore from "@/stores/posts/followingPostStore";
 
 const CommentModal = (label) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,7 @@ const CommentModal = (label) => {
   const setComment = postStore((state) => state.setComment);
   const setCommentGlobal = globalPostStore((state) => state.setComment);
   const setCommentUser = userPostStore((state) => state.setComment);
+  const setCommentFollowing = followingPostStore((state) => state.setComment);
 
   const addComment = commentStore((state) => state.addComment);
   const closeCommentModal = modalStore((state) => state.closeCommentModal);
@@ -47,6 +49,7 @@ const CommentModal = (label) => {
         setComment(currentPostId, "add");
         setCommentGlobal(currentPostId, "add");
         setCommentUser(currentPostId, "add");
+        setCommentFollowing(currentPostId, "add");
         addComment(res?.data);
       } catch (error) {
         console.log(error.message);
