@@ -9,19 +9,22 @@ const Scroller = ({ children }) => {
   const { paths, setScroll } = scrollStore((state) => state);
   const scrollRef = useRef(null);
 
-  const handleScroll = useCallback(
-    (e) => {
-      setScroll(pathname, e.target.scrollTop);
-    },
-    [pathname]
-  );
+  const scrollValueRef = useRef(0);
+
+  const handleScroll = useCallback((e) => {
+    scrollValueRef.current = e.target.scrollTop;
+  }, []);
 
   useEffect(() => {
     // scroll restoration
     if (paths.has(pathname)) {
       scrollRef.current.scrollTo(0, paths.get(pathname));
     }
-  }, []);
+
+    return () => {
+      setScroll(pathname, scrollValueRef.current);
+    };
+  }, [pathname]);
 
   return (
     <div

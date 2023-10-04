@@ -8,6 +8,8 @@ import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
 import followStore from "@/stores/followStore";
 import userStore from "@/stores/userStore";
+import SideBarFeed from "@/components/SidebarRight/SideBarFeed";
+import { BoltIcon } from "@heroicons/react/24/solid";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
   const globalPosts = followingPostStore((state) => state.posts);
@@ -135,8 +137,6 @@ const Feed = ({ initialPosts, loggedUserId }) => {
         followingIds: followingUsers,
       });
 
-      console.log("initialFetch");
-
       removeAll();
       await initialFetch();
     } catch (error) {
@@ -190,8 +190,17 @@ const Feed = ({ initialPosts, loggedUserId }) => {
     } else {
       // get initial posts
 
-      initialFetch();
+      if (
+        currentUser &&
+        followingUsers &&
+        followingUsers?.length !== currentUser?.followingIds?.length
+      ) {
+        // there is pending updates on following to sync
+        allDataFetched.current = true;
+        return;
+      }
     }
+    initialFetch();
   }, [initialPosts]);
 
   useEffect(() => {
@@ -257,11 +266,19 @@ const Feed = ({ initialPosts, loggedUserId }) => {
             ))}
           </>
         ) : (
-          <div className="flex justify-center items-center h-32 w-full  ">
+          <div className="flex justify-center items-center  w-full  h-fit">
             {!allDataFetched?.current ? (
               <span className="loading loading-spinner text-primary loading-lg"></span>
             ) : (
-              <p>follow someone</p>
+              <div className="w-[75%]  h-full flex justify-center items-center flex-col gap-6 p-2 ">
+                <div className="flex gap-2 items-center">
+                  <p className="text-sm leading-loose tracking-wider italic ">
+                    Start following someone
+                  </p>
+                  <BoltIcon className="w-5 h-5 text-accent" />
+                </div>
+                <SideBarFeed loggedUser={currentUser} users={[]} />
+              </div>
             )}
           </div>
         )}

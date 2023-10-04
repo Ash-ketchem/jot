@@ -15,6 +15,7 @@ import EditModal from "@/components/modals/EditModal";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Toaster from "@/components/Toaster";
 import Scroller from "@/components/common/Scroller";
+import SearchModal from "@/components/modals/SearchModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }) {
         <CommentModal />
         <PostDeleteModal />
         <EditModal />
+        <SearchModal />
         <Toaster />
         <div className="xl:px-[5%] px-0 ">
           <Header loggedUserId={loggedUserId} />

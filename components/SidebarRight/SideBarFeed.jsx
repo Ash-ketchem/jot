@@ -32,8 +32,6 @@ const SideBarFeed = ({ users, loggedUser }) => {
 
       setUsersToFollow((state) => [...state, ...newUsers]);
 
-      console.log(newUsers);
-
       if (newUsers?.length === 0) {
         finished.current = true;
       }
@@ -44,17 +42,36 @@ const SideBarFeed = ({ users, loggedUser }) => {
     }
   }, []);
 
+  const fetchUsers = useCallback(async () => {
+    try {
+      const res = await axios.get("/api/users");
+
+      if (res?.status !== 200) {
+        throw new Error("something went wrong");
+      }
+
+      cursor.current = res?.data?.[res?.data?.length - 1]?.id;
+      setUsersToFollow(res?.data.filter((user) => user.id !== loggedUser?.id));
+    } catch (error) {
+      //  toast
+    }
+  }, [setUsersToFollow]);
+
   useEffect(() => {
-    cursor.current = users[users?.length - 1]?.id;
-    setUsersToFollow(users);
-  }, [users]);
+    if (users?.length === 0) {
+      fetchUsers();
+    } else {
+      cursor.current = users?.[users?.length - 1]?.id;
+      setUsersToFollow(users);
+    }
+  }, [users, setUsersToFollow]);
 
   return (
     <>
       {usersToFollow?.length ? (
-        <ul className="menu bg-base-100 w-full  rounded-box space-y-4 shadow-md cursor-default">
+        <ul className="menu bg-base-100 w-full  rounded-box space-y-4 shadow-md cursor-default flex justify-center items-center [&_li>*]:rounded-xl">
           {usersToFollow.map((user) => (
-            <li key={user?.id} className="">
+            <li key={user?.id} className="w-[90%]">
               <UserCard
                 user={user}
                 isFollowing={loggedUser?.followingIds.includes(user?.id)}
@@ -81,7 +98,7 @@ const SideBarFeed = ({ users, loggedUser }) => {
           )}
         </ul>
       ) : (
-        <div>no users</div>
+        <span className="loading loading-spinner text-primary"></span>
       )}
     </>
   );

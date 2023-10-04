@@ -72,15 +72,15 @@ export default async function Home() {
   }
   return (
     <>
-      {/* <Scroller> */}
-      <div className="relative h-full">
-        {/* main */}
-        <Stories />
+      <Scroller>
+        <div className="relative h-full">
+          {/* main */}
+          <Stories />
 
-        {/* global feed */}
-        <FeedTab initialPosts={latestPosts} loggedUserId={loggedUserId} />
-      </div>
-      {/* </Scroller> */}
+          {/* global feed */}
+          <FeedTab initialPosts={latestPosts} loggedUserId={loggedUserId} />
+        </div>
+      </Scroller>
     </>
   );
 }

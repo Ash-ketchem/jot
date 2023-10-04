@@ -22,6 +22,7 @@ import axios from "axios";
 
 import { useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
+import followingPostStore from "@/stores/posts/followingPostStore";
 
 const PostAction = ({ post, loggedUserId }) => {
   const postId = post?.id;
@@ -31,10 +32,12 @@ const PostAction = ({ post, loggedUserId }) => {
   const setLike = postStore((state) => state.setLike);
   const setLikeUser = userPostStore((state) => state.setLike);
   const setLikeGlobal = globalPostStore((state) => state.setLike);
+  const setLikeFollowing = followingPostStore((state) => state.setLike);
 
   const setBookmark = postStore((state) => state.setBookmark);
   const setBookmarkUser = userPostStore((state) => state.setBookmark);
   const setBookmarkGlobal = globalPostStore((state) => state.setBookmark);
+  const setBookmarkFollowing = followingPostStore((state) => state.setBookmark);
 
   const addBookmarkId = bookmarkStore((state) => state.addBookmarkId);
   const addBookmark = bookmarkStore((state) => state.addBookmark);
@@ -58,6 +61,7 @@ const PostAction = ({ post, loggedUserId }) => {
     setLike(postId);
     setLikeUser(postId);
     setLikeGlobal(postId);
+    setLikeFollowing(postId);
 
     try {
       const likeEndpoint = "/api/like";
@@ -72,8 +76,9 @@ const PostAction = ({ post, loggedUserId }) => {
       setLike(postId);
       setLikeUser(postId);
       setLikeGlobal(postId);
+      setLikeFollowing(postId);
     }
-  }, [setLike, setLikeGlobal, setLikeUser]);
+  }, [setLike, setLikeGlobal, setLikeUser, setLikeFollowing]);
 
   const setBookmarkLocal = useCallback(
     async (e) => {
@@ -119,6 +124,7 @@ const PostAction = ({ post, loggedUserId }) => {
         setBookmark(postId);
         setBookmarkUser(postId);
         setBookmarkGlobal(postId);
+        setBookmarkFollowing(postId);
       } catch (error) {
         console.log(error);
       }
@@ -132,6 +138,7 @@ const PostAction = ({ post, loggedUserId }) => {
       addBookmarkId,
       removeBookmark,
       removeBookmarkId,
+      setBookmarkFollowing,
     ]
   );
 

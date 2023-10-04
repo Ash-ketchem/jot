@@ -36,6 +36,8 @@ export async function POST(req) {
       ? followingIds.filter((followingId) => followingId !== id)
       : [id, ...followingIds];
 
+    console.log(updatedFollowingIds, followingIds);
+
     const updatedUser = await client.user.update({
       where: {
         id: loggedUserId,

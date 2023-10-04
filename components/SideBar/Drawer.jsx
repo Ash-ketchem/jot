@@ -14,7 +14,7 @@ const Drawer = ({ loggedUserId }) => {
             htmlFor="my-drawer"
             className="btn btn-ghost btn-circle drawer-button"
           >
-            <Bars3Icon className="h-8 w-8" />
+            <Bars3Icon className="w-6 h-6 lg:w-8 lg:h-8" />
           </label>
         </div>
         <div className="drawer-side ">

@@ -51,11 +51,6 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
         return;
       }
 
-      setComment(postId, "add");
-      setCommentGlobal(postId, "add");
-      setCommentUser(postId, "add");
-      setCommentFollowing(postId, "add");
-
       try {
         setIsLoading(true);
         const res = await axios.post("/api/comment", {
@@ -67,12 +62,12 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
           throw new Error("Something went wrong");
         }
         addComment(res?.data);
+        setComment(postId, "add");
+        setCommentGlobal(postId, "add");
+        setCommentUser(postId, "add");
+        setCommentFollowing(postId, "add");
       } catch (error) {
         console.log(error.message);
-        setComment(postId, "remove");
-        setCommentGlobal(postId, "remove");
-        setCommentUser(postId, "remove");
-        setCommentFollowing(postId, "add");
       } finally {
         setIsLoading(false);
       }
