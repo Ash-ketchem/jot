@@ -51,12 +51,7 @@ const SearchModal = () => {
 
         cursorRef.current = null; // resetting cursor on new search
         allDataFetched.current = false; // resetting  on new search
-
-        if (allDataFetched.current) {
-          clearInterval(timerRef.current);
-          setLoading(false);
-          return;
-        }
+        setUsersFound([]);
 
         if (!e.target.value) {
           setUsersFound([]);
@@ -180,6 +175,12 @@ const SearchModal = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {usersFound?.length === 0 && searchValue && allDataFetched.current && (
+        <div className="w-full h-full flex justify-center items-center">
+          <p>No users Found :)</p>
         </div>
       )}
 

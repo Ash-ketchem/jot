@@ -26,7 +26,7 @@ const Theme = () => {
       <button className="btn btn-ghost btn-circle relative btn-sm md:btn-md">
         <div className=" dropdown dropdown-end relative">
           <label tabIndex={0} className="">
-            <SwatchIcon className="w-6 h-6 md:w-8 md:h-8 " />
+            <SwatchIcon className="w-6 h-6" />
           </label>
           <ul
             tabIndex={0}

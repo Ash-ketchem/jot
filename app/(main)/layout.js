@@ -16,6 +16,8 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import Toaster from "@/components/Toaster";
 import Scroller from "@/components/common/Scroller";
 import SearchModal from "@/components/modals/SearchModal";
+import TimerModal from "@/components/modals/TimerModal";
+import TakeaBreakModal from "@/components/modals/TakeaBreakModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,6 +44,8 @@ export default async function RootLayout({ children }) {
         <PostDeleteModal />
         <EditModal />
         <SearchModal />
+        <TimerModal />
+        <TakeaBreakModal />
         <Toaster />
         <div className="xl:px-[5%] px-0 ">
           <Header loggedUserId={loggedUserId} />

@@ -15,7 +15,7 @@ const LoggedUserItem = () => {
             <div className="w-8 h-8 rounded-full  ">
               <div className="flex justify-center items-center  w-8 h-8 rounded-full bg-primary ">
                 <span className="font-bold text-primary-content h-fit w-fit  rounded-full">
-                  {loggedUser?.name?.slice(0, 1)}
+                  {loggedUser?.username?.slice(0, 1).toUpperCase()}
                 </span>
               </div>
             </div>

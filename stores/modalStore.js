@@ -6,12 +6,16 @@ const modalStore = create((set) => ({
   openDeletePostModal: () => window.deletePostModal.showModal(),
   openEditModal: () => window.editModal.showModal(),
   openSearchModal: () => window.searchModal.showModal(),
+  openTimerModal: () => window.timerModal.showModal(),
+  openBreakModal: () => window.breakModal.showModal(),
 
   closeJotModal: () => window.jotModal.close(),
   closeCommentModal: () => window.commentModal.close(),
   closeDeletePostModal: () => window.deletePostModal.close(),
   closeEditModal: () => window.editModal.close(),
   closeSearchModal: () => window.searchModal.close(),
+  closeTimerModal: () => window.timerModal.close(),
+  closeBreakModal: () => window.breakModal.close(),
 }));
 
 export default modalStore;

@@ -7,6 +7,7 @@ import Drawer from "../SideBar/Drawer";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { FireIcon } from "@heroicons/react/24/solid";
+import Timer from "./Timer";
 
 const Header = (showBackArrow, loggedUserId) => {
   const router = useRouter();
@@ -23,15 +24,13 @@ const Header = (showBackArrow, loggedUserId) => {
           className="md:flex hidden btn btn-ghost btn-circle justify-center items-center ml-4"
           onClick={handleClick}
         >
-          {showBackArrow && (
-            <ArrowSmallLeftIcon className="w-6 h-6 md:w-8 md:h-8 " />
-          )}
+          {showBackArrow && <ArrowSmallLeftIcon className="w-6 h-6  " />}
         </div>
         <div className="md:hidden flex justify-center items-center">
           <Drawer loggedUserId={loggedUserId} />
         </div>
       </div>
-      <div className=" flex gap-4 justify-center items-center  ">
+      <div className="md:ml-24 flex gap-4 justify-center items-center  ">
         <div className="flex gap-4 justify-center items-center">
           <p className="normal-case text-md md:text-2xl font-semibold leading-relaxed tracking-widest p-4 -rotate-3 flex ">
             <span className=" mt-2 uppercase">j</span>
@@ -44,6 +43,9 @@ const Header = (showBackArrow, loggedUserId) => {
       </div>
       <div className=" justify-end items-center flex gap-4 mr-4 ">
         <div>
+          <Timer />
+        </div>
+        <div>
           <Search />
         </div>
         <div className="flex ">
@@ -52,7 +54,7 @@ const Header = (showBackArrow, loggedUserId) => {
 
         <button className="btn btn-ghost btn-circle btn-sm md:btn-md">
           <div className="indicator">
-            <BellIcon className="w-6 h-6 md:w-8 md:h-8" />
+            <BellIcon className="w-6 h-6 " />
             {/* <span className="badge badge-xs badge-primary indicator-item"></span> */}
           </div>
         </button>

@@ -12,7 +12,8 @@ const Search = () => {
         className="btn btn-ghost btn-circle btn-sm md:btn-md lg:btn-md"
         onClick={() => openSearchModal()}
       >
-        <MagnifyingGlassPlusIcon className="w-6 h-6 md:w-8 md:h-8 " />
+        <MagnifyingGlassPlusIcon className="w-6 h-6 " />
+        {/* md:w-8 md:h-8  */}
       </button>
     </div>
   );

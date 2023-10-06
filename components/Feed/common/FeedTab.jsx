@@ -10,10 +10,12 @@ const FeedTab = ({ initialPosts, loggedUserId }) => {
 
   return (
     <div className="flex flex-col">
-      <div className="tabs w-full  flex items-center p-2">
+      <div className="tabs tab-boxed w-full  flex items-center gap-2">
         <div
-          className={`tab tab-bordered basis-[50%] cursor-pointer ${
-            activeTab === 0 ? "tab-active !border-accent" : ""
+          className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out  ${
+            activeTab === 0
+              ? "tab-active bg-secondary text-secondary-content rounded-xl"
+              : ""
           }`}
           role="button"
           tabIndex={0}
@@ -22,8 +24,10 @@ const FeedTab = ({ initialPosts, loggedUserId }) => {
           Explore
         </div>
         <div
-          className={`tab tab-bordered basis-[50%] cursor-pointer ${
-            activeTab === 1 ? "tab-active !border-accent" : ""
+          className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out${
+            activeTab === 1
+              ? "tab-active bg-secondary text-secondary-content rounded-xl "
+              : ""
           }`}
           role="button"
           tabIndex={0}
