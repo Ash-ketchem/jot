@@ -23,6 +23,8 @@ const ImagesSection = ({ images }) => {
           src={media}
           alt="post images"
           fill
+          blurDataURL="/images/blur.jpg"
+          placeholder="blur"
           className="rounded-xl object-cover"
         />
       ) : (

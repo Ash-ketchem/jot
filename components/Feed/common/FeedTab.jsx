@@ -14,7 +14,7 @@ const FeedTab = ({ initialPosts, loggedUserId }) => {
         <div
           className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out  ${
             activeTab === 0
-              ? "tab-active bg-secondary text-secondary-content rounded-xl"
+              ? "tab-active bg-secondary text-secondary-content rounded-xl font-bold leading-loose tracking-wide"
               : ""
           }`}
           role="button"
@@ -26,7 +26,7 @@ const FeedTab = ({ initialPosts, loggedUserId }) => {
         <div
           className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out${
             activeTab === 1
-              ? "tab-active bg-secondary text-secondary-content rounded-xl "
+              ? "tab-active bg-secondary text-secondary-content rounded-xl font-bold leading-loose tracking-wide"
               : ""
           }`}
           role="button"

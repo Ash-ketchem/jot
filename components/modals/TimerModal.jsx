@@ -111,7 +111,7 @@ const TimerModal = () => {
         </div>
 
         <div>
-          <p className="text-md leading-loose tracking-widest text-center">
+          <div className="text-md leading-loose tracking-widest text-center">
             <p>
               {hours == 0 && minutes == 0
                 ? "Timer off"
@@ -119,7 +119,7 @@ const TimerModal = () => {
                     hours != 0 && minutes != 0 ? " and " : ""
                   } ${minutes != 0 ? minutes + " minutes" : ""}`}
             </p>
-          </p>
+          </div>
         </div>
         <div>
           <button

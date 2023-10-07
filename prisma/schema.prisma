@@ -79,3 +79,21 @@ model Bookmark {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
+
+model Verification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  token String @unique
+  resendCount Int @default(3)
+  retryCount Int @default(3)
+  expirationTime DateTime 
+
+}
+
+// const newVerification = await prisma.verification.create({
+//   data: {
+//     // ...
+//     expirationTime: new Date(Date.now() + 24*60*60*1000), // current time + 24 hours
+//     // ...
+//   },
+// });

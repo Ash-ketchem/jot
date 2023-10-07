@@ -10,6 +10,12 @@ const Theme = () => {
 
   useEffect(() => {
     htmlElm.current = document.querySelector("html");
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme) {
+      htmlElm.current?.setAttribute("data-theme", savedTheme);
+      themeStore.setTheme(savedTheme);
+    }
   }, []);
 
   const themeStore = ThemeStore((state) => state);
@@ -18,6 +24,7 @@ const Theme = () => {
     (theme) => {
       htmlElm.current?.setAttribute("data-theme", theme);
       themeStore.setTheme(theme);
+      localStorage.setItem("theme", theme);
     },
     [themeStore?.theme]
   );
