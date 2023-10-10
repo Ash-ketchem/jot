@@ -6,8 +6,7 @@ import globalPostStore from "@/stores/posts/globalPostStore";
 import axios from "axios";
 import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
-import scrollStore from "@/stores/ScrollStore";
-import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
   const globalPosts = globalPostStore((state) => state.posts);
@@ -24,6 +23,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   const allDataFetched = useRef(false);
   const bookmarksFetched = useRef(false);
   const initialPostsAdded = useRef(false);
+
+  const router = useRouter();
 
   // ref to hold a function
   const beautifyRef = useRef(null);
@@ -58,7 +59,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
 
       addBookmarkIds(res?.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }, [addBookmarkIds]);
 
@@ -181,22 +182,24 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   };
 
   return (
+    // <motion.div variants={variants} initial="hide" animate="show" layout>
     <div className="sm:px-2 px w-full h-fit rounded-box py-4">
-      <motion.div
-        className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto"
-        variants={variants}
-        initial="hide"
-        animate="show"
-      >
+      <div className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto">
         {globalPosts?.length ? (
           <>
             {globalPosts.map((post) => (
-              <FeedItem
-                post={post}
-                key={post.id}
-                loggedUserId={loggedUserId}
-                type="global"
-              />
+              <div
+                onClick={() => router.push(`/post/${post?.id}`)}
+                key={post?.id}
+                className="cursor-pointer"
+              >
+                <FeedItem
+                  post={post}
+                  key={post.id}
+                  loggedUserId={loggedUserId}
+                  type="global"
+                />
+              </div>
             ))}
           </>
         ) : (
@@ -218,8 +221,9 @@ const Feed = ({ initialPosts, loggedUserId }) => {
             ref={trackerRef}
           />
         )}
-      </motion.div>
+      </div>
     </div>
+    // </motion.div>
   );
 };
 

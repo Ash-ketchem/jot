@@ -16,7 +16,6 @@ model User {
   username         String?   @unique
   bio              String?
   email            String    @unique
-  emailVerified    DateTime?
   image            String?
   coverImage       String?
   profileImage     String?
@@ -24,7 +23,8 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   followingIds     String[]  @db.ObjectId
-  hashNotification Boolean?
+  emailVerified    Boolean @default(false)
+  hasNotification Boolean?
 
   // relations 
 
@@ -32,6 +32,7 @@ model User {
   comments     Comment[]
   notification Notification[]
   bookmarks    Bookmark[]
+  token Verification? 
 }
 
 model Post {
@@ -82,18 +83,14 @@ model Bookmark {
 
 model Verification {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
+  userId String @db.ObjectId @unique
   token String @unique
   resendCount Int @default(3)
   retryCount Int @default(3)
   expirationTime DateTime 
 
+  user User@relation(fields: [userId], references: [id], onDelete: Cascade)
+
 }
 
-// const newVerification = await prisma.verification.create({
-//   data: {
-//     // ...
-//     expirationTime: new Date(Date.now() + 24*60*60*1000), // current time + 24 hours
-//     // ...
-//   },
-// });
+

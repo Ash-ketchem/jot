@@ -42,7 +42,7 @@ const UserAction = ({ postId, self }) => {
 
   const setLikeLocal = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.stopPropagation();
       setLike(postId);
       setLikeGlobal(postId);
       setLikePost(postId);
@@ -68,7 +68,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleComment = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       setPostId(currentPost?.id);
 
@@ -79,7 +79,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleDelete = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       if (!self) return;
 
@@ -92,7 +92,7 @@ const UserAction = ({ postId, self }) => {
   const setBookmarkLocal = useCallback(
     async (e) => {
       console.log(e);
-      e.preventDefault();
+      e.stopPropagation();
 
       const action = currentPost?.bookmarked ? "remove" : "add";
 

@@ -6,6 +6,7 @@ import CommentFeed from "@/components/post/CommentFeed";
 import PostAction from "@/components/post/PostAction";
 import client from "@/libs/prismaClient";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 const page = async ({ params }) => {
   const { id } = params;
@@ -62,6 +63,10 @@ const page = async ({ params }) => {
 
     const session = await getServerSession(authOptions);
 
+    if (session?.user?.email && !session?.user?.emailVerified) {
+      throw new Error("user not verified");
+    }
+
     if (session?.user?.email) {
       const loggedUser = await client.user.findUnique({
         where: {
@@ -98,6 +103,9 @@ const page = async ({ params }) => {
     };
   } catch (error) {
     console.log(error);
+    if (error.message.toLowerCase() === "user not verified".toLowerCase()) {
+      redirect("/verification");
+    }
   }
 
   return (

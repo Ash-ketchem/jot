@@ -26,6 +26,7 @@ const ImagesSection = ({ images }) => {
           blurDataURL="/images/blur.jpg"
           placeholder="blur"
           className="rounded-xl object-cover"
+          loading="lazy"
         />
       ) : (
         <div

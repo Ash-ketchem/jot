@@ -6,6 +6,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const Feed = ({ userId, initialPosts, loggedUserId }) => {
   let posts = userPostStore((state) => state.posts);
@@ -24,6 +25,8 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
   const allDataFetched = useRef(false);
   const bookmarksFetched = useRef(false);
   const initialPostsAdded = useRef(false);
+
+  const router = useRouter();
 
   // ref to hold a function
   const beautifyRef = useRef(null);
@@ -184,12 +187,18 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
         {posts?.length ? (
           <>
             {posts.map((post) => (
-              <FeedItem
-                post={post}
-                key={post.id}
-                type="user"
-                loggedUserId={loggedUserId}
-              />
+              <div
+                onClick={() => router.push(`/post/${post?.id}`)}
+                key={post?.id}
+                className="cursor-pointer"
+              >
+                <FeedItem
+                  post={post}
+                  key={post.id}
+                  type="user"
+                  loggedUserId={loggedUserId}
+                />
+              </div>
             ))}
           </>
         ) : (

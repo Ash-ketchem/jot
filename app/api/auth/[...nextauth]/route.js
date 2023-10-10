@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
+// let userAccount = null;
+
 export const authOptions = {
   adapter: PrismaAdapter(client),
   providers: [
@@ -38,6 +40,8 @@ export const authOptions = {
             name: true,
             email: true,
             hashedPassword: true,
+            emailVerified: true,
+
             // id: true,
           },
         });
@@ -55,14 +59,40 @@ export const authOptions = {
           throw new Error("wrong password");
         }
 
+        // userAccount = {
+        //   name: user?.name,
+        //   emailVerified: user?.emailVerified,
+        // };
+
         return {
-          // id: user.id,
-          username: user.username,
+          // workaround to include emailverified field in session
+          // cannot access user object in session callback
+          name: { name: user?.name, emailVerified: user?.emailVerified },
+          emailVerified: user?.emailVerified,
           email: user.email,
         };
       },
     }),
   ],
+
+  callbacks: {
+    async jwt({ token, user }) {
+      // if (userAccount !== null) return { ...token, ...userAccount };
+      // else return token;
+      return token;
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          name: session?.user?.name?.name,
+          emailVerified: session?.user?.name?.emailVerified,
+        },
+      };
+    },
+  },
+
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
@@ -71,12 +101,6 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
-
-  // callbacks: {
-  //  async signIn({ user, account, profile, email, credentials }) {
-  //   return true;
-  //  },
-  // },
 };
 
 const handler = NextAuth(authOptions);

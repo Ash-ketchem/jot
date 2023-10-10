@@ -35,7 +35,7 @@ export async function GET(req) {
           coverImage: true,
           profileImage: true,
           followingIds: true,
-          hashNotification: true,
+          hasNotification: true,
         };
         break;
     }

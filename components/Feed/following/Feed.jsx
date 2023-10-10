@@ -10,8 +10,11 @@ import followStore from "@/stores/followStore";
 import userStore from "@/stores/userStore";
 import SideBarFeed from "@/components/SidebarRight/SideBarFeed";
 import { BoltIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
+  const router = useRouter();
+
   const globalPosts = followingPostStore((state) => state.posts);
   const removeAll = followingPostStore((state) => state.removeAll);
   const bookmarkIds = bookmarkStore((state) => state.bookmarkIds);
@@ -66,7 +69,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
 
       addBookmarkIds(res?.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }, [addBookmarkIds]);
 
@@ -248,21 +251,29 @@ const Feed = ({ initialPosts, loggedUserId }) => {
           </button>
         </div>
       )}
-      <motion.div
+      {/* <motion.div
         className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto"
         variants={variants}
         initial="hide"
         animate="show"
-      >
+      > */}
+
+      <div className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto">
         {globalPosts?.length ? (
           <>
             {globalPosts.map((post) => (
-              <FeedItem
-                post={post}
-                key={post.id}
-                loggedUserId={loggedUserId}
-                type="following"
-              />
+              <div
+                onClick={() => router.push(`/post/${post?.id}`)}
+                key={post?.id}
+                className="cursor-pointer"
+              >
+                <FeedItem
+                  post={post}
+                  key={post.id}
+                  loggedUserId={loggedUserId}
+                  type="following"
+                />
+              </div>
             ))}
           </>
         ) : (
@@ -292,7 +303,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
             ref={trackerRef}
           />
         )}
-      </motion.div>
+      </div>
+      {/* </motion.div> */}
     </div>
   );
 };

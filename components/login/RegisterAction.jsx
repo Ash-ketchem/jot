@@ -4,6 +4,7 @@ import toastStore from "@/stores/toastStore";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useCallback, useState } from "react";
 
 const RegisterAction = ({ label }) => {
@@ -37,7 +38,10 @@ const RegisterAction = ({ label }) => {
       if (signinRes?.error) {
         throw new Error("Signup success but login failed");
       }
+
+      window.location.href = "/verification";
     } catch (error) {
+      console.log(error);
       // console.log(error?.response?.data?.error);
       addToast(error?.response?.data?.error || "something went wrong");
     } finally {

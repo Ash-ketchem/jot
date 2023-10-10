@@ -43,7 +43,7 @@ const UserAction = ({ postId, self }) => {
 
   const setLikeLocal = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       // updating likes on both stores
       setLikeGlobal(postId);
@@ -72,7 +72,7 @@ const UserAction = ({ postId, self }) => {
 
   const setBookmarkLocal = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       const action = currentPost?.bookmarked ? "remove" : "add";
 
@@ -134,7 +134,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleComment = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       setPostId(currentPost?.id);
 
@@ -145,7 +145,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleDelete = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       if (!self) return;
 

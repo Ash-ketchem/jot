@@ -5,11 +5,16 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import getUserId from "@/libs/getUserId";
 import Scroller from "@/components/common/Scroller";
 import FeedTab from "@/components/Feed/common/FeedTab";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const postsNum = 10;
 
   const session = await getServerSession(authOptions);
+
+  if (session?.user?.email && !session?.user?.emailVerified) {
+    redirect("/verification");
+  }
 
   let loggedUserId = null;
 

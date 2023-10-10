@@ -6,8 +6,14 @@ const bookmarkStore = create((set) => ({
 
   addBookmarks: (bookmarks) => {
     set((state) => {
+      const currentBookmarks = state.bookmarks.map((bookmark) => bookmark?.id);
       return {
-        bookmarks: [...state.bookmarks, ...bookmarks],
+        bookmarks: [
+          ...state.bookmarks,
+          ...bookmarks.filter(
+            (bookmark) => !currentBookmarks?.includes(bookmark?.id)
+          ),
+        ],
       };
     });
   },

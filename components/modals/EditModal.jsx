@@ -15,7 +15,6 @@ const EditModal = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -45,7 +44,6 @@ const EditModal = () => {
 
         const postBody = {
           ...(name && name != loggedUser?.name ? { name } : {}),
-          ...(username && username != loggedUser?.username ? { username } : {}),
           ...(bio && bio != loggedUser?.bio ? { bio } : {}),
           ...(profileImage && profileImage != loggedUser?.profileImage
             ? { profileImage }
@@ -85,16 +83,7 @@ const EditModal = () => {
         setIsLoading(false);
       }
     },
-    [
-      name,
-      username,
-      oldPassword,
-      newPassword,
-      bio,
-      profileImage,
-      coverImage,
-      router,
-    ]
+    [name, oldPassword, newPassword, bio, profileImage, coverImage, router]
   );
 
   const handleImageUpload = useCallback(
@@ -139,8 +128,6 @@ const EditModal = () => {
     resetInputBox("profile");
     resetInputBox("cover");
     setName(loggedUser?.name || "");
-    setUsername(loggedUser?.username || "");
-    setUsername(loggedUser?.username || "");
     setBio(loggedUser?.bio || "");
   }, [loggedUser]);
 
@@ -169,8 +156,8 @@ const EditModal = () => {
             type="text"
             placeholder="username"
             className="input input-bordered w-full "
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={loggedUser?.username || ""}
+            disabled={true}
           />
         </div>
 
@@ -307,8 +294,7 @@ const EditModal = () => {
 
   useEffect(() => {
     setName(loggedUser?.name || "");
-    setUsername(loggedUser?.username || "");
-    setUsername(loggedUser?.username || "");
+    setName(loggedUser?.name || "");
     setBio(loggedUser?.bio || "");
     // setProfileImage(loggedUser?.profileImage || null);
     // setCoverImage(loggedUser?.coverImage || null);

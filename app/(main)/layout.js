@@ -18,6 +18,7 @@ import Scroller from "@/components/common/Scroller";
 import SearchModal from "@/components/modals/SearchModal";
 import TimerModal from "@/components/modals/TimerModal";
 import TakeaBreakModal from "@/components/modals/TakeaBreakModal";
+import EmailVerificiation from "@/components/verification/EmailVerificiation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,12 +32,24 @@ export default async function RootLayout({ children }) {
 
   let loggedUserId = null;
 
+  if (session?.user?.email && !session?.user?.emailVerified) {
+    return (
+      <>
+        <EmailVerificiation />
+      </>
+    );
+  }
+
   if (session?.user?.email) {
     loggedUserId = await getUserId(session.user.email);
   }
 
   return (
-    <html lang="en" data-theme="dark" className={inter?.className}>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${inter?.className} scroll-smooth`}
+    >
       <body>
         {loggedUserId && <SyncClient />}
         <JotModal />

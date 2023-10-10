@@ -4,6 +4,7 @@ import followStore from "@/stores/followStore";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useCallback, useEffect } from "react";
 
 const UserCard = ({ user, isFollowing, loggedUser }) => {
@@ -13,6 +14,8 @@ const UserCard = ({ user, isFollowing, loggedUser }) => {
     (state) => state.users.find((u) => u?.id === user?.id),
     user?.id
   );
+
+  const router = useRouter();
 
   const addUser = followStore((state) => state.addUser);
   const setLoggedUserId = followStore((state) => state.setLoggedUserId);
@@ -79,13 +82,14 @@ const UserCard = ({ user, isFollowing, loggedUser }) => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-1  border-0">
+        <div className="flex flex-col gap-1  border-0 ">
           <p className="text-sm">{user?.name}</p>
-          <Link href={`/user/${user.id}`}>
-            <p className="cursor-pointer font-semibold text-xs hover:underline">
-              @{user?.username}
-            </p>
-          </Link>
+          <p
+            className="cursor-pointer font-semibold text-xs hover:underline"
+            onClick={() => router.push(`/user/${user.id}`)}
+          >
+            @{user?.username}
+          </p>
         </div>
       </div>
       <div className="flex justify-center items-center  ">

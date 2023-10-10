@@ -135,6 +135,8 @@ const page = () => {
     },
   };
 
+  // console.log(bookmarks);
+
   return (
     <motion.div
       variants={variants}
@@ -144,64 +146,66 @@ const page = () => {
     >
       <div className="px-2 lg:px-[5%] xl:px-[0%] h-full  flex flex-col gap-3  lg:container lg:mx-auto relative">
         <AnimatePresence>
-          {bookmarks?.length ? (
+          {bookmarks?.length > 0 ? (
             <>
               {bookmarks.map((bookmark) => (
-                <motion.div
-                  key={bookmark?.id}
-                  variants={variants}
-                  exit={{
-                    y: -50,
-                    opacity: 0,
-                    transition: {
-                      duration: 0.3,
-                      delay: 0.1,
-                      y: { stiffness: 1000, velocity: -100 },
-                    },
-                  }}
-                  layout
-                  className="p-2 "
-                >
-                  {deleteLoading && (
-                    <div className="absolute top-[50%] left-[50%]  z-40 w-full h-screen ">
-                      <span className="loading loading-spinner text-error"></span>
-                    </div>
-                  )}
-                  <div className="card card-compact bg-base-100 shadow-xl h-auto p-2 realtive">
-                    <div className="flex flex-col sm:flex-row ">
-                      <div className="flex-1 flex flex-col items-start card-body w-full">
-                        <UserSection
-                          user={bookmark?.post?.user}
-                          createdAt={bookmark?.post?.createdAt}
-                        />
-                        {bookmark?.post?.images?.length > 0 && (
-                          <div className=" w-full h-72  border-0 relative my-2 shadow-inner rounded-md">
-                            <ImagesSection images={bookmark?.post?.images} />
-                          </div>
-                        )}
-                        <BodySection body={bookmark?.post?.body} />
+                <div key={bookmark?.post?.id}>
+                  <motion.div
+                    key={bookmark?.id}
+                    variants={variants}
+                    exit={{
+                      y: -50,
+                      opacity: 0,
+                      transition: {
+                        duration: 0.3,
+                        delay: 0.1,
+                        y: { stiffness: 1000, velocity: -100 },
+                      },
+                    }}
+                    layout
+                    className="p-2 "
+                  >
+                    {deleteLoading && (
+                      <div className="absolute top-[50%] left-[50%]  z-40 w-full h-screen ">
+                        <span className="loading loading-spinner text-error"></span>
                       </div>
+                    )}
+                    <div className="card card-compact bg-base-100 shadow-xl h-auto p-2 realtive">
+                      <div className="flex flex-col sm:flex-row ">
+                        <div className="flex-1 flex flex-col items-start card-body w-full">
+                          <UserSection
+                            user={bookmark?.post?.user}
+                            createdAt={bookmark?.post?.createdAt}
+                          />
+                          {bookmark?.post?.images?.length > 0 && (
+                            <div className=" w-full h-72  border-0 relative my-2 shadow-inner rounded-md">
+                              <ImagesSection images={bookmark?.post?.images} />
+                            </div>
+                          )}
+                          <BodySection body={bookmark?.post?.body} />
+                        </div>
 
-                      <div className="w-fit px-4 flex flex-row sm:flex-col  items-center justify-center  py-2 gap-8 card-actions">
-                        <Link
-                          href={`/post/${bookmark?.post?.id}`}
-                          prefetch={false}
-                        >
-                          <button className="btn  btn-glass sm:btn-sm btn-sm btn-circle ">
-                            <EyeIcon className="sm:w-6 sm:h-6 w-5 h-5" />
+                        <div className="w-fit px-4 flex flex-row sm:flex-col  items-center justify-center  py-2 gap-8 card-actions">
+                          <Link
+                            href={`/post/${bookmark?.post?.id}`}
+                            prefetch={false}
+                          >
+                            <button className="btn  btn-glass sm:btn-sm btn-sm btn-circle ">
+                              <EyeIcon className="sm:w-6 sm:h-6 w-5 h-5" />
+                            </button>
+                          </Link>
+                          <button
+                            className="btn  btn-glass  sm:btn-sm btn-sm btn-circle hover:text-red-500"
+                            onClick={(e) => handleDelete(e, bookmark?.post?.id)}
+                            disabled={deleteLoading}
+                          >
+                            <TrashIcon className="sm:w-6 sm:h-6 w-5 h-5" />
                           </button>
-                        </Link>
-                        <button
-                          className="btn  btn-glass  sm:btn-sm btn-sm btn-circle hover:text-red-500"
-                          onClick={(e) => handleDelete(e, bookmark?.post?.id)}
-                          disabled={deleteLoading}
-                        >
-                          <TrashIcon className="sm:w-6 sm:h-6 w-5 h-5" />
-                        </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </div>
               ))}
             </>
           ) : (

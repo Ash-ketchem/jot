@@ -21,6 +21,10 @@ const page = async () => {
       // return diffrent ui
     }
 
+    if (session?.user?.email && !session?.user?.emailVerified) {
+      throw new Error("user not verified");
+    }
+
     if (session?.user?.email) {
       loggedUser = await client.user.findUnique({
         where: {
@@ -35,7 +39,7 @@ const page = async () => {
           coverImage: true,
           profileImage: true,
           followingIds: true,
-          hashNotification: true,
+          hasNotification: true,
         },
       });
     }
@@ -105,6 +109,9 @@ const page = async () => {
     // console.log(error);
     if (error.message === "user not authenticated") {
       redirect("/login");
+    }
+    if (error.message.toLowerCase() === "user not verified".toLowerCase()) {
+      redirect("/verification");
     }
   }
 

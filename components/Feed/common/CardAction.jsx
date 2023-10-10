@@ -22,7 +22,7 @@ const CardAction = ({
   self,
 }) => {
   const LikeActionvariants = {
-    liked: { opacity: 1, scale: [0, 0.5, 0.8, 1.3, 1] },
+    liked: { opacity: 1, scale: [0.5, 1, 1.2, 1] },
     unliked: { opacity: 1, scale: 1 },
   };
 
@@ -60,13 +60,14 @@ const CardAction = ({
           animate={currentPost?.liked ? "liked" : "unliked"}
           variants={LikeActionvariants}
           transition={{
-            duration: 0.25,
-            ease: [0, 0.71, 0.2, 1.01],
+            duration: 0.1,
+            ease: "easeInOut",
             scale: {
               type: "spring",
-              damping: 5,
+              damping: 10,
               stiffness: 100,
               restDelta: 0.001,
+              // velocity: 20,
             },
           }}
         >

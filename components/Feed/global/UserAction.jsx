@@ -11,15 +11,18 @@ import axios from "axios";
 import { useCallback, useEffect } from "react";
 import CardAction from "../common/CardAction";
 import bookmarkStore from "@/stores/bookmarkStore";
+import followingPostStore from "@/stores/posts/followingPostStore";
 
 const UserAction = ({ postId, self }) => {
   const setLikeGlobal = globalPostStore((state) => state.setLike);
   const setLikeUser = userPostStore((state) => state.setLike);
   const setLikePost = postStore((state) => state.setLike);
+  const setLikeFollowing = followingPostStore((state) => state.setLike);
 
   const setBookmark = globalPostStore((state) => state.setBookmark);
   const setBookmarkUser = userPostStore((state) => state.setBookmark);
   const setBookmarkPost = postStore((state) => state.setBookmark);
+  const setBookmarkFollowing = followingPostStore((state) => state.setLike);
 
   const addBookmarkId = bookmarkStore((state) => state.addBookmarkId);
   const addBookmark = bookmarkStore((state) => state.addBookmark);
@@ -41,12 +44,13 @@ const UserAction = ({ postId, self }) => {
 
   const setLikeLocal = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
-      // updating likes on both stores
+      // updating likes on all stores
       setLikeGlobal(postId);
       setLikeUser(postId);
       setLikePost(postId);
+      setLikeFollowing(postId);
 
       try {
         const likeEndpoint = "/api/like";
@@ -61,6 +65,7 @@ const UserAction = ({ postId, self }) => {
         setLikeGlobal(postId);
         setLikeUser(postId);
         setLikePost(postId);
+        setLikeFollowing(postId);
       }
     },
     [setLikeGlobal, setLikeUser, setLikePost]
@@ -68,7 +73,7 @@ const UserAction = ({ postId, self }) => {
 
   const setBookmarkLocal = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       const action = currentPost?.bookmarked ? "remove" : "add";
 
@@ -110,6 +115,7 @@ const UserAction = ({ postId, self }) => {
         setBookmark(postId);
         setBookmarkUser(postId);
         setBookmarkPost(postId);
+        setBookmarkFollowing(postId);
       } catch (error) {
         console.log(error);
       }
@@ -128,7 +134,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleComment = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       setPostId(currentPost?.id);
 
@@ -139,7 +145,7 @@ const UserAction = ({ postId, self }) => {
 
   const handleDelete = useCallback(
     (e) => {
-      e.preventDefault();
+      e.stopPropagation();
 
       if (!self) return;
 

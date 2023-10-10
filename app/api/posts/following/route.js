@@ -7,6 +7,8 @@ export async function GET(req) {
   try {
     const session = await getServerSession(authOptions);
 
+    console.log(session, "session from");
+
     if (!session?.user?.email) {
       throw new Error("invalid session");
     }

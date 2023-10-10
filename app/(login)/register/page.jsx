@@ -1,9 +1,12 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Login from "@/components/login/Login";
-import getSession from "@/libs/getSession";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 const page = async () => {
-  if (await getSession()) {
+  const session = await getServerSession(authOptions);
+
+  if (session?.user?.emailVerified) {
     redirect("/");
   }
   return (

@@ -55,6 +55,24 @@ export const POST = async (req) => {
     if (!res?.id) {
       throw new Error("something went wrong");
     }
+
+    // verification token generation
+
+    const resp = await client.verification.create({
+      data: {
+        userId: res?.id,
+        token: crypto.randomUUID(),
+        expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    console.log("token sucess ", res);
+
+    //send token to email
+
     return NextResponse.json({ res }, { status: 200 });
   } catch (error) {
     console.log(error);

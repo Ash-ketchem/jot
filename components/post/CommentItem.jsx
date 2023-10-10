@@ -4,10 +4,13 @@ import { HeartIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CommentItem = ({ comment, self, deleteComment }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
 
   const commentVariants = {
     show: {
@@ -29,7 +32,7 @@ const CommentItem = ({ comment, self, deleteComment }) => {
 
   return (
     <motion.div
-      className="w-full h-full border-0 p-2 relative after:h-[90%] after:w-1 after:bg-accent/50 after:absolute  after:top-[20%] after:left-6 after:z-30"
+      className="w-full h-full border-0 p-2 relative after:h-[90%] after:w-1 after:bg-accent/50 after:absolute  after:top-[20%] after:left-[1.4rem] after:z-30"
       variants={commentVariants}
       initial="hide"
       animate="show"
@@ -51,7 +54,7 @@ const CommentItem = ({ comment, self, deleteComment }) => {
         <div className="flex  items-center relative">
           <div className="flex items-center justify-start gap-4 flex-1">
             <div className="avatar z-50">
-              <div className="w-10 h-10 rounded-full relative">
+              <div className="w-8 h-8 rounded-full relative">
                 <Image
                   src={comment?.user?.profileImage || "/images/intro.jpg"}
                   fill
@@ -62,11 +65,12 @@ const CommentItem = ({ comment, self, deleteComment }) => {
 
             <div className="flex items-center gap-2">
               <p className="text-sm">{comment?.user?.name}</p>
-              <Link href={`/user/${comment?.user?.id}`} prefetch={false}>
-                <p className="font-semibold text-sm cursor-pointer hover:underline leading-loose">
-                  {comment?.user?.username}
-                </p>
-              </Link>
+              <p
+                className="font-semibold text-sm cursor-pointer hover:underline leading-loose"
+                onClick={() => router.push(`/user/${comment?.user?.id}`)}
+              >
+                {comment?.user?.username}
+              </p>
             </div>
             <div>
               <p className="text-xs">2 sec ago</p>

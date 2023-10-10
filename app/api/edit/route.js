@@ -7,15 +7,8 @@ import cloudinary from "@/libs/cloudinaryConfig";
 
 export async function POST(req) {
   try {
-    const {
-      name,
-      username,
-      bio,
-      profileImage,
-      coverImage,
-      oldPassword,
-      newPassword,
-    } = await req.json();
+    const { name, bio, profileImage, coverImage, oldPassword, newPassword } =
+      await req.json();
 
     let profileImageUrl = null;
     let coverImageUrl = null;
@@ -23,7 +16,6 @@ export async function POST(req) {
 
     if (
       (name && typeof name !== "string") ||
-      (username && typeof username !== "string") ||
       (bio && typeof bio !== "string") ||
       (oldPassword && typeof oldPassword !== "string") ||
       (newPassword && typeof newPassword !== "string")
@@ -78,7 +70,6 @@ export async function POST(req) {
 
     const updateFields = {
       ...(name ? { name } : {}),
-      ...(username ? { username } : {}),
       ...(bio ? { bio } : {}),
       ...(profileImage ? { profileImage: profileImageUrl } : {}),
       ...(coverImage ? { coverImage: coverImageUrl } : {}),

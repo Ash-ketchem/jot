@@ -9,7 +9,7 @@ const UserHero = ({
   isFollowing,
   loggedUserId,
 }) => {
-  console.log(user);
+  // console.log(user);
   return (
     <div className="px-2 z-40 bg-base-300 rounded-b-xl pb-4">
       {/* sticky top-0  */}
