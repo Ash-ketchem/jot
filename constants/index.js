@@ -25,6 +25,14 @@ export const themes = [
     theme: "dark",
     icon: MoonIcon,
   },
+  {
+    theme: "lofi",
+    icon: SunIcon,
+  },
+  {
+    theme: "coffee",
+    icon: MoonIcon,
+  },
 ];
 
 export const NavItems = [

@@ -10,6 +10,6 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["light", "dark", "cupcake", "night"],
+    themes: ["light", "dark", "cupcake", "night", "coffee", "lofi"],
   },
 };

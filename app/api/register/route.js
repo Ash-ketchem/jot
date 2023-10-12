@@ -1,4 +1,5 @@
 import client from "@/libs/prismaClient";
+import sendMail from "@/libs/sendMail";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 
@@ -58,6 +59,8 @@ export const POST = async (req) => {
 
     // verification token generation
 
+    const token = crypto.randomUUID();
+
     const resp = await client.verification.create({
       data: {
         userId: res?.id,
@@ -72,6 +75,19 @@ export const POST = async (req) => {
     console.log("token sucess ", res);
 
     //send token to email
+
+    if (resp?.id) {
+      const mailSend = sendMail({
+        username,
+        action: "verification",
+        token,
+        recipient: email,
+      });
+
+      if (!mailSend) {
+        throw new Error("Failed to send verification token to mail");
+      }
+    }
 
     return NextResponse.json({ res }, { status: 200 });
   } catch (error) {

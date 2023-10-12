@@ -33,7 +33,7 @@ const SideBarRight = async () => {
 
     users = users?.filter((user) => user.id !== loggedUser?.id);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 
   return (

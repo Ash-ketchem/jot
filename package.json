@@ -22,9 +22,11 @@
     "next": "^13.5.4",
     "next-auth": "^4.23.2",
     "next-cloudinary": "^4.21.0",
+    "nodemailer": "^6.9.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-nuance": "^3.0.1"
+    "react-nuance": "^3.0.1",
+    "resend": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
