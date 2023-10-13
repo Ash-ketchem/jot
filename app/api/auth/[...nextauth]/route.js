@@ -29,7 +29,7 @@ export const authOptions = {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
         if (!emailRegex.test(credentials?.email)) {
-          throw new Error("invalid email ");
+          throw new Error("invalid email");
         }
 
         const user = await client.user.findUnique({
@@ -47,7 +47,7 @@ export const authOptions = {
         });
 
         if (!user || !user?.hashedPassword) {
-          throw new Error("invalid credentials 1");
+          throw new Error("invalid credentials");
         }
 
         const isCorrectPassword = await bcrypt.compare(

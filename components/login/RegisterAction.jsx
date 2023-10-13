@@ -13,7 +13,19 @@ const RegisterAction = ({ label }) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  //validation
+
+  const [emailValid, setEmailValid] = useState(false);
+  const [passValid, setPassValid] = useState(false);
+  const [usernameValid, setUsernameValid] = useState(false);
+
   const addToast = toastStore((state) => state.addToast);
+
+  const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usernameRegex = /^[a-zA-Z0-9_.]{3,20}$/;
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   const handleRegister = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -61,10 +73,25 @@ const RegisterAction = ({ label }) => {
               type="email"
               placeholder="Email"
               required
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
               value={email}
               className="input input-bordered w-full max-w-sm"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                const isValid = EmailRegex.test(e.target.value);
+                setEmailValid(isValid);
+                setEmail(e.target.value);
+              }}
             />
+            <label className="label max-w-sm">
+              <span className="label-text-alt"></span>
+              <span
+                className={`label-text-alt ${
+                  email && emailValid ? "text-success" : "text-error"
+                }`}
+              >
+                {email && emailValid ? "valid email" : email && "invalid email"}
+              </span>
+            </label>
           </div>
           <div>
             <label className="label">
@@ -76,8 +103,24 @@ const RegisterAction = ({ label }) => {
               placeholder="Username"
               value={username}
               className="input input-bordered w-full max-w-sm"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                const isValid = usernameRegex.test(e.target.value);
+                setUsernameValid(isValid);
+                setUsername(e.target.value);
+              }}
             />
+            <label className="label max-w-sm">
+              <span className="label max-w-sm-text-alt"></span>
+              <span
+                className={`label-text-alt ${
+                  username && usernameValid ? "text-success" : "text-error"
+                }`}
+              >
+                {username && usernameValid
+                  ? "valid username"
+                  : username && "invalid username"}
+              </span>
+            </label>
           </div>
           <div>
             <label className="label">
@@ -89,23 +132,45 @@ const RegisterAction = ({ label }) => {
               value={password}
               placeholder="Password"
               className="input input-bordered w-full max-w-sm"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const isValid = passwordRegex.test(e.target.value);
+                setPassValid(isValid);
+                setPassword(e.target.value);
+              }}
             />
+            <label className="label max-w-sm">
+              <span className="label-text-alt"></span>
+              <span
+                className={`label-text-alt ${
+                  password && passValid ? "text-success" : "text-error"
+                }`}
+              >
+                {password && passValid
+                  ? "valid password"
+                  : password && "invalid password"}
+              </span>
+            </label>
           </div>
         </div>
       </div>
       <button
         className="btn btn-primary max-w-sm"
-        disabled={isLoading}
+        disabled={
+          isLoading ||
+          !(username && password && email) ||
+          !emailValid ||
+          !usernameValid ||
+          !passValid
+        }
         onClick={handleRegister}
       >
         {label}
       </button>
       <div className="flex justify-center items-center">
-        <p>
-          Have an account ?{" "}
+        <p className="text-sm leading-relaxed -tracking-wide">
+          Already have an account ?{" "}
           <Link href="/login">
-            <span className="font-semibold text-md hover:underline cursor-pointer">
+            <span className="font-semibold text-md hover:underline cursor-pointer text-accent">
               Login
             </span>
           </Link>

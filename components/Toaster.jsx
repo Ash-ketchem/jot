@@ -71,7 +71,7 @@ const Toaster = () => {
               }}
               key={toast?.id}
             >
-              <div className="alert  bg-white text-neutral w-[18rem] flex justify-center items-center z-50">
+              <div className="alert  bg-white text-neutral w-[18rem] flex justify-center items-center z-50 leading-relaxed tracking-wide">
                 <span>{toast?.label}</span>
               </div>
             </motion.div>

@@ -11,10 +11,23 @@ export const POST = async (req) => {
       throw new Error("credentials cannot be empty");
     }
 
+    //validation
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const usernameRegex = /^[a-zA-Z0-9_.]{3,20}$/;
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     if (!emailRegex.test(email)) {
       throw new Error("invalid email ");
+    }
+
+    if (!usernameRegex.test(username)) {
+      throw new Error("invalid username ");
+    }
+
+    if (!passwordRegex.test(password)) {
+      throw new Error("invalid password ");
     }
 
     let existingUserNames = await client.user.findMany({
