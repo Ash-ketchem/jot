@@ -58,7 +58,7 @@ const UserHeroAction = ({
         if (res?.status !== 200) {
           throw new Error("Something went wrong");
         }
-        console.log(userId, followState?.following ? false : true, loggedUser);
+        // console.log(userId, followState?.following ? false : true, loggedUser);
         setFollow(userId, followState?.following ? false : true, loggedUser);
       }
     } catch (error) {

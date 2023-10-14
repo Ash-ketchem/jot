@@ -98,7 +98,7 @@ const followingPostStore = create((set) => ({
 
   deletePost: (userId) => {
     set((state) => {
-      console.log(state?.posts[0]);
+      // console.log(state?.posts[0]);
       return {
         posts: state?.posts.filter((post) => post?.user?.id !== userId),
       };

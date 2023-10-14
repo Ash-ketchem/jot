@@ -85,7 +85,7 @@ export const POST = async (req) => {
       },
     });
 
-    console.log("token sucess ", res);
+    // console.log("token sucess ", res);
 
     //send token to email
 

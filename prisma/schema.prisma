@@ -38,7 +38,7 @@ model User {
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   body      String?
-  images    String[] @default([])
+  images    Json @default("[]")
   videos    String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

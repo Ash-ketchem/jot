@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import client from "@/libs/prismaClient";
 import { NextResponse } from "next/server";
+import cloudinary from "@/libs/cloudinaryConfig";
 
 export async function POST(req) {
   try {
@@ -34,11 +35,37 @@ export async function POST(req) {
       },
     });
 
+    if (!userId) {
+      throw new Error("invalid user");
+    }
+
+    const updatedImages = await Promise.all(
+      (images || []).map((image) => {
+        return new Promise((resolve) => {
+          cloudinary.uploader.explicit(
+            image,
+            { type: "fetch" },
+            function (error, result) {
+              if (error) {
+                console.log(error);
+                resolve({ image });
+              } else {
+                console.log(result.width, result.height);
+                resolve({ image, width: result.width, height: result.height });
+              }
+            }
+          );
+        });
+      })
+    );
+
+    // console.log(updatedImages);
+
     const post = await client.post.create({
       data: {
         body,
         userId: userId,
-        images: images ? images : [],
+        images: updatedImages ? updatedImages : [],
       },
       select: {
         id: true,

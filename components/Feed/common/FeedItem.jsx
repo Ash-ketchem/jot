@@ -3,7 +3,6 @@ import ImagesSection from "./ImagesSection";
 import UserActionGlobal from "../global/UserAction";
 import UserActionUser from "../user/UserAction";
 import UserSection from "./UserSection";
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import UserActionFollowing from "../following/UserAction";
 

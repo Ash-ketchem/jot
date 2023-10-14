@@ -4,38 +4,14 @@ import Feed from "@/components/Feed/global/Feed";
 import FeedFollowing from "@/components/Feed/following/Feed";
 import { AnimatePresence, motion } from "framer-motion";
 import PostTabStore from "@/stores/activePostTabStore";
+import FeedTabSwitch from "./FeedTabSwitch";
 
 const FeedTab = ({ initialPosts, loggedUserId }) => {
   const { activeTab, setActiveTab } = PostTabStore((state) => state);
 
   return (
     <div className="flex flex-col">
-      <div className="tabs tab-boxed w-full  flex items-center gap-2 ">
-        <div
-          className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out leading-loose hover:bg-neutral rounded-xl   ${
-            activeTab === 0
-              ? "tab-active bg-secondary text-secondary-content rounded-xl font-bold tracking-wide hover:bg-secondary"
-              : ""
-          }`}
-          role="button"
-          tabIndex={0}
-          onClick={() => setActiveTab(0)}
-        >
-          Explore
-        </div>
-        <div
-          className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center transition-all duration-300 ease-in-out leading-loose hover:bg-neutral rounded-xl  ${
-            activeTab === 1
-              ? "tab-active bg-secondary text-secondary-content rounded-xl font-bold tracking-wide hover:bg-secondary "
-              : ""
-          }`}
-          role="button"
-          tabIndex={0}
-          onClick={() => setActiveTab(1)}
-        >
-          Following
-        </div>
-      </div>
+      <FeedTabSwitch activeTab={activeTab} setActiveTab={setActiveTab} />
       <div>
         <AnimatePresence mode="await">
           {activeTab === 0 ? (

@@ -35,7 +35,7 @@ const Header = (showBackArrow, loggedUserId) => {
           <p className="normal-case text-md md:text-2xl font-semibold leading-relaxed tracking-widest p-4 -rotate-3 flex ml-6">
             <span className="hidden md:block mt-2 uppercase">j</span>
             <span className="uppercase text-lg px-1">
-              <FireIcon className="w-8 h-8 lg:w-8 lg:h-8 text-info" />
+              <FireIcon className="w-10 h-10 lg:w-8 lg:h-8 text-info" />
             </span>
             <span className="mt-2 hidden md:block">t</span>
           </p>

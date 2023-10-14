@@ -13,7 +13,7 @@ import getUserId from "@/libs/getUserId";
 import PostDeleteModal from "@/components/modals/PostDeleteModal";
 import EditModal from "@/components/modals/EditModal";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import Toaster from "@/components/Toaster";
+import Toaster from "@/components/Toasts/Toaster";
 import Scroller from "@/components/common/Scroller";
 import SearchModal from "@/components/modals/SearchModal";
 import TimerModal from "@/components/modals/TimerModal";

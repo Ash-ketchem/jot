@@ -10,6 +10,7 @@ import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import AdvacncedSettings from "../settings/AdvacncedSettings";
 
 const EditModal = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -160,6 +161,18 @@ const EditModal = () => {
             disabled={true}
           />
         </div>
+        <div className="form-control w-full ">
+          <label className="label">
+            <span className="label-text">Username</span>
+          </label>
+          <input
+            type="text"
+            placeholder="username"
+            className="input input-bordered w-full "
+            value={loggedUser?.email || ""}
+            disabled={true}
+          />
+        </div>
 
         <div className="form-control w-full ">
           <label className="label">
@@ -290,7 +303,23 @@ const EditModal = () => {
     </div>
   );
 
-  const contents = [textTabContent, mediaTabContent, passwordTabContent];
+  const advancedTabContent = (
+    <div className="w-full h-full ">
+      <div className="w-full h-full flex flex-col gap-2">
+        <AdvacncedSettings
+          username={loggedUser?.username || ""}
+          email={loggedUser?.email || ""}
+        />
+      </div>
+    </div>
+  );
+
+  const contents = [
+    textTabContent,
+    mediaTabContent,
+    passwordTabContent,
+    advancedTabContent,
+  ];
 
   useEffect(() => {
     setName(loggedUser?.name || "");
@@ -322,17 +351,19 @@ const EditModal = () => {
           <div className="h-full w-full flex flex-col gap-2 justify-evenly">
             <main className=" transition-[height] duration-75 ease-in-out overflow-y-auto">
               <div className="tabs tabs-boxed mb-3 p-2">
-                {["Info", "Media", "Password"].map((value, index) => (
-                  <span
-                    key={value}
-                    className={`tab ${
-                      bodyContent === index ? "tab-active" : ""
-                    }`}
-                    onClick={() => setBodyContent(index)}
-                  >
-                    {value}
-                  </span>
-                ))}
+                {["Info", "Media", "Password", "Advanced"].map(
+                  (value, index) => (
+                    <span
+                      key={value}
+                      className={`font-medium tab ${
+                        bodyContent === index ? "tab-active" : ""
+                      }`}
+                      onClick={() => setBodyContent(index)}
+                    >
+                      {value}
+                    </span>
+                  )
+                )}
               </div>
               <AnimatePresence mode="await">
                 <motion.div
@@ -383,7 +414,8 @@ const EditModal = () => {
                     (oldPassword && !newPassword) ||
                     (newPassword && !oldPassword) ||
                     isLoading ||
-                    !loggedUser?.id
+                    !loggedUser?.id ||
+                    bodyContent > 2
                   }
                 >
                   submit
