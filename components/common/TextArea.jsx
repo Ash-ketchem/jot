@@ -59,7 +59,7 @@ const TextArea = ({
                 inlineContainer: "#container",
                 theme: "minimal",
                 clientAllowedFormats: ["jpg", "png", "mov", "mp4"],
-                maxFiles: 1,
+                maxFiles: 3,
 
                 text: {
                   en: {

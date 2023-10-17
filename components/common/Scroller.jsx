@@ -34,7 +34,7 @@ const Scroller = ({ children }) => {
 
   return (
     <div
-      className="basis-2/3 overflow-y-auto  h-full  bg-base-200 rounded-box "
+      className="basis-2/3 overflow-y-auto  h-full  bg-base-200 rounded-box"
       onScroll={handleScroll}
       ref={scrollRef}
     >

@@ -50,7 +50,7 @@ export default async function RootLayout({ children }) {
       data-theme="dark"
       className={`${inter?.className} scroll-smooth`}
     >
-      <body>
+      <body className="overflow-hidden h-screen">
         {loggedUserId && <SyncClient />}
         <JotModal />
         <CommentModal />

@@ -78,8 +78,8 @@ const TimerModal = () => {
                 .map((k, i) => (
                   <div
                     key={i}
-                    className={`p-4 hover:bg-base-100 cursor-pointer rounded-xl text-center ${
-                      hours == i ? "bg-base-100" : ""
+                    className={`p-4 hover:bg-base-100 cursor-pointer rounded-md text-center mx-4 text-sm ${
+                      hours == i ? "bg-base-300" : ""
                     }`}
                   >
                     {i}
@@ -99,8 +99,8 @@ const TimerModal = () => {
                 .map((k, i) => (
                   <div
                     key={i * 5}
-                    className={`p-4 hover:bg-base-100 cursor-pointer rounded-xl text-center ${
-                      minutes == i * 5 ? "bg-base-100" : ""
+                    className={`p-4 hover:bg-base-100 cursor-pointer rounded-md text-center mx-4 text-sm ${
+                      minutes == i * 5 ? "bg-base-300" : ""
                     }`}
                   >
                     {i * 5}
