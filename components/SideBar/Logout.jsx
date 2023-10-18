@@ -26,10 +26,10 @@ const Logout = ({ loggedUserId }) => {
 
   return (
     <div
-      className="flex gap-4 justify-start items-center py-4"
+      className="flex gap-4 justify-start items-center py-4 group"
       onClick={handleLogout}
     >
-      <ArrowLeftOnRectangleIcon className="w-6 h-6" />
+      <ArrowLeftOnRectangleIcon className="w-6 h-6 group-hover:animate-[wiggle_1s_ease-in-out]" />
       <p className="font-semibold lg:text-base  text-sm">{label}</p>
     </div>
   );

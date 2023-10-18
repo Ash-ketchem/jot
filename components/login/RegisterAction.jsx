@@ -4,7 +4,6 @@ import toastStore from "@/stores/toastStore";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { useCallback, useState } from "react";
 
 const RegisterAction = ({ label }) => {

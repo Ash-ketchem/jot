@@ -22,7 +22,7 @@ const Toaster = () => {
   }, [toasts]);
 
   return (
-    <div className="w-screen h-screen  top-0 left-0 border-0 flex justify-center items-center  absolute pointer-events-none">
+    <div className="w-screen h-screen  top-0 left-0 border-0 flex justify-center items-center  absolute pointer-events-none z-50">
       <motion.div
         layout
         className=" mt-4 h-full flex-col gap-4  w-[20rem] z-50 flex items-center "
@@ -71,8 +71,8 @@ const Toaster = () => {
               }}
               key={toast?.id}
             >
-              <div className="alert  bg-white text-neutral w-[18rem] flex justify-center items-center z-50 leading-relaxed tracking-wide">
-                <span>{toast?.label}</span>
+              <div className="alert  bg-white text-black w-[18rem] flex justify-center items-center z-50 leading-relaxed tracking-wide text-sm">
+                <span className="w-full text-center">{toast?.label}</span>
               </div>
             </motion.div>
           </AnimatePresence>

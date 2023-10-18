@@ -7,7 +7,9 @@ import { useEffect } from "react";
 const SyncClient = () => {
   // synchronizing client stores
 
-  const { data: loggedUser } = useCurrentUser("med");
+  const type = "med";
+
+  const { data: loggedUser } = useCurrentUser(type);
 
   const setUser = userStore((state) => state.setUser);
 

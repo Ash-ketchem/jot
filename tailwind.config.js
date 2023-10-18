@@ -7,6 +7,28 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        wiggle: {
+          "0%": {
+            transform: "rotate(-6deg)",
+          },
+          "25%": {
+            transform: "rotate(6deg)",
+          },
+          "50%": {
+            transform: "rotate(-6deg)",
+          },
+          "75%": {
+            transform: "rotate(6deg)",
+          },
+          "100%": {
+            transform: "rotate(-6deg)",
+          },
+        },
+      },
+      animation: {
+        wiggle: "wiggle 2s ease-in-out infinite",
+      },
       height: {
         100: "480px",
       },

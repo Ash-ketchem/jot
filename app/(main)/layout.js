@@ -14,11 +14,11 @@ import PostDeleteModal from "@/components/modals/PostDeleteModal";
 import EditModal from "@/components/modals/EditModal";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Toaster from "@/components/Toasts/Toaster";
-import Scroller from "@/components/common/Scroller";
 import SearchModal from "@/components/modals/SearchModal";
 import TimerModal from "@/components/modals/TimerModal";
 import TakeaBreakModal from "@/components/modals/TakeaBreakModal";
 import EmailVerificiation from "@/components/verification/EmailVerificiation";
+import MobileJot from "@/components/common/MobileJot";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -70,6 +70,9 @@ export default async function RootLayout({ children }) {
               </div>
               <div className="basis-2/3 flex-1 overflow-y-auto  h-full  bg-base-200 rounded-box pb-4 xl:px-[2%] lg:px-[1%] md:px-2 sm:px-4">
                 {children}
+                <div className="w-fit h-fit py-2  absolute bottom-4 right-4 md:hidden flex">
+                  <MobileJot />
+                </div>
               </div>
               <div className="xl:flex hidden basis-1/3 overflow-auto bg-base-200 rounded-box">
                 {/* extra */}

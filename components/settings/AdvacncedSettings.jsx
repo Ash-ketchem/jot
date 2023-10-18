@@ -31,9 +31,9 @@ const AdvacncedSettings = ({ username, email }) => {
             {option?.label || ""}
           </div>
           <div className="collapse-content">
-            <p className="text-sm leading-relaxed tracking-wide">
+            <div className="text-sm leading-relaxed tracking-wide">
               {option?.content || <></>}
-            </p>
+            </div>
           </div>
         </div>
       ))}

@@ -69,7 +69,7 @@ const ImageCarousel = ({ images }) => {
         </motion.div>
       </AnimatePresence>
       {images?.length > 1 && (
-        <div className="w-full flex justify-between items-center absolute top-[50%] left-0 z-50 text-white">
+        <div className="w-full flex justify-between items-center absolute top-[50%] left-0 z-30 text-white">
           <motion.div
             className="btn btn-sm btn-ghost btn-circle font-bold hover:text-accent hover:bg-transparent "
             onClick={(e) => {

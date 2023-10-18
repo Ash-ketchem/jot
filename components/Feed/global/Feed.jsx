@@ -182,8 +182,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   };
 
   return (
-    // <motion.div variants={variants} initial="hide" animate="show" layout>
     <div className="sm:px-2 px w-full h-fit rounded-box py-4">
+      {/* <motion.div variants={variants} initial="hide" animate="show"> */}
       <div className="px-2 lg:px-[5%] xl:px-0 h-full w-full flex flex-col gap-3 pt-2 overflow-y-auto">
         {globalPosts?.length ? (
           <>
@@ -211,6 +211,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
             )}
           </div>
         )}
+
         {loading ? (
           <div className="flex justify-center items-center">
             <span className="loading loading-dots loading-lg "></span>
@@ -222,8 +223,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
           />
         )}
       </div>
+      {/* </motion.div> */}
     </div>
-    // </motion.div>
   );
 };
 

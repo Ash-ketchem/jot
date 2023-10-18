@@ -33,6 +33,8 @@ const EditModal = () => {
 
   const router = useRouter();
 
+  // console.log(loggedUser, " loggeduser");
+
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
@@ -60,7 +62,7 @@ const EditModal = () => {
 
         const res = await axios.post("/api/edit", postBody);
 
-        console.log(res);
+        // console.log(res);
 
         if (res?.status !== 200) {
           throw new Error(res?.error);

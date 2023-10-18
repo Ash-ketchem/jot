@@ -219,7 +219,9 @@ const SearchModal = () => {
       {/* search input */}
       <div className="w-full mt-2">
         <label className="label">
-          <span className="label-text">search by name or username</span>
+          <span className="label-text font-semibold">
+            search by name or username
+          </span>
         </label>
         <input
           type="text"

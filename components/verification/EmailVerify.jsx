@@ -98,7 +98,7 @@ const EmailVerify = ({ email, retryAttemptsLeft }) => {
             <button
               className="btn btn-primary lowercase leading-loose tracking-wider"
               onClick={handleVerification}
-              disabled={loading || retryAttemptsLeft === 0}
+              disabled={loading || retryAttemptsLeft === 0 || !token}
             >
               Verify
             </button>

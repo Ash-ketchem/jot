@@ -14,7 +14,7 @@ const UserInfo = ({ id, followingCount, followersCount, loggedUser }) => {
     //logged user follow someone => someones's followers count increases
 
     //update followingcount for logged  user
-    if (loggedUser && followData) {
+    if (loggedUser && followData && followData?.length) {
       setfollowingCountNew(
         followData?.filter((user) => user?.id !== id && user.following)
           ?.length || 0

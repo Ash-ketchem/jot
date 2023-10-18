@@ -30,21 +30,21 @@ const FeedItem = ({ post, loggedUserId, type = "global" }) => {
 
   return (
     <div>
-      <AnimatePresence>
-        <motion.div
-          className="card card-compact bg-base-100 shadow-xl h-auto p-2 pb-4"
-          variants={variants}
-          exit={{
-            y: -50,
-            opacity: 0,
-            transition: {
-              duration: 0.3,
-              delay: 0.1,
-              y: { stiffness: 1000, velocity: -100 },
-            },
-          }}
-          layout
-        >
+      <motion.div
+        className="card card-compact bg-base-100 shadow-xl h-auto p-2 pb-4"
+        variants={variants}
+        exit={{
+          y: -50,
+          opacity: 0,
+          transition: {
+            duration: 0.3,
+            delay: 0.1,
+            y: { stiffness: 1000, velocity: -100 },
+          },
+        }}
+        layout
+      >
+        <AnimatePresence>
           <div
             className={`flex flex-col sm:${
               cardStyle === "vertical" ? "flex-row" : "flex-col"
@@ -77,8 +77,8 @@ const FeedItem = ({ post, loggedUserId, type = "global" }) => {
               />
             )}
           </div>
-        </motion.div>
-      </AnimatePresence>
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

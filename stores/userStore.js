@@ -13,6 +13,20 @@ const userStore = create((set) => ({
     });
   },
 
+  setUserData: (data) => {
+    // data = { key: value };
+    set((state) => {
+      if (state?.loggedUser[data?.key]) {
+        state.loggedUser[data?.key] = data?.value;
+        return {
+          loggedUser: {
+            ...state?.loggedUser,
+          },
+        };
+      }
+    });
+  },
+
   removeUser: () => {
     set(() => {
       return {

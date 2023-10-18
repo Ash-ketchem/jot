@@ -34,7 +34,7 @@ const UserSection = ({ user, createdAt }) => {
           </div>
         </div>
         <div className="flex flex-col justify-center items-start text-sm gap-1 tracking-wider  p-0">
-          <p className="sm:text-sm text-sm">{user?.name}</p>
+          <p className="sm:text-sm text-sm font-bold">{user?.name}</p>
           <p
             className="font-semibold hover:underline cursor-pointer text-xs leading-loose tracking-wider"
             onClick={handleClick}
