@@ -1,6 +1,32 @@
 "use client";
 
+import toastStore from "@/stores/toastStore";
+import { useCallback, useState } from "react";
+
 const Page = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+  const addToast = toastStore((state) => state.addToast);
+
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      try {
+        setLoading(true);
+        addToast("Will get back to you soon!!");
+      } catch (error) {
+        addToast("Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [name, email, message]
+  );
   return (
     <div className="max-h-[90vh] flex items-center justify-center">
       <div className=" p-8 rounded-lg shadow-md w-full max-w-md">
@@ -21,6 +47,8 @@ const Page = () => {
               className="w-full px-4 py-2  rounded-md focus:outline-none focus:border-primary"
               placeholder="John Doe"
               required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div>
@@ -32,6 +60,8 @@ const Page = () => {
               className="w-full px-4 py-2  rounded-md focus:outline-none focus:border-primary"
               placeholder="john.doe@example.com"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div>
@@ -42,11 +72,14 @@ const Page = () => {
               className="w-full h-32 px-4 py-2  rounded-md focus:outline-none focus:border-primary"
               placeholder="Enter your message here..."
               required
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             ></textarea>
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white rounded-md py-2 hover:bg-primary-hover transition duration-300"
+            className="w-full btn btn-primary"
+            onClick={handleSubmit}
           >
             Submit
           </button>

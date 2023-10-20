@@ -1,27 +1,19 @@
 "use client";
 
-import FeedItem from "../common/FeedItem";
 import { useCallback, useEffect, useRef, useState } from "react";
 import globalPostStore from "@/stores/posts/globalPostStore";
 import axios from "axios";
 import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import toastStore from "@/stores/toastStore";
+import FeedItem from "../Feed/common/FeedItem";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
-  // to render only 5 cards on first render
-  // to make entry animation smoother
-  const [limit, setLimit] = useState(true);
-
-  let globalPosts = globalPostStore((state) => state.posts);
-
+  const globalPosts = globalPostStore((state) => state.posts);
   const bookmarkIds = bookmarkStore((state) => state.bookmarkIds);
 
   const addPosts = globalPostStore((state) => state.addPosts);
   const addBookmarkIds = bookmarkStore((state) => state.addBookmarkIds);
-
-  const addToast = toastStore((state) => state.addToast);
 
   const [loading, setLoading] = useState(false);
 
@@ -96,18 +88,10 @@ const Feed = ({ initialPosts, loggedUserId }) => {
       }
     } catch (error) {
       console.log(error);
-      //add a toast
-      addToast("Failed to fetch posts");
     } finally {
       setLoading(false);
     }
   }, [addPosts]);
-
-  useEffect(() => {
-    if (limit) {
-      globalPosts = globalPosts.slice(0, 5);
-    }
-  }, []);
 
   // infinite scroll setup
   useEffect(() => {
@@ -183,26 +167,14 @@ const Feed = ({ initialPosts, loggedUserId }) => {
     }
   }, []);
 
-  // restet limit
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      //slow down full initial render
-      setLimit(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const variants = {
     hide: { y: 50, opacity: 0 },
     show: {
       y: 0,
       opacity: 1,
       transition: {
-        // delay: 0.3,
         duration: 0.3,
         staggerChildren: 0.15,
-        ease: "easeInOut",
       },
     },
   };
@@ -213,47 +185,46 @@ const Feed = ({ initialPosts, loggedUserId }) => {
         variants={variants}
         // initial="hide"
         // animate="show"
-        // layout
+        className="px-2 lg:px-[5%] xl:px-[0%] h-full  flex flex-col gap-3  lg:container lg:mx-auto"
+        layout
       >
-        <div className="px-2 lg:px-[5%] xl:px-[0%] h-full  flex flex-col gap-3  lg:container lg:mx-auto">
-          {globalPosts?.length ? (
-            <>
-              {globalPosts.map((post) => (
-                <div
-                  onClick={() => router.push(`/post/${post?.id}`)}
-                  key={post?.id}
-                  className="cursor-pointer"
-                >
-                  <FeedItem
-                    post={post}
-                    key={post.id}
-                    loggedUserId={loggedUserId}
-                    type="global"
-                  />
-                </div>
-              ))}
-            </>
-          ) : (
-            <div className="flex justify-center items-center h-32 w-full  ">
-              {initialPosts?.length ? (
-                <span className="loading loading-spinner text-primary loading-lg"></span>
-              ) : (
-                <p>No posts found!!</p>
-              )}
-            </div>
-          )}
+        {globalPosts?.length ? (
+          <>
+            {globalPosts.map((post) => (
+              <div
+                onClick={() => router.push(`/post/${post?.id}`)}
+                key={post?.id}
+                className="cursor-pointer"
+              >
+                <FeedItem
+                  post={post}
+                  key={post.id}
+                  type="global"
+                  loggedUserId={loggedUserId}
+                />
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="flex justify-center items-center h-32 w-full  ">
+            {initialPosts?.length ? (
+              <span className="loading loading-spinner text-primary loading-lg"></span>
+            ) : (
+              <p>No posts found!!</p>
+            )}
+          </div>
+        )}
 
-          {loading ? (
-            <div className="flex justify-center items-center">
-              <span className="loading loading-dots loading-lg "></span>
-            </div>
-          ) : (
-            <div
-              className="h-[1px] bg-white border-0 w-full z-50 invisible"
-              ref={trackerRef}
-            />
-          )}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <span className="loading loading-dots loading-lg "></span>
+          </div>
+        ) : (
+          <div
+            className="h-[1px] bg-transparent border-1 w-full invisible"
+            ref={trackerRef}
+          />
+        )}
       </motion.div>
     </div>
   );

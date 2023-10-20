@@ -1,12 +1,15 @@
 "use client";
 
 import toastStore from "@/stores/toastStore";
+import { EyeIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { signOut } from "next-auth/react";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const PasswordReset = () => {
   const [loading, setLoading] = useState(false);
+
+  const passRef = useRef(null);
 
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
@@ -98,9 +101,20 @@ const PasswordReset = () => {
             <span
               className={`label-text-alt ${tokenGenerated ? "" : "text-info"}`}
             >
-              {tokenGenerated
-                ? "New password"
-                : "A token will be sent to your email address"}
+              {tokenGenerated ? (
+                <span className="flex gap-2 justify-center items-center">
+                  <span className="font-semibold">New password</span>
+                  <EyeIcon
+                    className="w-4 h-4 cursor-pointer"
+                    onClick={() => {
+                      passRef.current.type =
+                        passRef.current.type === "text" ? "password" : "text";
+                    }}
+                  />
+                </span>
+              ) : (
+                "A token will be sent to your email address"
+              )}
             </span>
             <span
               className={`label-text-alt ${
@@ -122,6 +136,7 @@ const PasswordReset = () => {
             type="password"
             placeholder="New password"
             className="input input-bordered w-full"
+            ref={passRef}
             value={password}
             disabled={loading || !tokenGenerated}
             onChange={(e) => setPassword(e.target.value)}
@@ -139,7 +154,7 @@ const PasswordReset = () => {
         {tokenGenerated && (
           <div>
             <label className="label">
-              <span className={`label-text-alt`}>Token</span>
+              <span className={`label-text-alt font-semibold`}>Token</span>
             </label>
             <input
               type="text"

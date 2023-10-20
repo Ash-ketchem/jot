@@ -2,6 +2,7 @@ import { create } from "react-nuance";
 
 const globalPostStore = create((set) => ({
   posts: [],
+
   addPosts: (posts) => {
     set((state) => {
       const oldPosts = state.posts.map((post) => post.id);

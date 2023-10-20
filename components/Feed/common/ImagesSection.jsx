@@ -10,8 +10,13 @@ const ImagesSection = ({ images }) => {
   const cloudinaryPublicIdPattern = /v.*\/(.*?\..{3,4})$/;
 
   const imageGroup = images.map((img) => {
-    const matchResult =
-      (img?.image ?? img).match(cloudinaryPublicIdPattern)[1] || null;
+    const matchResult = (img?.image ?? img)?.match(
+      cloudinaryPublicIdPattern
+    )?.[1];
+
+    if (!matchResult) {
+      return null;
+    }
     const height = img?.height ?? 0;
     const width = img?.width ?? 0;
     const media = matchResult?.split(".")[0] || null;
@@ -29,6 +34,10 @@ const ImagesSection = ({ images }) => {
       objectFit: objectFit,
     };
   });
+
+  if (imageGroup?.every((img) => img === null)) {
+    return null;
+  }
 
   return <ImageCarousel images={imageGroup} />;
 

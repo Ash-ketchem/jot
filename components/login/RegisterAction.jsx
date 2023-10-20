@@ -1,10 +1,11 @@
 "use client";
 
 import toastStore from "@/stores/toastStore";
+import { EyeIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const RegisterAction = ({ label }) => {
   const [username, setUsername] = useState("");
@@ -17,6 +18,8 @@ const RegisterAction = ({ label }) => {
   const [emailValid, setEmailValid] = useState(false);
   const [passValid, setPassValid] = useState(false);
   const [usernameValid, setUsernameValid] = useState(false);
+
+  const passRef = useRef(null);
 
   const addToast = toastStore((state) => state.addToast);
 
@@ -64,9 +67,10 @@ const RegisterAction = ({ label }) => {
     <div className="flex flex-col gap-4 w-full ">
       <div>
         <div className="form-control w-full py-2 space-y-4 lg:pr-2">
+          {/* email */}
           <div>
             <label className="label">
-              <span className="label-text">Email</span>
+              <span className="label-text font-semibold">Email</span>
             </label>
             <input
               type="email"
@@ -92,9 +96,20 @@ const RegisterAction = ({ label }) => {
               </span>
             </label>
           </div>
+
+          {/* username */}
           <div>
             <label className="label">
-              <span className="label-text">Username</span>
+              <span className="label-text font-semibold">Username</span>
+              <span
+                className={`label-text-alt ${
+                  username && usernameValid ? "text-success" : "text-error"
+                }`}
+              >
+                {username && usernameValid
+                  ? "valid username"
+                  : username && "invalid username"}
+              </span>
             </label>
             <input
               type="text"
@@ -108,37 +123,28 @@ const RegisterAction = ({ label }) => {
                 setUsername(e.target.value);
               }}
             />
-            <label className="label max-w-sm">
-              <span className="label max-w-sm-text-alt"></span>
-              <span
-                className={`label-text-alt ${
-                  username && usernameValid ? "text-success" : "text-error"
-                }`}
-              >
-                {username && usernameValid
-                  ? "valid username"
-                  : username && "invalid username"}
+            <label className="label">
+              <span className="label-text-alt text-info">
+                Username must be 3 to 20 characters long and can contain letters
+                (both uppercase and lowercase), numbers, underscores (_), and
+                dots (.)
               </span>
             </label>
           </div>
+
+          {/* password */}
           <div>
             <label className="label">
-              <span className="label-text">Password</span>
-            </label>
-            <input
-              type="text"
-              required
-              value={password}
-              placeholder="Password"
-              className="input input-bordered w-full max-w-sm"
-              onChange={(e) => {
-                const isValid = passwordRegex.test(e.target.value);
-                setPassValid(isValid);
-                setPassword(e.target.value);
-              }}
-            />
-            <label className="label max-w-sm">
-              <span className="label-text-alt"></span>
+              <div className="flex gap-2 items-center justify-center">
+                <span className="label-text font-semibold">Password</span>
+                <EyeIcon
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    passRef.current.type =
+                      passRef.current.type === "text" ? "password" : "text";
+                  }}
+                />
+              </div>
               <span
                 className={`label-text-alt ${
                   password && passValid ? "text-success" : "text-error"
@@ -147,6 +153,26 @@ const RegisterAction = ({ label }) => {
                 {password && passValid
                   ? "valid password"
                   : password && "invalid password"}
+              </span>
+            </label>
+            <input
+              type="password"
+              required
+              value={password}
+              placeholder="Password"
+              className="input input-bordered w-full max-w-sm"
+              ref={passRef}
+              onChange={(e) => {
+                const isValid = passwordRegex.test(e.target.value);
+                setPassValid(isValid);
+                setPassword(e.target.value);
+              }}
+            />
+            <label className="label">
+              <span className="label-text-alt text-info">
+                Password must be at least 8 characters long and include at least
+                one lowercase letter, one uppercase letter, one digit, and one
+                special character (@, $, !, %, *, ?, or &).
               </span>
             </label>
           </div>

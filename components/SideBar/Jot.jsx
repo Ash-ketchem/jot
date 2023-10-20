@@ -13,7 +13,7 @@ const Jot = ({ label }) => {
 
   return (
     <div
-      className="group flex gap-4 justify-start items-center py-4 bg-primary text-primary-content hover:bg-primary-focus "
+      className="group flex gap-4 justify-start items-center py-4 bg-primary text-primary-content hover:bg-primary-focus hover:text-primary-content "
       onClick={hanldleJot}
     >
       <FireIcon className="w-6 h-6 group-hover:animate-[wiggle_1s_ease-in-out]" />

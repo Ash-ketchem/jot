@@ -56,6 +56,16 @@ const TextArea = ({
             <CldUploadButton
               signatureEndpoint="/api/sign"
               options={{
+                sources: [
+                  "local",
+                  "camera",
+                  "google_drive",
+                  "dropbox",
+                  "shutterstock",
+                  "gettyimages",
+                  "istock",
+                  "unsplash",
+                ],
                 inlineContainer: "#container",
                 theme: "minimal",
                 clientAllowedFormats: ["jpg", "png", "mov", "mp4"],
@@ -73,6 +83,9 @@ const TextArea = ({
                 },
               }}
               onQueuesEnd={(res, options) => {
+                if (!res?.info?.files) {
+                  return;
+                }
                 res = res?.info?.files
                   .filter((file) => file.status === "success")
                   ?.map((file) => file?.uploadInfo?.secure_url);

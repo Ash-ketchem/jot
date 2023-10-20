@@ -5,6 +5,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/route";
 import UserHero from "@/components/user/UserHero";
 import UserFeed from "@/components/user/UserFeed";
 import Scroller from "@/components/common/Scroller";
+import Feed from "@/components/Feed/global/Feed";
 
 const page = async () => {
   const postsNum = 5;

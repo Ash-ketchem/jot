@@ -10,7 +10,7 @@ export async function DELETE(req) {
       throw new Error("invalid id");
     }
 
-    const { images } = await client.post.findUnique({
+    let { images } = await client.post.findUnique({
       where: {
         id: id,
       },
@@ -18,6 +18,21 @@ export async function DELETE(req) {
         images: true,
       },
     });
+
+    const cloudinaryPublicIdPattern = /v.*\/(.*?)\..{3,4}$/;
+
+    images = images?.map((img) => {
+      const matchResult = img?.image?.match(cloudinaryPublicIdPattern)?.[1];
+
+      return {
+        media: matchResult?.split(".")[0] || null,
+        mediaType: ["jpg", "png"].includes(matchResult?.split(".")[1] || null)
+          ? "image"
+          : "video",
+      };
+    });
+
+    //deleting the original post
 
     const post = await client.post.delete({
       where: {
@@ -32,16 +47,22 @@ export async function DELETE(req) {
       throw new Error("something went wrong");
     }
 
+    // if(images?.every(img=>img === "image")){
+    //   // bulk delete
+    //   cloudinary.api
+    //   .delete_resources(images.map(img=>img?.media))
+    //   .then((result) => console.log(result));
+    // }
+
     // deleting images from cloudinary
-    const cloudinaryPublicIdPattern = /v.*\/(.*?)\..{3,4}$/;
 
     for (const img of images) {
-      const pub_id = img.match(cloudinaryPublicIdPattern)?.[1];
-
-      if (pub_id) {
-        const res = await cloudinary.uploader.destroy(pub_id, {
-          resource_type: "image",
-        });
+      if (img?.media) {
+        cloudinary.uploader
+          .destroy(img?.media, {
+            resource_type: img?.mediaType,
+          })
+          .then((result) => console.log(result));
       }
     }
 
