@@ -8,6 +8,7 @@ const modalStore = create((set) => ({
   openSearchModal: () => window.searchModal.showModal(),
   openTimerModal: () => window.timerModal.showModal(),
   openBreakModal: () => window.breakModal.showModal(),
+  openImageModal: () => window.imageModal.showModal(),
 
   closeJotModal: () => window.jotModal.close(),
   closeCommentModal: () => window.commentModal.close(),
@@ -16,6 +17,7 @@ const modalStore = create((set) => ({
   closeSearchModal: () => window.searchModal.close(),
   closeTimerModal: () => window.timerModal.close(),
   closeBreakModal: () => window.breakModal.close(),
+  closeImageModal: () => window.imageModal.close(),
 }));
 
 export default modalStore;

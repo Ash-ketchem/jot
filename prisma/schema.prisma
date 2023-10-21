@@ -11,20 +11,21 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  name             String?
-  username         String?   @unique
-  bio              String?
-  email            String    @unique
-  image            String?
-  coverImage       String?
-  profileImage     String?
-  hashedPassword   String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  followingIds     String[]  @db.ObjectId
-  emailVerified    Boolean @default(false)
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  username        String?  @unique
+  bio             String?
+  email           String   @unique
+  image           String?
+  coverImage      String?
+  profileImage    String?
+  hashedPassword  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  followingIds    String[] @default([])
+  emailVerified   Boolean  @default(false)
   hasNotification Boolean?
+  role            String   @default("user")
 
   // relations 
 
@@ -32,18 +33,22 @@ model User {
   comments     Comment[]
   notification Notification[]
   bookmarks    Bookmark[]
-  token Verification? 
+  token        Verification?
 }
 
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  // uniqueId  String   @unique @default(uuid()) // for liking posts
   body      String?
-  images    Json @default("[]")
+  images    Json     @default("[]")
   videos    String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
   likeIds   String[] @db.ObjectId
+
+  // to be updated
+  // likeIds   String[] @default([])
 
   comments  Comment[]
   bookmarks Bookmark[]
@@ -82,15 +87,12 @@ model Bookmark {
 }
 
 model Verification {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId @unique
-  token String @unique
-  resendCount Int @default(3)
-  retryCount Int @default(3)
-  expirationTime DateTime 
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @unique @db.ObjectId
+  token          String   @unique
+  resendCount    Int      @default(3)
+  retryCount     Int      @default(3)
+  expirationTime DateTime
 
-  user User@relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
-

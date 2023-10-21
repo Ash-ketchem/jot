@@ -1,5 +1,7 @@
 "use client";
 
+import modalStore from "@/stores/modalStore";
+import selectedImageStore from "@/stores/selectedImageStore";
 import {
   ArrowLeftCircleIcon,
   ArrowRightCircleIcon,
@@ -9,6 +11,10 @@ import { CldImage, CldVideoPlayer } from "next-cloudinary";
 import { useCallback, useRef, useState } from "react";
 
 const ImageCarousel = ({ images }) => {
+  const openImageModal = modalStore((state) => state.openImageModal);
+
+  const setImage = selectedImageStore((state) => state.setImage);
+
   const [[page, direction], setPage] = useState([0, 0]);
   const pageIndex = useRef(0);
 
@@ -43,7 +49,10 @@ const ImageCarousel = ({ images }) => {
             x: { type: "spring", stiffness: 100, damping: 20, mass: 1.2 },
             opacity: { duration: 0.3 },
           }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
         >
           {["jpg", "png"].includes(images[pageIndex.current]?.mediaType) ? (
             <CldImage
@@ -55,6 +64,19 @@ const ImageCarousel = ({ images }) => {
               className={` rounded-xl bg-base-200/60 object-${
                 images[pageIndex.current]?.objectFit
               }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (
+                  ["jpg", "png"].includes(images[pageIndex.current]?.mediaType)
+                ) {
+                  setImage({
+                    img: images[pageIndex.current]?.media,
+                    h: images[pageIndex.current]?.height,
+                    w: images[pageIndex.current]?.width,
+                  });
+                  openImageModal();
+                }
+              }}
               loading="lazy"
             />
           ) : (

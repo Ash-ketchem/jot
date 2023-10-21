@@ -39,6 +39,7 @@ export async function POST(req) {
       },
     });
 
+    //replace this with raw mongodb queries in the  latest code
     const updatedPost = await client.post.update({
       where: {
         id: postId,
@@ -52,6 +53,53 @@ export async function POST(req) {
         id: true,
       },
     });
+
+    // LATEST CODE TO BE UPDATED
+    /*
+    const { uniqueId } = await client.post.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        uniqueId: true,
+      },
+    });
+
+    if (userAlreadyLiked) {
+      //unlike by deleting from array
+
+      const updatePost = await client.$runCommandRaw({
+        update: "Post",
+        updates: [
+          {
+            q: { uniqueId: uniqueId }, // Query conditions (empty object matches all documents)
+            u: {
+              $pull: {
+                likeIds: id,
+              },
+            },
+          },
+        ],
+      });
+    } else {
+      //like
+
+      const updatePost = await client.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          likeIds: {
+            push: id,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+    }
+
+    */
 
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {

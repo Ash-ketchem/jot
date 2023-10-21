@@ -10,8 +10,6 @@ export async function GET(req) {
     const cursor = searchParams.get("cursor");
     const query = searchParams.get("query").trim().toLocaleLowerCase();
 
-    // console.log(query);
-
     if (!cursor) {
       users = await client.user.findMany({
         take: count,
@@ -20,9 +18,13 @@ export async function GET(req) {
             {
               username: {
                 contains: query,
+                mode: "insensitive",
               },
+            },
+            {
               name: {
                 contains: query,
+                mode: "insensitive",
               },
             },
           ],
@@ -38,7 +40,7 @@ export async function GET(req) {
         },
       });
 
-      console.log(users);
+      // console.log(users);
     } else {
       users = await client.user.findMany({
         skip: 1,
@@ -51,9 +53,13 @@ export async function GET(req) {
             {
               username: {
                 contains: query,
+                mode: "insensitive",
               },
+            },
+            {
               name: {
                 contains: query,
+                mode: "insensitive",
               },
             },
           ],

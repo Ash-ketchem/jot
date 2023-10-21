@@ -41,6 +41,7 @@ export const authOptions = {
             email: true,
             hashedPassword: true,
             emailVerified: true,
+            role: true,
 
             // id: true,
           },
@@ -67,7 +68,11 @@ export const authOptions = {
         return {
           // workaround to include emailverified field in session
           // cannot access user object in session callback
-          name: { name: user?.name, emailVerified: user?.emailVerified },
+          name: {
+            name: user?.name,
+            emailVerified: user?.emailVerified,
+            role: user?.role || "user",
+          },
           emailVerified: user?.emailVerified,
           email: user.email,
         };
@@ -88,6 +93,7 @@ export const authOptions = {
           ...session.user,
           name: session?.user?.name?.name,
           emailVerified: session?.user?.name?.emailVerified,
+          role: session?.user?.name?.role,
         },
       };
     },

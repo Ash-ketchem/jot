@@ -2,10 +2,11 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import client from "@/libs/prismaClient";
 import { NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 
 export async function POST(req) {
   try {
-    // id of the userr to follow
+    // id of the user to follow
     const { id } = await req.json();
 
     if (!id || typeof id !== "string") {
@@ -18,7 +19,7 @@ export async function POST(req) {
       throw new Error("invalid session");
     }
 
-    const { id: loggedUserId, followingIds } = await client.user.findUnique({
+    const loggedUser = await client.user.findUnique({
       where: {
         email: session?.user?.email,
       },
@@ -28,33 +29,55 @@ export async function POST(req) {
       },
     });
 
-    if (id === loggedUserId) {
+    if (id === loggedUser.id) {
       throw new Error("cannot follow yourself");
     }
 
-    const updatedFollowingIds = followingIds?.includes(id)
-      ? followingIds.filter((followingId) => followingId !== id)
-      : [id, ...followingIds];
+    let updateUser = null;
 
-    console.log(updatedFollowingIds, followingIds);
+    const currentlyFollowing = loggedUser.followingIds.includes(id);
 
-    const updatedUser = await client.user.update({
-      where: {
-        id: loggedUserId,
-      },
-      data: {
-        followingIds: updatedFollowingIds,
-      },
-      select: {
-        id: true,
-      },
-    });
+    if (currentlyFollowing) {
+      //unfollow by deleting from array
 
-    return NextResponse.json(updatedUser, {
+      updateUser = await client.$runCommandRaw({
+        update: "User",
+        updates: [
+          {
+            q: { email: session?.user?.email }, // Query conditions (empty object matches all documents)
+            u: {
+              $pull: {
+                followingIds: id,
+              },
+            },
+          },
+        ],
+      });
+    } else {
+      //follow
+
+      updateUser = await client.user.update({
+        where: {
+          id: loggedUser.id,
+        },
+        data: {
+          followingIds: {
+            push: id,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+    }
+
+    console.log(currentlyFollowing, id, updateUser, loggedUser?.id);
+
+    return NextResponse.json(updateUser, {
       status: 200,
     });
   } catch (error) {
-    console.log("error while creating a post", error);
+    console.log("error while foloowing a user", error);
     return NextResponse.json(
       {
         error: "error while following  a user",

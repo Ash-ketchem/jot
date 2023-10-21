@@ -19,6 +19,7 @@ import TimerModal from "@/components/modals/TimerModal";
 import TakeaBreakModal from "@/components/modals/TakeaBreakModal";
 import EmailVerificiation from "@/components/verification/EmailVerificiation";
 import MobileJot from "@/components/common/MobileJot";
+import ImageModal from "@/components/modals/ImageModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +41,12 @@ export default async function RootLayout({ children }) {
     );
   }
 
+  //admin panel only
+  if (session?.user?.email && session?.user?.role?.toLowerCase() === "admin") {
+    //admin dashboasrd
+    return null;
+  }
+
   if (session?.user?.email) {
     loggedUserId = await getUserId(session.user.email);
   }
@@ -59,6 +66,7 @@ export default async function RootLayout({ children }) {
         <SearchModal />
         <TimerModal />
         <TakeaBreakModal />
+        <ImageModal />
         <Toaster />
         <div className="xl:px-[5%] px-0 ">
           <Header loggedUserId={loggedUserId} />
