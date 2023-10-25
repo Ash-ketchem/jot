@@ -77,7 +77,7 @@ export const POST = async (req) => {
     const resp = await client.verification.create({
       data: {
         userId: res?.id,
-        token: crypto.randomUUID(),
+        token: token,
         expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
       },
       select: {

@@ -22,7 +22,7 @@ const JotModal = ({ label }) => {
     e?.preventDefault();
 
     if (!jotBody && !images?.length) {
-      alert("jot empty");
+      addToast("Jot can't be  empty");
       return;
     }
 
@@ -78,6 +78,7 @@ const JotModal = ({ label }) => {
         placeholder="Say something sweet!!"
         submitLabel={jotLabel}
         isLoading={isLoading}
+        setIsLoading={setIsLoading}
         handleSubmit={handlePost}
         btnSize="md"
         options={true}

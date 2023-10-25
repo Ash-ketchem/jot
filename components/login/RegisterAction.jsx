@@ -123,8 +123,8 @@ const RegisterAction = ({ label }) => {
                 setUsername(e.target.value);
               }}
             />
-            <label className="label">
-              <span className="label-text-alt text-info">
+            <label className="label max-w-sm">
+              <span className="label-text-alt text-info text-justify">
                 Username must be 3 to 20 characters long and can contain letters
                 (both uppercase and lowercase), numbers, underscores (_), and
                 dots (.)
@@ -168,8 +168,8 @@ const RegisterAction = ({ label }) => {
                 setPassword(e.target.value);
               }}
             />
-            <label className="label">
-              <span className="label-text-alt text-info">
+            <label className="label max-w-sm">
+              <span className="label-text-alt text-info text-justify">
                 Password must be at least 8 characters long and include at least
                 one lowercase letter, one uppercase letter, one digit, and one
                 special character (@, $, !, %, *, ?, or &).

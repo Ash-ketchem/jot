@@ -9,6 +9,11 @@ const UserHero = ({
   isFollowing,
   loggedUserId,
 }) => {
+  const userBio = user?.bio?.split("\n").map((paragraph, index) => (
+    <p key={index} className="text-md tracking-wide text-left leading-loose">
+      {paragraph}
+    </p>
+  ));
   // console.log(user);
   return (
     <div className="px-2 z-40 bg-base-300 rounded-b-xl pb-4">
@@ -55,8 +60,8 @@ const UserHero = ({
           <p>{user?.name}</p>
           <p className="font-semibold">@{user?.username}</p>
         </div>
-        <div>
-          <p>{user?.bio || "I'm feeling good"}</p>
+        <div className=" whitespace-pre-wrap">
+          <p>{userBio || "I'm feeling good"}</p>
         </div>
         <div className="flex  gap-4">
           <UserInfo

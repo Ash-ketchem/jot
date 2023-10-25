@@ -8,6 +8,7 @@ const TextArea = ({
   placeholder,
   submitLabel,
   isLoading,
+  setIsLoading,
   options,
   handleSubmit,
   btnSize,
@@ -16,6 +17,8 @@ const TextArea = ({
   const jotRef = useRef("");
 
   const lineRef = useRef(null);
+
+  const textAreaRef = useRef(null);
 
   const handleChange = useCallback(
     (e) => {
@@ -39,6 +42,7 @@ const TextArea = ({
           onChange={handleChange}
           placeholder={placeholder}
           disabled={isLoading}
+          ref={textAreaRef}
         />
         <div
           id="container"
@@ -82,6 +86,13 @@ const TextArea = ({
                   },
                 },
               }}
+              onUploadAdded={(res, options) => {
+                if (!res?.info?.file?.name) {
+                  return;
+                }
+
+                setIsLoading(true);
+              }}
               onQueuesEnd={(res, options) => {
                 if (!res?.info?.files) {
                   return;
@@ -117,8 +128,10 @@ const TextArea = ({
           <button
             className={`btn btn-primary text-primary-content  rounded-full leading-relaxed btn-${btnSize} p-2  h-fit w-fit`}
             onClick={(e) => {
+              console.log(jot);
               handleSubmit(e, jot);
               setJot("");
+              textAreaRef.current.style.height = "auto";
             }}
             disabled={isLoading}
           >
