@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import followingPostStore from "@/stores/posts/followingPostStore";
 
-const CommentFeed = ({ comments, postId, totalcomments }) => {
+const CommentFeed = ({ comments, postId, totalcomments, postOwnerId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const newCursor = useRef(null);
@@ -106,7 +106,15 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
         setIsLoading(false);
       }
     },
-    [removeComment, router, setComment, setCommentGlobal, setCommentUser]
+    [
+      removeComment,
+      router,
+      setComment,
+      setCommentGlobal,
+      setCommentUser,
+      loggedUserId,
+      postOwnerId,
+    ]
   );
 
   const handleMoreComments = useCallback(async () => {
@@ -192,7 +200,10 @@ const CommentFeed = ({ comments, postId, totalcomments }) => {
               <div key={comment?.id}>
                 <CommentItem
                   comment={comment}
-                  self={comment?.user?.id === loggedUserId}
+                  self={
+                    postOwnerId === loggedUserId ||
+                    loggedUserId === comment?.user?.id
+                  }
                   deleteComment={deleteComment}
                 />
               </div>

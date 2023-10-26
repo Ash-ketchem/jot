@@ -86,6 +86,33 @@ export async function DELETE(req) {
       throw new Error("missing fields");
     }
 
+    const commentToBeDeletd = await client.comment.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        user: {
+          select: {
+            id: true,
+          },
+        },
+        post: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+
+    if (
+      !(
+        commentToBeDeletd?.user?.id === userId ||
+        commentToBeDeletd?.post?.userId === userId
+      )
+    ) {
+      throw new Error("User not authorized");
+    }
+
     const comment = await client.comment.delete({
       where: {
         id: id,

@@ -8,14 +8,37 @@ const sendMail = ({ username, action, token, recipient }) => {
     token,
   });
 
+  //token is a 128-bit uuid
+
   if (!emailHtml) {
     return null;
+  }
+
+  let textMessage = "";
+
+  if (action === "verification") {
+    textMessage = `Greetings ${username}!
+
+    Please use the following token to verify your email:
+    
+    ${token}
+    
+    Valid for 24 hours.`;
+  } else {
+    textMessage = `Greetings ${username}!
+
+    To reset your password, use the following token:
+    
+    ${token}
+    
+    Valid for 24 hours.`;
   }
 
   const mailOptions = {
     from: process.env.GMAIL_USERNAME,
     to: recipient,
-    subject: "Verification",
+    subject: "Jot Verification",
+    text: textMessage,
     html: emailHtml,
   };
 

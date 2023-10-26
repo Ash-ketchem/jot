@@ -131,6 +131,7 @@ const page = async ({ params }) => {
                 postId={post?.id}
                 timestamp={Date.now()}
                 totalcomments={post?.commentCount || 0}
+                postOwnerId={post?.user?.id}
               />
             </div>
           </div>

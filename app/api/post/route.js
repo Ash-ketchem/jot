@@ -1,6 +1,8 @@
 import cloudinary from "@/libs/cloudinaryConfig";
 import client from "@/libs/prismaClient";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function DELETE(req) {
   const { id } = await req.json();
@@ -8,6 +10,34 @@ export async function DELETE(req) {
   try {
     if (!id || typeof id !== "string") {
       throw new Error("invalid id");
+    }
+
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      throw new Error("User not authenticated");
+    }
+
+    const loggedUser = await client.user.findUnique({
+      where: {
+        email: session?.user?.email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const postToBeDeleted = await client.post.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        userId: true,
+      },
+    });
+
+    if (postToBeDeleted?.userId !== loggedUser?.id) {
+      throw new Error("user not authorized to perform post deletion");
     }
 
     let { images } = await client.post.findUnique({
