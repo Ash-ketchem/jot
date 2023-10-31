@@ -28,6 +28,7 @@ const page = async () => {
       },
       select: {
         retryCount: true,
+        resendCount: true,
       },
     });
   } catch (error) {}
@@ -36,6 +37,7 @@ const page = async () => {
     <EmailVerify
       email={session?.user?.email}
       retryAttemptsLeft={token?.retryCount || 0}
+      resendLeft={token?.resendCount || 0}
     />
   );
 };

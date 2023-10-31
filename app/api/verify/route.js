@@ -43,19 +43,20 @@ export async function POST(req) {
       throw new Error("something went wrong");
     }
 
-    if (Date.now() > tokenData?.expirationTime) {
-      // delete user from user table
+    // if (Date.now() > tokenData?.expirationTime) {
+    //   // delete user from user table
 
-      const deletedUser = await client.user.delete({
-        where: {
-          id: tokenData.userId,
-        },
-        select: {
-          id: true,
-        },
-      });
-      throw new Error("token has expired");
-    }
+    //   const deletedUser = await client.user.delete({
+    //     where: {
+    //       id: tokenData.userId,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //   });
+    //   throw new Error("token has expired");
+    // }
+
     if (tokenData?.retryCount <= 0) {
       throw new Error("maximum retries reached");
     }

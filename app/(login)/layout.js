@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "@/styles/globals.css";
 import Toaster from "@/components/Toasts/Toaster";
+import HeaderLogin from "@/components/common/HeaderLogin";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,8 +13,9 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" data-theme="dark" className={inter?.className}>
-      <body>
+      <body className=" overflow-y-hidden">
         <Toaster />
+        <HeaderLogin />
         <div className="flex justify-center items-center h-screen w-screen  flex-col">
           {children}
         </div>

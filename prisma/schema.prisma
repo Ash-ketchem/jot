@@ -87,12 +87,12 @@ model Bookmark {
 }
 
 model Verification {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId         String   @unique @db.ObjectId
-  token          String   @unique
-  resendCount    Int      @default(3)
-  retryCount     Int      @default(3)
-  expirationTime DateTime
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique @db.ObjectId
+  token       String   @unique
+  resendCount Int      @default(3)
+  retryCount  Int      @default(3)
+  createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

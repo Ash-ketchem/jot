@@ -4,7 +4,7 @@ import RegisterAction from "./RegisterAction";
 
 const Login = ({ label, header, body, type, img }) => {
   return (
-    <div className="flex justify-center items-center h-screen xl:w-[75%]  sm:w-[95%]">
+    <div className="flex justify-center items-center h-screen xl:w-[75%]  sm:w-[95%] ">
       <div className="card card-side bg-base-100 shadow-sm w-[100%] h-fit ">
         <div className="basis-[40%] relative hidden md:block ">
           <Image
@@ -20,7 +20,7 @@ const Login = ({ label, header, body, type, img }) => {
               src="/images/logo.jpg"
               height={100}
               width={100}
-              className="absolute h-10 w-10 rounded-full md:right-[50%] right-0 -top-10 bg-blend-darken"
+              className="absolute h-10 w-10 rounded-full md:right-[50%] right-2 top-4 bg-blend-darken"
               alt="logo"
             />
             <h2 className="font-bold card-title tracking-wide mb-3">{label}</h2>

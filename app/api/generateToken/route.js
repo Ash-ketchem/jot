@@ -5,24 +5,24 @@ import { NextResponse } from "next/server";
 import sendMail from "@/libs/sendMail";
 
 export async function POST(req) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.email) {
-    throw new Error("invalid session");
-  }
-
   let status = null;
 
   try {
-    const { token } = await req.json();
+    const { token, email } = await req.json();
 
     if (!token) {
       throw new Error("invalid token");
     }
 
+    const session = await getServerSession(authOptions);
+
+    if (!email && !session?.user?.email) {
+      throw new Error("invalid session");
+    }
+
     const user = await client.user.findUnique({
       where: {
-        email: session.user.email,
+        email: session?.user?.email ?? email,
       },
       select: {
         id: true,
@@ -53,8 +53,7 @@ export async function POST(req) {
       const resp = await client.verification.create({
         data: {
           userId: user?.id,
-          token: crypto.randomUUID(),
-          expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
+          token: token,
         },
         select: {
           id: true,
@@ -77,29 +76,29 @@ export async function POST(req) {
       }
     }
 
-    if (Date.now() > tokenData?.expirationTime) {
-      // deleting useless tokens
-      const deletedToken = await client.verification.delete({
-        where: {
-          id: tokenData.id,
-        },
-        select: {
-          id: true,
-        },
-      });
-      status =
-        "token has expired. For your security, a new token is being generated";
+    // if (Date.now() > tokenData?.expirationTime) {
+    //   // deleting useless tokens
+    //   const deletedToken = await client.verification.delete({
+    //     where: {
+    //       id: tokenData.id,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //   });
+    //   status =
+    //     "token has expired. For your security, a new token is being generated";
 
-      return NextResponse.json(
-        {
-          status: status || "token generated",
-        },
-        { status: 200 }
-      );
-    }
+    //   return NextResponse.json(
+    //     {
+    //       status: status || "token generated",
+    //     },
+    //     { status: 200 }
+    //   );
+    // }
 
     if (tokenData?.retryCount <= 0) {
-      // deleting useless tokens
+      // deleting timed out tokens
       const deletedToken = await client.verification.delete({
         where: {
           id: tokenData.id,

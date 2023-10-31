@@ -3,7 +3,7 @@
 import modalStore from "@/stores/modalStore";
 import toastStore from "@/stores/toastStore";
 import userStore from "@/stores/userStore";
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { signIn, signOut } from "next-auth/react";
@@ -13,6 +13,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import AdvacncedSettings from "../settings/AdvacncedSettings";
 
 const EditModal = () => {
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [name, setName] = useState("");
@@ -32,6 +35,9 @@ const EditModal = () => {
   const addToast = toastStore((state) => state.addToast);
 
   const router = useRouter();
+
+  const curPassRef = useRef(null);
+  const newPassRef = useRef(null);
 
   // console.log(loggedUser, " loggeduser");
 
@@ -280,10 +286,20 @@ const EditModal = () => {
     <div className="flex flex-col gap-4">
       <div className="form-control w-full">
         <label className="label">
-          <span className="label-text">currrent password</span>
+          <div className="flex gap-2 justify-center items-center">
+            <span className="label-text">currrent password</span>
+            <EyeIcon
+              className="w-4 h-4 cursor-pointer"
+              onClick={() => {
+                curPassRef.current.type =
+                  curPassRef.current.type === "text" ? "password" : "text";
+              }}
+            />
+          </div>
         </label>
         <input
-          type="text"
+          type="password"
+          ref={curPassRef}
           placeholder="current password"
           className="input input-bordered w-full "
           value={oldPassword}
@@ -292,15 +308,32 @@ const EditModal = () => {
       </div>
       <div className="form-control w-full">
         <label className="label">
-          <span className="label-text">New password</span>
+          <div className="flex gap-2 justify-center items-center">
+            <span className="label-text">New password</span>
+            <EyeIcon
+              className="w-4 h-4 cursor-pointer"
+              onClick={() => {
+                newPassRef.current.type =
+                  newPassRef.current.type === "text" ? "password" : "text";
+              }}
+            />
+          </div>
         </label>
         <input
-          type="text"
+          type="password"
           placeholder="new password"
+          ref={newPassRef}
           className="input input-bordered w-full "
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
+        <label className="label">
+          <span className="label-text-alt text-info text-justify">
+            Password must be at least 8 characters long and include at least one
+            lowercase letter, one uppercase letter, one digit, and one special
+            character (@, $, !, %, *, ?, or &).
+          </span>
+        </label>
       </div>
     </div>
   );

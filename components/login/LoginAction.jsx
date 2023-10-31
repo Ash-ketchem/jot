@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toastStore from "@/stores/toastStore";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 const LoginAction = ({ label }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +13,8 @@ const LoginAction = ({ label }) => {
   const [password, setPassword] = useState("");
   const [validMail, setValidMail] = useState(false);
   const router = useRouter();
+
+  const passRef = useRef(null);
 
   const addToast = toastStore((state) => state.addToast);
 
@@ -82,17 +85,38 @@ const LoginAction = ({ label }) => {
             </label>
           </div>
           <div>
-            <label className="label">
-              <span className="label-text">Password</span>
+            <label className="label max-w-sm">
+              <span className="label-text flex gap-2 justify-center items-center">
+                Password{" "}
+                <EyeIcon
+                  className="w-4 h-4 cursor-pointer"
+                  onClick={() => {
+                    passRef.current.type =
+                      passRef.current.type === "text" ? "password" : "text";
+                  }}
+                />
+              </span>
             </label>
             <input
               type="password"
               required
               placeholder="Password"
+              ref={passRef}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="input input-bordered w-full max-w-sm"
             />
+            <label className="label max-w-sm">
+              <span></span>
+              <span
+                className="label-text text-xs cursor-pointer leading-relaxed tracking-wide hover:text-primary underline"
+                onClick={() => {
+                  router.push("/passwordReset");
+                }}
+              >
+                Forgot Password
+              </span>
+            </label>
           </div>
         </div>
       </div>

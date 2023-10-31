@@ -38,23 +38,23 @@ export async function POST(req) {
       emailAvaialable = true;
     }
 
-    if (emailAvaialable) {
-      updatedUser = await client.user.update({
-        where: {
-          email: session?.user?.email,
-        },
-        data: {
-          email,
-          emailVerified: false,
-        },
-        select: {
-          id: true,
-          username: true,
-        },
-      });
-    } else {
+    if (!emailAvaialable) {
       throw new Error("email linked to another account");
     }
+
+    updatedUser = await client.user.update({
+      where: {
+        email: session?.user?.email,
+      },
+      data: {
+        email,
+        emailVerified: false,
+      },
+      select: {
+        id: true,
+        username: true,
+      },
+    });
 
     // verification token generation
 
@@ -63,8 +63,7 @@ export async function POST(req) {
     const resp = await client.verification.create({
       data: {
         userId: updatedUser?.id,
-        token: crypto.randomUUID(),
-        expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
+        token: token,
       },
       select: {
         id: true,

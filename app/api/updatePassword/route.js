@@ -10,7 +10,7 @@ export async function POST(req) {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    const { newPassword, verificationToken } = await req.json();
+    const { newPassword, verificationToken, email } = await req.json();
 
     if (
       !newPassword ||
@@ -26,13 +26,13 @@ export async function POST(req) {
 
     const session = await getServerSession(authOptions);
 
-    if (!session) {
+    if (!session && !email) {
       throw new Error("invalid session");
     }
 
     const user = await client.user.findUnique({
       where: {
-        email: session?.user?.email,
+        email: session?.user?.email ?? email,
       },
       select: {
         id: true,
@@ -49,12 +49,21 @@ export async function POST(req) {
       throw new Error("something went wrong");
     }
 
-    if (Date.now() > tokenData?.expirationTime) {
-      throw {
-        message: "token has expired",
-        retryCount: -1,
-      };
-    }
+    // if (Date.now() > tokenData?.expirationTime) {
+    //   //deleting token
+    //   const deletedToken = await client.verification.delete({
+    //     where: {
+    //       id: tokenData.id,
+    //     },
+    //     select: {
+    //       id: true,
+    //     },
+    //   });
+    //   throw {
+    //     message: "token has expired",
+    //     retryCount: -1,
+    //   };
+    // }
 
     if (tokenData?.retryCount <= 0) {
       throw {
@@ -75,6 +84,17 @@ export async function POST(req) {
           retryCount: true,
         },
       });
+
+      if (updatedToken?.retryCount <= 0) {
+        const deletedToken = await client.verification.delete({
+          where: {
+            id: tokenData.id,
+          },
+          select: {
+            id: true,
+          },
+        });
+      }
 
       throw {
         message: "invalid Token",
@@ -97,7 +117,7 @@ export async function POST(req) {
 
     const updatedUser = await client.user.update({
       where: {
-        email: session?.user?.email,
+        email: session?.user?.email ?? email,
       },
       data: {
         hashedPassword,

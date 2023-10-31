@@ -6,7 +6,7 @@ import axios from "axios";
 import { signOut } from "next-auth/react";
 import { useCallback, useRef, useState } from "react";
 
-const PasswordReset = () => {
+const PasswordReset = ({ email }) => {
   const [loading, setLoading] = useState(false);
 
   const passRef = useRef(null);
@@ -28,9 +28,12 @@ const PasswordReset = () => {
       try {
         setLoading(true);
 
+        console.log(email);
+
         const res = await axios.post("/api/updatePassword", {
           newPassword: password,
           verificationToken: token,
+          ...(email ? { email } : {}),
         });
 
         if (res?.status !== 200) {
@@ -40,6 +43,8 @@ const PasswordReset = () => {
         addToast("password updated successfully");
 
         await signOut();
+
+        window.location.href = "/login";
       } catch (error) {
         addToast(
           error?.response?.data?.error ||
@@ -67,6 +72,7 @@ const PasswordReset = () => {
 
         const res = await axios.post("/api/generateToken", {
           token: true,
+          ...(email ? { email } : {}),
         });
 
         if (res?.status !== 200) {

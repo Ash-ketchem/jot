@@ -69,7 +69,7 @@ const UserNameUpdate = ({ currentUsername }) => {
         setUserData({
           username: username,
         });
-        setUsername(currentUsername);
+        // setUsername(username);
 
         router.refresh();
         // window.location.reload();
@@ -83,7 +83,7 @@ const UserNameUpdate = ({ currentUsername }) => {
         setLoading(false);
       }
     },
-    [username, router]
+    [username, router, setUserData]
   );
 
   return (

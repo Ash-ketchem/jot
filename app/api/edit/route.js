@@ -14,6 +14,9 @@ export async function POST(req) {
     let coverImageUrl = null;
     let updatedHashedPassword = null;
 
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     if (
       (name && typeof name !== "string") ||
       (bio && typeof bio !== "string") ||
@@ -64,6 +67,9 @@ export async function POST(req) {
       );
 
       if (isCorrectPassword) {
+        if (!passwordRegex.test(newPassword)) {
+          throw new Error("Invalid password format");
+        }
         updatedHashedPassword = await bcrypt.hash(newPassword, 12);
       }
     }

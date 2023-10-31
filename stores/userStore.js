@@ -16,8 +16,11 @@ const userStore = create((set) => ({
   setUserData: (data) => {
     // data = { key: value };
     set((state) => {
-      if (state?.loggedUser[data?.key]) {
-        state.loggedUser[data?.key] = data?.value;
+      for (const key of Object.keys(data)) {
+        if (state?.loggedUser[key]) {
+          state.loggedUser[key] = data[key];
+        }
+
         return {
           loggedUser: {
             ...state?.loggedUser,

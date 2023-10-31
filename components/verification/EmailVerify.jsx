@@ -5,10 +5,11 @@ import axios from "axios";
 import { signOut } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
-const EmailVerify = ({ email, retryAttemptsLeft }) => {
+const EmailVerify = ({ email, retryAttemptsLeft, resendLeft }) => {
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [attemptsLeft, setAttemptsLeft] = useState(retryAttemptsLeft);
+  const [resendAttemptsLeft, setresendAttemptsLeft] = useState(resendLeft);
 
   const addToast = toastStore((state) => state.addToast);
 
@@ -33,7 +34,10 @@ const EmailVerify = ({ email, retryAttemptsLeft }) => {
 
       //signout
 
+      addToast("Verification sucesss");
+
       await signOut();
+      window.location.href = "/login";
     } catch (error) {
       // console.log(error);
       addToast(
@@ -47,6 +51,45 @@ const EmailVerify = ({ email, retryAttemptsLeft }) => {
       setLoading(false);
     }
   }, [token, setLoading]);
+
+  const handleResendToken = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const res = await axios.post("/api/resendToken", {
+        resend: true,
+      });
+
+      if (res?.error) {
+        throw new Error(res?.error);
+      }
+
+      addToast("New token sent to mail ID");
+
+      if (parseInt(res?.data?.resendCount) >= 0) {
+        setresendAttemptsLeft(res?.data?.resendCount);
+      }
+
+      if (parseInt(res?.data?.retryCount) > 0) {
+        setAttemptsLeft(res?.data?.retryCount);
+      }
+    } catch (error) {
+      // console.log(error);
+      addToast(
+        error?.response?.data?.error || error?.message || "something went wrong"
+      );
+
+      if (parseInt(error?.response?.data?.retryCount) >= 0) {
+        setAttemptsLeft(error?.response?.data?.retryCount);
+      }
+
+      if (parseInt(error?.response?.data?.resendCount) <= 0) {
+        await signOut();
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     (async function destroySession() {
@@ -102,6 +145,19 @@ const EmailVerify = ({ email, retryAttemptsLeft }) => {
             >
               Verify
             </button>
+            <div>
+              <button
+                className="btn btn-primary lowercase leading-loose tracking-wider"
+                onClick={handleResendToken}
+                disabled={loading}
+              >
+                resend token
+              </button>
+
+              <p className="text-xs text-error m-2">
+                {resendAttemptsLeft} resends left
+              </p>
+            </div>
           </div>
         </div>
       </div>
