@@ -70,7 +70,7 @@ const UserCard = ({ user, isFollowing, loggedUser }) => {
   }, [user?.id]);
 
   return (
-    <div className="w-full px-2 flex gap-4 border-0 justify-evenly items-center flex-wrap py-4  ">
+    <div className="w-[97%] px-2 flex gap-4 justify-between items-center flex-wrap py-4">
       <div className="flex gap-5 items-center justify-evenly  flex-0 ">
         <div className="avatar">
           <div className="w-10 h-10 rounded-full  relative">

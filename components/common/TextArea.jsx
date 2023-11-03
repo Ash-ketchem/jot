@@ -43,6 +43,7 @@ const TextArea = ({
           placeholder={placeholder}
           disabled={isLoading}
           ref={textAreaRef}
+          maxLength={300}
         />
         <div
           id="container"
@@ -86,13 +87,13 @@ const TextArea = ({
                   },
                 },
               }}
+              // disabling textarea after upoading files
               onUploadAdded={(res, options) => {
-                if (!res?.info?.file?.name) {
-                  return;
-                }
-
                 setIsLoading(true);
               }}
+              // onQueuesStart={(res, options) => {
+              //   setIsLoading(true);
+              // }}
               onQueuesEnd={(res, options) => {
                 if (!res?.info?.files) {
                   return;
@@ -107,7 +108,7 @@ const TextArea = ({
 
                 options.widget.close();
                 setUploadEnabled((state) => !state);
-                setJot("");
+                // setJot("");
                 jotRef.current = "";
               }}
               className="btn btn-sm btn-circle btn-ghost"

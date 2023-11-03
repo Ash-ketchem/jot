@@ -40,11 +40,11 @@ const CardAction = ({
 
   return (
     <div
-      className={` mt-3 w-full flex flex-row items-center justify-between  sm:px-3.5 px-4  sm:py-2 
+      className={`w-full flex flex-row items-center justify-between  sm:px-3.5 px-4  sm:py-2 
       ${
         cardStyle === "vertical"
-          ? "sm:w-fit sm:flex-col sm:justify-center gap-5 border-0"
-          : "sm:w-full sm:flex-row sm:justify-start gap-7 "
+          ? "sm:w-fit h-full sm:flex-col sm:justify-center gap-5"
+          : "sm:w-full sm:flex-row sm:justify-start gap-7  !px-0 "
       }   
 
       `}

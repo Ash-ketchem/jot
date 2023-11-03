@@ -52,30 +52,36 @@ const FeedItem = ({ post, loggedUserId, type = "global" }) => {
           >
             <div className=" flex flex-col items-start card-body w-full">
               <UserSection user={post?.user} createdAt={post?.createdAt} />
-              {post?.images?.length > 0 && (
-                <ImagesSection images={post?.images} />
-              )}
               <BodySection body={post.body} />
-            </div>
 
-            {type === "global" && (
-              <UserActionGlobal
-                postId={post.id}
-                self={loggedUserId === post?.user?.id}
-              />
-            )}
-            {type === "user" && (
-              <UserActionUser
-                postId={post.id}
-                self={loggedUserId === post?.user?.id}
-              />
-            )}
-            {type === "following" && (
-              <UserActionFollowing
-                postId={post.id}
-                self={loggedUserId === post?.user?.id}
-              />
-            )}
+              <div className="w-full h-full flex">
+                <>
+                  {post?.images?.length > 0 && (
+                    <ImagesSection images={post?.images} />
+                  )}
+                </>
+                <>
+                  {type === "global" && (
+                    <UserActionGlobal
+                      postId={post.id}
+                      self={loggedUserId === post?.user?.id}
+                    />
+                  )}
+                  {type === "user" && (
+                    <UserActionUser
+                      postId={post.id}
+                      self={loggedUserId === post?.user?.id}
+                    />
+                  )}
+                  {type === "following" && (
+                    <UserActionFollowing
+                      postId={post.id}
+                      self={loggedUserId === post?.user?.id}
+                    />
+                  )}
+                </>
+              </div>
+            </div>
           </div>
         </AnimatePresence>
       </motion.div>
