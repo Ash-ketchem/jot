@@ -49,22 +49,6 @@ export async function POST(req) {
       throw new Error("something went wrong");
     }
 
-    // if (Date.now() > tokenData?.expirationTime) {
-    //   //deleting token
-    //   const deletedToken = await client.verification.delete({
-    //     where: {
-    //       id: tokenData.id,
-    //     },
-    //     select: {
-    //       id: true,
-    //     },
-    //   });
-    //   throw {
-    //     message: "token has expired",
-    //     retryCount: -1,
-    //   };
-    // }
-
     if (tokenData?.retryCount <= 0) {
       throw {
         message: "maximum retries reached",

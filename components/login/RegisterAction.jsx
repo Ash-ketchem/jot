@@ -86,7 +86,7 @@ const RegisterAction = ({ label }) => {
               }}
             />
             <label className="label max-w-sm">
-              <span className="label-text-alt"></span>
+              <span className="label-text-alt max-w-sm"></span>
               <span
                 className={`label-text-alt ${
                   email && emailValid ? "text-success" : "text-error"
@@ -99,7 +99,7 @@ const RegisterAction = ({ label }) => {
 
           {/* username */}
           <div>
-            <label className="label">
+            <label className="label max-w-sm">
               <span className="label-text font-semibold">Username</span>
               <span
                 className={`label-text-alt ${
@@ -134,7 +134,7 @@ const RegisterAction = ({ label }) => {
 
           {/* password */}
           <div>
-            <label className="label">
+            <label className="label max-w-sm">
               <div className="flex gap-2 items-center justify-center">
                 <span className="label-text font-semibold">Password</span>
                 <EyeIcon

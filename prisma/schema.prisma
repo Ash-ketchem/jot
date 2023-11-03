@@ -38,17 +38,16 @@ model User {
 
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  // uniqueId  String   @unique @default(uuid()) // for liking posts
+  uniqueId  String   @unique @default(uuid()) // for liking posts
   body      String?
   images    Json     @default("[]")
   videos    String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
-  likeIds   String[] @db.ObjectId
 
-  // to be updated
-  // likeIds   String[] @default([])
+  // likeIds   String[] @db.ObjectId
+  likeIds String[] @default([])
 
   comments  Comment[]
   bookmarks Bookmark[]

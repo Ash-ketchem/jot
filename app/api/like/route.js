@@ -30,52 +30,46 @@ export async function POST(req) {
       throw new Error("invalid user");
     }
 
-    const { likeIds } = await client.post.findUnique({
+    const { likeIds, uniqueId } = await client.post.findUnique({
       where: {
         id: postId,
       },
       select: {
         likeIds: true,
-      },
-    });
-
-    //replace this with raw mongodb queries in the  latest code
-    const updatedPost = await client.post.update({
-      where: {
-        id: postId,
-      },
-      data: {
-        likeIds: likeIds.includes(userId)
-          ? likeIds.filter((id) => id !== userId)
-          : [...likeIds, userId],
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    // LATEST CODE TO BE UPDATED
-    /*
-    const { uniqueId } = await client.post.findUnique({
-      where: {
-        id: postId,
-      },
-      select: {
         uniqueId: true,
       },
     });
 
-    if (userAlreadyLiked) {
+    //replace this with raw mongodb queries in the  latest code
+    // const updatedPost = await client.post.update({
+    //   where: {
+    //     id: postId,
+    //   },
+    //   data: {
+    //     likeIds: likeIds.includes(userId)
+    //       ? likeIds.filter((id) => id !== userId)
+    //       : [...likeIds, userId],
+    //   },
+    //   select: {
+    //     id: true,
+    //   },
+    // });
+
+    // LATEST CODE TO BE UPDATED
+
+    let updatedPost = null;
+
+    if (likeIds.includes(userId)) {
       //unlike by deleting from array
 
-      const updatePost = await client.$runCommandRaw({
+      updatedPost = await client.$runCommandRaw({
         update: "Post",
         updates: [
           {
             q: { uniqueId: uniqueId }, // Query conditions (empty object matches all documents)
             u: {
               $pull: {
-                likeIds: id,
+                likeIds: userId,
               },
             },
           },
@@ -84,13 +78,13 @@ export async function POST(req) {
     } else {
       //like
 
-      const updatePost = await client.post.update({
+      updatedPost = await client.post.update({
         where: {
           id: postId,
         },
         data: {
           likeIds: {
-            push: id,
+            push: userId,
           },
         },
         select: {
@@ -98,8 +92,6 @@ export async function POST(req) {
         },
       });
     }
-
-    */
 
     return NextResponse.json(updatedPost, { status: 200 });
   } catch (error) {

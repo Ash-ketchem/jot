@@ -76,27 +76,6 @@ export async function POST(req) {
       }
     }
 
-    // if (Date.now() > tokenData?.expirationTime) {
-    //   // deleting useless tokens
-    //   const deletedToken = await client.verification.delete({
-    //     where: {
-    //       id: tokenData.id,
-    //     },
-    //     select: {
-    //       id: true,
-    //     },
-    //   });
-    //   status =
-    //     "token has expired. For your security, a new token is being generated";
-
-    //   return NextResponse.json(
-    //     {
-    //       status: status || "token generated",
-    //     },
-    //     { status: 200 }
-    //   );
-    // }
-
     if (tokenData?.retryCount <= 0) {
       // deleting timed out tokens
       const deletedToken = await client.verification.delete({

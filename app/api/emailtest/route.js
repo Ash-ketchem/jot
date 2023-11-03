@@ -6,7 +6,7 @@ export async function GET() {
     username: "ash",
     action: "reset",
     token: crypto.randomUUID(),
-    recipient: "22mp1953@rit.ac.in",
+    recipient: "sangeethpg666@gmail.com",
   });
 
   if (res) {
