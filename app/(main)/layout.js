@@ -20,6 +20,7 @@ import TakeaBreakModal from "@/components/modals/TakeaBreakModal";
 import EmailVerificiation from "@/components/verification/EmailVerificiation";
 import MobileJot from "@/components/common/MobileJot";
 import ImageModal from "@/components/modals/ImageModal";
+import StoriesModal from "@/components/modals/StoriesModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -67,6 +68,7 @@ export default async function RootLayout({ children }) {
         <TimerModal />
         <TakeaBreakModal />
         <ImageModal />
+        <StoriesModal />
         <Toaster />
         <div className="xl:px-[5%] px-0 ">
           <Header loggedUserId={loggedUserId} />

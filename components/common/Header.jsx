@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { FireIcon } from "@heroicons/react/24/solid";
 import Timer from "./Timer";
+import TextArea from "./TextArea";
 
 const Header = (showBackArrow, loggedUserId) => {
   const router = useRouter();

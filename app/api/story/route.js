@@ -17,7 +17,7 @@ export async function POST(req) {
     }
 
     if (!body && !images?.length) {
-      throw new Error("post can't be empty");
+      throw new Error("story can't be empty");
     }
 
     const session = await getServerSession(authOptions);
@@ -61,7 +61,7 @@ export async function POST(req) {
 
     // console.log(updatedImages);
 
-    const post = await client.post.create({
+    const story = await client.story.create({
       data: {
         body,
         userId: userId,
@@ -73,9 +73,6 @@ export async function POST(req) {
         images: true,
         likeIds: true,
         createdAt: true,
-        _count: {
-          select: { comments: true },
-        },
         user: {
           select: {
             id: true,
@@ -87,14 +84,14 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json(post, {
+    return NextResponse.json(story, {
       status: 200,
     });
   } catch (error) {
-    console.log("error while creating a post", error);
+    console.log("error while creating a story", error);
     return NextResponse.json(
       {
-        error: "error while creating a post",
+        error: "error while creating a story",
       },
       {
         status: 400,

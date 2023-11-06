@@ -4,6 +4,7 @@ import { ArrowSmallLeftIcon, BellIcon } from "@heroicons/react/24/outline";
 
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import Theme from "./Theme";
 
 const HeaderLogin = (showBackArrow, loggedUserId) => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const HeaderLogin = (showBackArrow, loggedUserId) => {
   }, [router]);
 
   return (
-    <div className="navbar bg-base-100 top-0  z-0 flex  gap-4 py-3.5 items-center backdrop-filter  h-[8vh] justify-between absolute ">
+    <div className="navbar bg-base-100 top-0  z-0 flex  gap-4 py-3.5 items-center backdrop-filter  h-[8vh] justify-between absolute">
       {/* backdrop-blur-lg bg-opacity-30 */}
       <div className="  justify-start items-center">
         <div
@@ -21,6 +22,12 @@ const HeaderLogin = (showBackArrow, loggedUserId) => {
           onClick={handleClick}
         >
           {showBackArrow && <ArrowSmallLeftIcon className="w-6 h-6  " />}
+        </div>
+        <div
+          className="absolute right-2 top-2
+        "
+        >
+          <Theme />
         </div>
       </div>
     </div>

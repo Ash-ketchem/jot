@@ -80,7 +80,7 @@ export default async function Home() {
       <Scroller>
         <div className="relative h-full">
           {/* main */}
-          <Stories />
+          <Stories loggedUserId={loggedUserId} />
 
           {/* global feed */}
           <FeedTab initialPosts={latestPosts} loggedUserId={loggedUserId} />

@@ -21,7 +21,7 @@ const FeedTabSwitch = ({ activeTab, setActiveTab }) => {
         initial="inactive"
         animate={activeTab === 0 ? "active" : "inactive"}
         transition={tabTransition}
-        className={`p-3 basis-[48%] cursor-pointer flex justify-center items-center  leading-loose hover:bg-neutral hover:text-neutral-content rounded-xl ${
+        className={`ml-2 p-3 basis-[48%] cursor-pointer flex justify-center items-center  leading-loose hover:bg-neutral hover:text-neutral-content rounded-xl ${
           activeTab === 0
             ? "tab-active bg-secondary text-secondary-content rounded-xl font-bold tracking-wide hover:bg-secondary hover:text-secondary-content "
             : ""

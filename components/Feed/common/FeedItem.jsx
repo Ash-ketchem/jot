@@ -54,7 +54,7 @@ const FeedItem = ({ post, loggedUserId, type = "global" }) => {
               <UserSection user={post?.user} createdAt={post?.createdAt} />
               <BodySection body={post.body} />
 
-              <div className="w-full h-full flex">
+              <div className="w-full h-full flex sm:flex-row flex-col gap-y-2.5 sm:gap-0 ">
                 <>
                   {post?.images?.length > 0 && (
                     <ImagesSection images={post?.images} />

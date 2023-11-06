@@ -3,10 +3,12 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const UserSection = ({ user, createdAt }) => {
   const router = useRouter();
+
+  const [dateFromNow, setDateFromNow] = useState("");
 
   const handleClick = useCallback(
     (e) => {
@@ -16,8 +18,12 @@ const UserSection = ({ user, createdAt }) => {
     [router, user?.id]
   );
 
-  const dateFromNow =
-    (createdAt && formatDistanceToNowStrict(new Date(createdAt))) || "";
+  useEffect(() => {
+    setDateFromNow(
+      (createdAt && formatDistanceToNowStrict(new Date(createdAt))) || ""
+    );
+  }, [createdAt]);
+
   return (
     <div className="w-full font-normal leading-snug ">
       <div className="flex gap-6 py-2">

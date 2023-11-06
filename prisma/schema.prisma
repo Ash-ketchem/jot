@@ -34,6 +34,7 @@ model User {
   notification Notification[]
   bookmarks    Bookmark[]
   token        Verification?
+  stories      Story[]
 }
 
 model Post {
@@ -92,6 +93,22 @@ model Verification {
   resendCount Int      @default(3)
   retryCount  Int      @default(3)
   createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Story {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  uniqueId  String   @unique @default(uuid()) // for liking posts
+  body      String?
+  images    Json     @default("[]")
+  videos    String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+
+  likeIds String[] @default([])
+  views   String[] @default([])
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
