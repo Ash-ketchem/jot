@@ -15,7 +15,7 @@ const FeedTabSwitch = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <div className="tabs tab-boxed w-full  flex items-center gap-2">
+    <div className="tabs tab-boxed w-full  flex items-center gap-2 !flex-nowrap">
       <motion.div
         variants={tabVariants}
         initial="inactive"

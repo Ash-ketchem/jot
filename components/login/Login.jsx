@@ -4,8 +4,8 @@ import RegisterAction from "./RegisterAction";
 
 const Login = ({ label, header, body, type, img }) => {
   return (
-    <div className="flex justify-center items-center h-screen xl:w-[75%]  sm:w-[95%] ">
-      <div className="card card-side bg-base-100 shadow-sm w-[100%] h-fit ">
+    <div className="flex justify-center items-center h-screen xl:w-[75%]  sm:w-[95%]">
+      <div className="card card-side bg-base-100 shadow-sm w-[100%] h-fit">
         <div className="basis-[40%] relative hidden md:block ">
           <Image
             src={img}

@@ -15,7 +15,7 @@ export default async function RootLayout({ children }) {
     <html lang="en" data-theme="dark" className={inter?.className}>
       <body className=" overflow-y-hidden">
         <Toaster />
-        <HeaderLogin />
+        <HeaderLogin loggedUserId={false} showBackArrow={true} />
         <div className="flex justify-center items-center h-screen w-screen  flex-col">
           {children}
         </div>

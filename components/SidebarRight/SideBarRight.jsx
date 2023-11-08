@@ -16,6 +16,7 @@ const SideBarRight = async () => {
         profileImage: true,
         // followingIds: true,
       },
+      take: 3,
     });
 
     const session = await getServerSession(authOptions);

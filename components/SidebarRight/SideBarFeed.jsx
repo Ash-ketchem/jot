@@ -28,6 +28,8 @@ const SideBarFeed = ({ users, loggedUser }) => {
         return;
       }
 
+      cursor.current = res?.data?.[res?.data?.length - 1]?.id;
+
       const newUsers = res?.data.filter((user) => user.id !== loggedUser?.id);
 
       setUsersToFollow((state) => [...state, ...newUsers]);

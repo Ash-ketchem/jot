@@ -64,9 +64,9 @@ const RegisterAction = ({ label }) => {
   }, [username, email, password]);
 
   return (
-    <div className="flex flex-col gap-4 w-full ">
+    <div className="flex flex-col gap-4 w-full mb-12">
       <div>
-        <div className="form-control w-full py-2 space-y-4 lg:pr-2">
+        <div className="form-control w-full py-2 space-y-0 lg:pr-2 ">
           {/* email */}
           <div>
             <label className="label">
@@ -78,15 +78,15 @@ const RegisterAction = ({ label }) => {
               required
               pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
               value={email}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full max-w-lg"
               onChange={(e) => {
                 const isValid = EmailRegex.test(e.target.value);
                 setEmailValid(isValid);
                 setEmail(e.target.value);
               }}
             />
-            <label className="label max-w-sm">
-              <span className="label-text-alt max-w-sm"></span>
+            <label className="label max-w-lg">
+              <span className="label-text-alt max-w-lg"></span>
               <span
                 className={`label-text-alt ${
                   email && emailValid ? "text-success" : "text-error"
@@ -99,7 +99,7 @@ const RegisterAction = ({ label }) => {
 
           {/* username */}
           <div>
-            <label className="label max-w-sm">
+            <label className="label max-w-lg">
               <span className="label-text font-semibold">Username</span>
               <span
                 className={`label-text-alt ${
@@ -116,14 +116,14 @@ const RegisterAction = ({ label }) => {
               required
               placeholder="Username"
               value={username}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full max-w-lg"
               onChange={(e) => {
                 const isValid = usernameRegex.test(e.target.value);
                 setUsernameValid(isValid);
                 setUsername(e.target.value);
               }}
             />
-            <label className="label max-w-sm">
+            <label className="label max-w-lg">
               <span className="label-text-alt text-info text-justify">
                 Username must be 3 to 20 characters long and can contain letters
                 (both uppercase and lowercase), numbers, underscores (_), and
@@ -134,7 +134,7 @@ const RegisterAction = ({ label }) => {
 
           {/* password */}
           <div>
-            <label className="label max-w-sm">
+            <label className="label max-w-lg">
               <div className="flex gap-2 items-center justify-center">
                 <span className="label-text font-semibold">Password</span>
                 <EyeIcon
@@ -160,7 +160,7 @@ const RegisterAction = ({ label }) => {
               required
               value={password}
               placeholder="Password"
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full max-w-lg"
               ref={passRef}
               onChange={(e) => {
                 const isValid = passwordRegex.test(e.target.value);
@@ -168,7 +168,7 @@ const RegisterAction = ({ label }) => {
                 setPassword(e.target.value);
               }}
             />
-            <label className="label max-w-sm">
+            <label className="label max-w-lg">
               <span className="label-text-alt text-info text-justify">
                 Password must be at least 8 characters long and include at least
                 one lowercase letter, one uppercase letter, one digit, and one
@@ -179,7 +179,7 @@ const RegisterAction = ({ label }) => {
         </div>
       </div>
       <button
-        className="btn btn-primary max-w-sm"
+        className="btn btn-primary max-w-lg"
         disabled={
           isLoading ||
           !(username && password && email) ||

@@ -21,6 +21,7 @@ import EmailVerificiation from "@/components/verification/EmailVerificiation";
 import MobileJot from "@/components/common/MobileJot";
 import ImageModal from "@/components/modals/ImageModal";
 import StoriesModal from "@/components/modals/StoriesModal";
+import DashBoard from "@/components/dashbaord/DashBoard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +46,7 @@ export default async function RootLayout({ children }) {
   //admin panel only
   if (session?.user?.email && session?.user?.role?.toLowerCase() === "admin") {
     //admin dashboasrd
-    return null;
+    return <DashBoard />;
   }
 
   if (session?.user?.email) {
@@ -76,7 +77,10 @@ export default async function RootLayout({ children }) {
             <div className="flex  h-full w-full gap-x-4">
               <div className="basis-1/3   overflow-x-hidden overflow-y-scroll hidden md:flex">
                 {/* sidebar */}
-                <SideBar loggedUserId={loggedUserId} />
+                <SideBar
+                  loggedUserId={loggedUserId}
+                  role={session?.user?.role || "user"}
+                />
               </div>
               <div className="basis-2/3 flex-1 overflow-y-auto  h-full  bg-base-200 rounded-box pb-4 xl:px-[2%] lg:px-[1%] md:px-2 sm:px-4">
                 {children}

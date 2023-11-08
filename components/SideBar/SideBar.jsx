@@ -4,8 +4,9 @@ import Jot from "./Jot";
 import Extra from "./Extra";
 import Logout from "./Logout";
 import LoggedUserItem from "./LoggedUserItem";
+import { BoltIcon } from "@heroicons/react/24/outline";
 
-const SideBar = ({ loggedUserId }) => {
+const SideBar = ({ loggedUserId, role }) => {
   return (
     <ul className="menu bg-base-200 w-full rounded-box space-y-3 relative [&_li>*]:rounded-full h-full">
       <div className="mt-2" />
@@ -31,6 +32,20 @@ const SideBar = ({ loggedUserId }) => {
       <li>
         <Logout loggedUserId={loggedUserId} />
       </li>
+
+      {/* admin dashboard */}
+      {role?.toLowerCase() === "admin" && (
+        <li>
+          <SideBarItem
+            key="dashboard"
+            label="DashBoard"
+            auth={true}
+            href={"/dashboard"}
+            Icon={BoltIcon}
+            loggedUserId={loggedUserId}
+          />
+        </li>
+      )}
       {loggedUserId && (
         <li>
           <Extra loggedUserId={loggedUserId} />

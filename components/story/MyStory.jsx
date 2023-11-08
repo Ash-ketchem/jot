@@ -9,7 +9,7 @@ const MyStory = () => {
     <div>
       <div className="avatar">
         <button
-          className="btn btn-primary btn-circle btn-sm "
+          className="btn btn-primary btn-circle btn-sm lg:btn-lg"
           onClick={() => openStoriesModal()}
         >
           <PlusCircleIcon className="w-full h-full" />

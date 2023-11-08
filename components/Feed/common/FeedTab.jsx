@@ -11,7 +11,7 @@ const FeedTab = ({ initialPosts, loggedUserId }) => {
   const { activeTab, setActiveTab } = PostTabStore((state) => state);
 
   return (
-    <div className="flex flex-col mr-3">
+    <div className="flex flex-col mr-3 mt-2">
       <FeedTabSwitch activeTab={activeTab} setActiveTab={setActiveTab} />
       <div>
         {activeTab === 0 ? (
