@@ -76,11 +76,12 @@ export const monthOrder = [
   "November",
   "December",
 ];
+
 export const timeRanges = {
-  "12-6 AM": { start: 0, end: 6 },
-  "6-12 PM": { start: 6, end: 12 },
-  "12-6 PM": { start: 12, end: 18 },
   "6-12 AM": { start: 18, end: 24 },
+  "12-6 PM": { start: 12, end: 18 },
+  "6-12 PM": { start: 6, end: 12 },
+  "12-6 AM": { start: 0, end: 6 },
 };
 
 // export const timeRanges = {

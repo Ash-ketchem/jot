@@ -22,6 +22,8 @@ import MobileJot from "@/components/common/MobileJot";
 import ImageModal from "@/components/modals/ImageModal";
 import StoriesModal from "@/components/modals/StoriesModal";
 import DashBoard from "@/components/dashbaord/DashBoard";
+import SocketClient from "@/components/synchronize/SocketClient";
+import axios from "axios";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +63,7 @@ export default async function RootLayout({ children }) {
     >
       <body className="overflow-hidden h-screen">
         {loggedUserId && <SyncClient />}
+        {/* {loggedUserId && <SocketClient loggedUserId={loggedUserId} />} */}
         <JotModal />
         <CommentModal />
         <PostDeleteModal />

@@ -23,6 +23,7 @@ import axios from "axios";
 import { useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import followingPostStore from "@/stores/posts/followingPostStore";
+import { useRouter } from "next/navigation";
 
 const PostAction = ({ post, loggedUserId }) => {
   const postId = post?.id;
@@ -55,6 +56,8 @@ const PostAction = ({ post, loggedUserId }) => {
 
     unliked: { opacity: 1, scale: 1 },
   };
+
+  const router = useRouter();
 
   const setLikeLocal = useCallback(async () => {
     // updating likes on both stores
@@ -163,6 +166,16 @@ const PostAction = ({ post, loggedUserId }) => {
     [openCommentModal, loggedUserId, setPostId, currentPost?.id]
   );
 
+  const handlePostEngagement = useCallback(
+    (e) => {
+      if (loggedUserId === post?.user?.id) {
+        e.preventDefault();
+        router.push(`/postEngagement/${post?.id}`);
+      }
+    },
+    [loggedUserId, post?.user?.id, router]
+  );
+
   useEffect(() => {
     if (currentPost?.id !== post?.id) {
       addPost(post);
@@ -215,7 +228,10 @@ const PostAction = ({ post, loggedUserId }) => {
         </div>
         <div className="flex justify-start items-center  w-full hover:text-accent ">
           <div className="btn btn-ghost sm:btn-sm btn-xs btn-circle">
-            <ChartBarIcon className=" w-5 h-5 " />
+            <ChartBarIcon
+              className=" w-5 h-5 "
+              onClick={handlePostEngagement}
+            />
           </div>
           <span className="sm:ml-0.5 ml-0 text-xs sm:text-sm ">
             {(currentPost?.likeCount || 0) + (currentPost?.commentCount || 0)}

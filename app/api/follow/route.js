@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import client from "@/libs/prismaClient";
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
+import axios from "axios";
 
 export async function POST(req) {
   try {
@@ -29,7 +29,7 @@ export async function POST(req) {
       },
     });
 
-    if (id === loggedUser.id) {
+    if (id === loggedUser?.id) {
       throw new Error("cannot follow yourself");
     }
 
@@ -53,6 +53,10 @@ export async function POST(req) {
           },
         ],
       });
+
+      if (updateUser?.ok !== 1) {
+        throw new Error("something went wrong");
+      }
     } else {
       //follow
 
@@ -69,9 +73,33 @@ export async function POST(req) {
           id: true,
         },
       });
+
+      if (!updateUser?.id) {
+        throw new Error("something went wrong");
+      }
     }
 
-    console.log(currentlyFollowing, id, updateUser, loggedUser?.id);
+    if (!currentlyFollowing) {
+      try {
+        const notification = await client.notification.create({
+          data: {
+            userId: id,
+            body: "started following you",
+            triggeringUserId: loggedUser.id,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        const res = await axios.post("http://localhost:3001/emit", {
+          eventType: "notification",
+          userId: id,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return NextResponse.json(updateUser, {
       status: 200,

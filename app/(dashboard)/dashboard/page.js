@@ -317,7 +317,7 @@ const page = async () => {
   return (
     <>
       <HeaderLogin
-        loggedUserId={session?.user?.role?.toLowerCase() === "admin"}
+        adminLoggedIn={session?.user?.role?.toLowerCase() === "admin"}
         showBackArrow={true}
       />
       <div className=" grid-cols-1 gap-8 p-4 h-full overflow-y-scroll w-screen">

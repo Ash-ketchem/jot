@@ -1,7 +1,7 @@
 "use client";
 
 import toastStore from "@/stores/toastStore";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 const Page = () => {
   const [name, setName] = useState("");
@@ -12,13 +12,16 @@ const Page = () => {
 
   const addToast = toastStore((state) => state.addToast);
 
+  const formRef = useRef();
+
   const handleSubmit = useCallback(
     (e) => {
-      e.preventDefault();
-
       try {
         setLoading(true);
-        addToast("Will get back to you soon!!");
+        if (name && email && message) {
+          addToast("Will get back to you soon!!");
+        }
+        formRef.current.submit();
       } catch (error) {
         addToast("Something went wrong");
       } finally {
@@ -37,7 +40,11 @@ const Page = () => {
           We're here to assist you! Please fill out the form below, and we'll
           get back to you as soon as possible.
         </p>
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <form
+          className="space-y-4"
+          onSubmit={(e) => e.preventDefault()}
+          ref={formRef}
+        >
           <div>
             <label className="label text-sm font-semibold">
               <span className="label-text-alt">Your Name</span>

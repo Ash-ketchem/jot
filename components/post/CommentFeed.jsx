@@ -212,7 +212,7 @@ const CommentFeed = ({ comments, postId, totalcomments, postOwnerId }) => {
             {postComments?.length > 0 ? (
               <div className="w-full h-full p-0 relative ">
                 <button
-                  className={`top-0 left-0 z-30  absolute btn-circle  btn btn-ghost   btn-sm ml-2.5 mt-2 ${
+                  className={`top-0 left-0 z-30  absolute btn-circle  btn btn-ghost   btn-sm ml-[0.4rem] mt-2 ${
                     showArrowIcon ? "animate-bounce" : " opacity-30"
                   }`}
                   onClick={handleMoreComments}

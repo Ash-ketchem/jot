@@ -1,5 +1,3 @@
-import React from "react";
-
 function About() {
   return (
     <div className="w-full h-full px-2 py-4 flex flex-col gap-6">

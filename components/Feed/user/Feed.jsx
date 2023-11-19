@@ -8,7 +8,12 @@ import bookmarkStore from "@/stores/bookmarkStore";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-const Feed = ({ userId, initialPosts, loggedUserId }) => {
+const Feed = ({
+  userId,
+  initialPosts,
+  loggedUserId,
+  useractionVisible = true,
+}) => {
   let posts = userPostStore((state) => state.posts);
   posts = posts.filter((post) => post?.user?.id === userId);
 
@@ -197,6 +202,7 @@ const Feed = ({ userId, initialPosts, loggedUserId }) => {
                   key={post.id}
                   type="user"
                   loggedUserId={loggedUserId}
+                  useractionVisible={useractionVisible}
                 />
               </div>
             ))}

@@ -9,6 +9,10 @@ const SideBarRight = async () => {
 
   try {
     users = await client.user.findMany({
+      where: {
+        role: "user",
+        emailVerified: true,
+      },
       select: {
         id: true,
         name: true,

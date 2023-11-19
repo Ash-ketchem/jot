@@ -29,12 +29,13 @@ model User {
 
   // relations 
 
-  posts        Post[]
-  comments     Comment[]
-  notification Notification[]
-  bookmarks    Bookmark[]
-  token        Verification?
-  stories      Story[]
+  posts                      Post[]
+  comments                   Comment[]
+  notification               Notification[]
+  notificationTrigerringUser Notification[] @relation("trigerringUser")
+  bookmarks                  Bookmark[]
+  token                      Verification?
+  stories                    Story[]
 }
 
 model Post {
@@ -49,6 +50,7 @@ model Post {
 
   // likeIds   String[] @db.ObjectId
   likeIds String[] @default([])
+  views   String[] @default([])
 
   comments  Comment[]
   bookmarks Bookmark[]
@@ -59,6 +61,7 @@ model Post {
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   body      String?
+  likes     String[] @default([])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
@@ -69,12 +72,15 @@ model Comment {
 }
 
 model Notification {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  body      String?
-  userId    String   @db.ObjectId
-  createdAt DateTime @default(now())
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  body             String?
+  userId           String   @db.ObjectId
+  triggeringUserId String?  @db.ObjectId
+  createdAt        DateTime @default(now())
+  read             Boolean  @default(false)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  triggeringUser User? @relation("trigerringUser", fields: [triggeringUserId], references: [id], onDelete: Cascade)
 }
 
 model Bookmark {

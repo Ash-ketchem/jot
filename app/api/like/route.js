@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import client from "@/libs/prismaClient";
 import { NextResponse } from "next/server";
+import axios from "axios";
 
 export async function POST(req) {
   const session = await getServerSession(authOptions);
@@ -30,13 +31,18 @@ export async function POST(req) {
       throw new Error("invalid user");
     }
 
-    const { likeIds, uniqueId } = await client.post.findUnique({
+    const {
+      likeIds,
+      uniqueId,
+      userId: postOwnerId,
+    } = await client.post.findUnique({
       where: {
         id: postId,
       },
       select: {
         likeIds: true,
         uniqueId: true,
+        userId: true,
       },
     });
 
@@ -55,7 +61,7 @@ export async function POST(req) {
     //   },
     // });
 
-    // LATEST CODE TO BE UPDATED
+    // LATEST CODE
 
     let updatedPost = null;
 
@@ -91,6 +97,29 @@ export async function POST(req) {
           id: true,
         },
       });
+
+      if (updatedPost?.id) {
+        // creating a notification on like
+        try {
+          const notification = await client.notification.create({
+            data: {
+              userId: postOwnerId,
+              body: "liked your post",
+              triggeringUserId: userId,
+            },
+            select: {
+              id: true,
+            },
+          });
+
+          const res = await axios.post("http://localhost:3001/emit", {
+            eventType: "notification",
+            userId: postOwnerId,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
 
     return NextResponse.json(updatedPost, { status: 200 });

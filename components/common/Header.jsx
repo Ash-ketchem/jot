@@ -4,11 +4,12 @@ import { ArrowSmallLeftIcon, BellIcon } from "@heroicons/react/24/outline";
 import Theme from "./Theme";
 import Search from "./Search";
 import Drawer from "../SideBar/Drawer";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FireIcon } from "@heroicons/react/24/solid";
 import Timer from "./Timer";
-import TextArea from "./TextArea";
+import reRenderStore from "@/stores/reRenderStore";
+import notificationStore from "@/stores/notificationsStore";
 
 const Header = (showBackArrow, loggedUserId) => {
   const router = useRouter();
@@ -16,6 +17,30 @@ const Header = (showBackArrow, loggedUserId) => {
   const handleClick = useCallback(() => {
     router.back();
   }, [router]);
+
+  const rerenderedRef = useRef(0);
+
+  const unreadNotifications = notificationStore(
+    (state) => state.notificationsAvailable
+  );
+  const setUnreadNotifications = notificationStore(
+    (state) => state.setNotificationsAvailable
+  );
+
+  const state = reRenderStore((state) => state.routes, "notifications");
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (rerenderedRef.current > 1 && pathname !== "/notifications") {
+      setUnreadNotifications(true);
+    }
+    // console.log("rerendered", rerenderedRef, pathname);
+  }, [state]);
+
+  useEffect(() => {
+    rerenderedRef.current += 1;
+  }, []);
 
   return (
     <div className="navbar bg-base-100  sticky top-0  z-40 flex  gap-4 py-3.5 items-center backdrop-filter  h-[10vh] justify-between ">
@@ -53,10 +78,18 @@ const Header = (showBackArrow, loggedUserId) => {
           <Theme />
         </div>
 
-        <button className="btn btn-ghost btn-circle btn-sm md:btn-md">
+        <button
+          className="btn btn-ghost btn-circle btn-sm md:btn-md"
+          onClick={() => {
+            setUnreadNotifications(false);
+            router.push("/notifications");
+          }}
+        >
           <div className="indicator">
             <BellIcon className="w-6 h-6 " />
-            {/* <span className="badge badge-xs badge-primary indicator-item"></span> */}
+            {unreadNotifications && (
+              <span className="badge badge-xs badge-primary indicator-item"></span>
+            )}
           </div>
         </button>
       </div>

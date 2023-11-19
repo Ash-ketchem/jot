@@ -11,6 +11,7 @@ import userStore from "@/stores/userStore";
 import SideBarFeed from "@/components/SidebarRight/SideBarFeed";
 import { BoltIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
+import followingUpdatedStore from "@/stores/followingUpdatedStore";
 
 const Feed = ({ initialPosts, loggedUserId }) => {
   const router = useRouter();
@@ -35,7 +36,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
   const allDataFetched = useRef(false);
   const bookmarksFetched = useRef(false);
   const initialPostsAdded = useRef(false);
-
+  const isThereUpdates = followingUpdatedStore((state) => state.isThereUpdates);
+  const setUpdates = followingUpdatedStore((state) => state.setUpdates);
   // ref to hold a function
   const beautifyRef = useRef(null);
 
@@ -112,6 +114,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
     try {
       const url = "/api/posts/following";
       const latestPosts = await axios.get(url);
+
       newCursor.current = latestPosts.data[latestPosts.data.length - 1]?.id;
 
       if (latestPosts.status !== 200) {
@@ -141,6 +144,7 @@ const Feed = ({ initialPosts, loggedUserId }) => {
       });
 
       removeAll();
+      setUpdates(false);
       await initialFetch();
     } catch (error) {
     } finally {
@@ -149,8 +153,8 @@ const Feed = ({ initialPosts, loggedUserId }) => {
 
   useEffect(() => {
     if (currentUser && followingUsers) {
-      if (followingUsers?.length !== currentUser?.followingIds?.length)
-        setLoadMore(true);
+      if (isThereUpdates) setLoadMore(true);
+      else setLoadMore(false);
     }
   }, [followingUsers, currentUser, setLoadMore]);
 
@@ -192,19 +196,9 @@ const Feed = ({ initialPosts, loggedUserId }) => {
       addPosts(beautify(initialPosts));
     } else {
       // get initial posts
-
-      if (
-        currentUser &&
-        followingUsers &&
-        followingUsers?.length !== currentUser?.followingIds?.length
-      ) {
-        // there is pending updates on following to sync
-        allDataFetched.current = true;
-        return;
-      }
+      initialFetch();
     }
-    initialFetch();
-  }, [initialPosts]);
+  }, [initialPosts, currentUser, followingUsers]);
 
   useEffect(() => {
     if (!bookmarkIds?.length) {

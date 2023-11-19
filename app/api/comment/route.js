@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 import client from "@/libs/prismaClient";
+import axios from "axios";
 
 export async function POST(req) {
   try {
@@ -34,6 +35,20 @@ export async function POST(req) {
       throw new Error("missing fields");
     }
 
+    const { userId: postOwnerId } = await client.post.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        id: true,
+        userId: true,
+      },
+    });
+
+    if (!postOwnerId) {
+      throw new Error("Post doesn't exists");
+    }
+
     const comment = await client.comment.create({
       data: {
         body,
@@ -54,6 +69,28 @@ export async function POST(req) {
 
     if (!comment) {
       throw new Error("failed to create a comment");
+    }
+
+    //comment notification
+
+    try {
+      const notification = await client.notification.create({
+        data: {
+          userId: postOwnerId,
+          body: "commented on your post",
+          triggeringUserId: userId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      const res = await axios.post("http://localhost:3001/emit", {
+        eventType: "notification",
+        userId: postOwnerId,
+      });
+    } catch (error) {
+      console.log(error);
     }
 
     return NextResponse.json(comment, { status: 200 });

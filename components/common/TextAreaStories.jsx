@@ -108,7 +108,7 @@ const TextAreaStories = ({
 
                 options.widget.close();
                 setUploadEnabled((state) => !state);
-                // setJot("");
+                setJot("");
                 jotRef.current = "";
               }}
               className="btn btn-sm btn-circle btn-ghost"

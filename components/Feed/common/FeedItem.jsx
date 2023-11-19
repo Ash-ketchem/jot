@@ -6,7 +6,12 @@ import UserSection from "./UserSection";
 import { AnimatePresence, motion } from "framer-motion";
 import UserActionFollowing from "../following/UserAction";
 
-const FeedItem = ({ post, loggedUserId, type = "global" }) => {
+const FeedItem = ({
+  post,
+  loggedUserId,
+  type = "global",
+  useractionVisible = true,
+}) => {
   const cardStyle = post?.images?.length ? "vertical" : "horizontal";
 
   const variants = {
@@ -60,26 +65,29 @@ const FeedItem = ({ post, loggedUserId, type = "global" }) => {
                     <ImagesSection images={post?.images} />
                   )}
                 </>
-                <>
-                  {type === "global" && (
-                    <UserActionGlobal
-                      postId={post.id}
-                      self={loggedUserId === post?.user?.id}
-                    />
-                  )}
-                  {type === "user" && (
-                    <UserActionUser
-                      postId={post.id}
-                      self={loggedUserId === post?.user?.id}
-                    />
-                  )}
-                  {type === "following" && (
-                    <UserActionFollowing
-                      postId={post.id}
-                      self={loggedUserId === post?.user?.id}
-                    />
-                  )}
-                </>
+                {/* //admins dont nedd to have user actions */}
+                {useractionVisible && (
+                  <>
+                    {type === "global" && (
+                      <UserActionGlobal
+                        postId={post.id}
+                        self={loggedUserId === post?.user?.id}
+                      />
+                    )}
+                    {type === "user" && (
+                      <UserActionUser
+                        postId={post.id}
+                        self={loggedUserId === post?.user?.id}
+                      />
+                    )}
+                    {type === "following" && (
+                      <UserActionFollowing
+                        postId={post.id}
+                        self={loggedUserId === post?.user?.id}
+                      />
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

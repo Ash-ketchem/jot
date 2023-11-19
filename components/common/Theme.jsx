@@ -37,12 +37,12 @@ const Theme = () => {
           </label>
           <ul
             tabIndex={0}
-            className="dropdown-content z-50  menu p-2  bg-base-100 rounded-box w-44 shadow-xl  "
+            className="dropdown-content !z-50  menu p-2  bg-base-100 rounded-box w-44 shadow-xl  "
           >
             {themes.map(({ icon: Icon, theme }) => (
               <div
                 role="button"
-                className={`btn  rounded-full !px-2 leading-relaxed tracking-wider  ${
+                className={`btn  rounded-full !px-2 leading-relaxed tracking-wider !z-50  ${
                   theme === themeStore?.theme
                     ? "btn-glass"
                     : "btn-ghost lowercase"
@@ -50,7 +50,7 @@ const Theme = () => {
                 onClick={() => setTheme(theme)}
                 key={theme}
               >
-                <div className="flex justify-around items-center  w-full h-full ">
+                <div className="flex justify-around items-center  w-full h-full !z-50 ">
                   <Icon className="w-5 h-5 basis-1/2 " />
                   <p className="basis-1/2  text-left">{theme}</p>
                 </div>

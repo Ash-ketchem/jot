@@ -66,6 +66,7 @@ export async function POST(req) {
         body,
         userId: userId,
         images: updatedImages ? updatedImages : [],
+        views: [userId],
       },
       select: {
         id: true,
@@ -73,6 +74,7 @@ export async function POST(req) {
         images: true,
         likeIds: true,
         createdAt: true,
+        views: true,
         user: {
           select: {
             id: true,
@@ -92,6 +94,45 @@ export async function POST(req) {
     return NextResponse.json(
       {
         error: "error while creating a story",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+}
+
+export async function DELETE(req) {
+  const { storyId } = await req.json();
+
+  try {
+    if (!storyId || typeof storyId !== "string") {
+      throw new Error("invalid story id");
+    }
+
+    const deletedStory = await client.story.delete({
+      where: {
+        id: storyId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!deletedStory?.id) {
+      throw new Error("Failed to delete the story");
+    }
+
+    console.log(deletedStory);
+
+    return NextResponse.json(deletedStory, {
+      status: 200,
+    });
+  } catch (error) {
+    console.log("error while deleting a story", error);
+    return NextResponse.json(
+      {
+        error: "error while deleting a story",
       },
       {
         status: 400,

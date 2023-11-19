@@ -12,6 +12,10 @@ export async function GET(req) {
     if (!cursor) {
       posts = await client.user.findMany({
         take: count,
+        where: {
+          role: "user",
+          emailVerified: true,
+        },
 
         select: {
           id: true,
@@ -30,6 +34,10 @@ export async function GET(req) {
         skip: 1, // Skip the cursor
         cursor: {
           id: cursor,
+        },
+        where: {
+          role: "user",
+          emailVerified: true,
         },
         select: {
           id: true,

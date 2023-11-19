@@ -8,6 +8,7 @@ const UserHero = ({
   loggedUser = false,
   isFollowing,
   loggedUserId,
+  useractionVisible = true,
 }) => {
   const userBio = user?.bio?.split("\n").map((paragraph, index) => (
     <p key={index} className="text-md tracking-wide text-left leading-loose">
@@ -44,15 +45,17 @@ const UserHero = ({
           </div>
         </div>
         <div className="mr-2">
-          <UserHeroAction
-            buttonLabel={buttonLabel}
-            loggedUser={loggedUser}
-            loggedUserId={loggedUserId}
-            userId={user?.id}
-            isFollowing={isFollowing}
-            followingCount={user?.followingIds.length || 0}
-            followersCount={user?.followersCount || 0}
-          />
+          {useractionVisible && (
+            <UserHeroAction
+              buttonLabel={buttonLabel}
+              loggedUser={loggedUser}
+              loggedUserId={loggedUserId}
+              userId={user?.id}
+              isFollowing={isFollowing}
+              followingCount={user?.followingIds.length || 0}
+              followersCount={user?.followersCount || 0}
+            />
+          )}
         </div>
       </div>
       <div className=" flex flex-col gap-2.5 h-full flex-1 pl-2">

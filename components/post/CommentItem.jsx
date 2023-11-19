@@ -32,7 +32,7 @@ const CommentItem = ({ comment, self, deleteComment }) => {
 
   return (
     <motion.div
-      className="w-full h-full border-0 p-2 relative after:h-[90%] after:w-1 after:bg-accent/50 after:absolute  after:top-[20%] after:left-[1.4rem] after:z-30"
+      className="w-full h-full border-0 p-2 relative after:h-[90%] after:w-1 after:bg-accent/50 after:absolute  after:top-[20%] after:left-[1.25rem] after:z-30"
       variants={commentVariants}
       initial="hide"
       animate="show"

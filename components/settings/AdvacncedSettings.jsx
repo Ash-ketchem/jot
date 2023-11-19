@@ -4,6 +4,7 @@ import { useState } from "react";
 import UserNameUpdate from "./UserNameUpdate";
 import PasswordReset from "./PasswordReset";
 import EmailUpdate from "./EmailUpdate";
+import DeleteAccount from "./DeleteAccount";
 
 const AdvacncedSettings = ({ username, email }) => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -20,6 +21,10 @@ const AdvacncedSettings = ({ username, email }) => {
     {
       label: "Update Username",
       content: <UserNameUpdate currentUsername={username} />,
+    },
+    {
+      label: "Delete Account",
+      content: <DeleteAccount currentEmail={email} />,
     },
   ];
   return (
