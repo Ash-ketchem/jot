@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import toastStore from "@/stores/toastStore";
 import modalStore from "@/stores/modalStore";
 
-const StoriesCarouselModal = ({ stories }) => {
+const StoriesCarouselModal = ({ stories, loggedUserId }) => {
   const [currentIndex, setCurrentIndex] = useState(1);
 
   const storyIds = viewdStoryStore((state) => state.StoryIds);
@@ -102,14 +102,16 @@ const StoriesCarouselModal = ({ stories }) => {
                               user={story?.user}
                               createdAt={story?.createdAt}
                             />
-                            <div className="absolute right-12 top-1/6 mt-2">
-                              <button
-                                className="btn btn-xs btn-error btn-circle"
-                                onClick={() => handleDelete(story?.id)}
-                              >
-                                <TrashIcon className="w-4 h-4" />
-                              </button>
-                            </div>
+                            {loggedUserId === story?.user?.id && (
+                              <div className="absolute right-12 top-1/6 mt-2">
+                                <button
+                                  className="btn btn-xs btn-error btn-circle"
+                                  onClick={() => handleDelete(story?.id)}
+                                >
+                                  <TrashIcon className="w-4 h-4" />
+                                </button>
+                              </div>
+                            )}
                             <BodySection body={story.body} />
 
                             <div className="w-full h-full flex sm:flex-row flex-col gap-y-2.5 sm:gap-0 ">

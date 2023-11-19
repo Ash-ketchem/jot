@@ -1,6 +1,7 @@
 "use client";
 
 import followStore from "@/stores/followStore";
+import followingUpdatedStore from "@/stores/followingUpdatedStore";
 import modalStore from "@/stores/modalStore";
 import axios from "axios";
 import { useCallback, useState, useEffect } from "react";
@@ -22,6 +23,8 @@ const UserHeroAction = ({
   );
 
   const openEditModal = modalStore((state) => state.openEditModal);
+
+  const setUpdates = followingUpdatedStore((state) => state.setUpdates);
 
   const UpdatedbuttonLabel = loggedUser
     ? buttonLabel
@@ -60,6 +63,8 @@ const UserHeroAction = ({
         }
         // console.log(userId, followState?.following ? false : true, loggedUser);
         setFollow(userId, followState?.following ? false : true, loggedUser);
+
+        setUpdates(true);
       }
     } catch (error) {
       console.log(error?.message);

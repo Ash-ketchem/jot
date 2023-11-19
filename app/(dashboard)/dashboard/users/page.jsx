@@ -44,7 +44,7 @@ const page = async () => {
   return (
     <div className="w-full min-h-[80vh]">
       <HeaderLogin showBackArrow={true} />
-      <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-4 gap-4 ">
+      <div className="h-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 p-4 gap-4 w-full">
         {Object.entries(users)?.map((user) => (
           <div key={user[0]}>
             <UserCard user={user} />

@@ -29,6 +29,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-nuance": "^3.0.1",
+    "sharp": "^0.32.6",
     "socket.io-client": "^4.7.2",
     "utf-8-validate": "^5.0.10"
   },

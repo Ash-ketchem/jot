@@ -51,7 +51,7 @@ async function page({ params }) {
       return (
         <div className="flex w-full h-full justify-center items-center flex-col gap-4">
           <p className="text-sm font-semibold leading-relaxed tracking-wide">
-            You can't view other user's post Engagement statistics
+            You can&apos;t view other user&apos;s post Engagement statistics
           </p>
           <div className="relative min-h-[50vh] w-full">
             <Image src="/images/noEntry.svg" alt="not authorized" fill />

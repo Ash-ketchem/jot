@@ -47,7 +47,7 @@ const PostEngagement = ({ post, users }) => {
                 return (
                   users.has(id) && (
                     <div className="p-2 shadow-sm w-40" key={`comment-${id}`}>
-                      <UserCard user={users.get(id)} showActions={false} />
+                      <UserCard user={users.get(id)} showActions={true} />
                     </div>
                   )
                 );
@@ -76,10 +76,7 @@ const PostEngagement = ({ post, users }) => {
               .map((id) => {
                 return (
                   users.has(id) && (
-                    <div
-                      className="p-2 shadow-sm min-w-fit max-w-3"
-                      key={`comment-${id}`}
-                    >
+                    <div className="p-2 shadow-sm w-40" key={`comment-${id}`}>
                       <UserCard user={users.get(id)} showActions={true} />
                     </div>
                   )

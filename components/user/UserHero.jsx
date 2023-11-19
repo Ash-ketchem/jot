@@ -14,7 +14,7 @@ const UserHero = ({
     <p key={index} className="text-md tracking-wide text-left leading-loose">
       {paragraph}
     </p>
-  )) ?? <p> "I'm feeling good"</p>;
+  )) ?? <p> I&apos;m feeling good</p>;
   // console.log(user);
   return (
     <div className="px-2 z-40 bg-base-300 rounded-b-xl pb-4">

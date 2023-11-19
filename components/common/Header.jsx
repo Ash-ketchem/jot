@@ -32,7 +32,7 @@ const Header = (showBackArrow, loggedUserId) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (rerenderedRef.current > 1 && pathname !== "/notifications") {
+    if (rerenderedRef.current > 0 && pathname !== "/notifications") {
       setUnreadNotifications(true);
     }
     // console.log("rerendered", rerenderedRef, pathname);

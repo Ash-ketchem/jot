@@ -49,7 +49,7 @@ const LoginAction = ({ label }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [email, password, router]);
+  }, [email, password, router, addToast, validMail]);
 
   return (
     <div className="flex flex-col gap-4 w-full  lg:pr-2">
@@ -129,7 +129,7 @@ const LoginAction = ({ label }) => {
       </button>
       <div className="flex justify-center items-center">
         <p className="text-sm leading-relaxed -tracking-wide">
-          Dont' have an account ?{" "}
+          Dont&apos; have an account ?{" "}
           <Link href="/register">
             <span className="font-semibold text-md hover:underline cursor-pointer text-accent">
               Signup

@@ -28,7 +28,7 @@ const Page = () => {
         setLoading(false);
       }
     },
-    [name, email, message]
+    [name, email, message, addToast]
   );
   return (
     <div className="max-h-[90vh] flex items-center justify-center">
@@ -37,8 +37,8 @@ const Page = () => {
           Contact and Support
         </h1>
         <p className="text-gray-400 text-sm mb-6">
-          We're here to assist you! Please fill out the form below, and we'll
-          get back to you as soon as possible.
+          We&apos;re here to assist you! Please fill out the form below, and
+          we&apos;ll get back to you as soon as possible.
         </p>
         <form
           className="space-y-4"

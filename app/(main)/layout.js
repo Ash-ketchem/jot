@@ -63,7 +63,7 @@ export default async function RootLayout({ children }) {
     >
       <body className="overflow-hidden h-screen">
         {loggedUserId && <SyncClient />}
-        {/* {loggedUserId && <SocketClient loggedUserId={loggedUserId} />} */}
+        {loggedUserId && <SocketClient loggedUserId={loggedUserId} />}
         <JotModal />
         <CommentModal />
         <PostDeleteModal />

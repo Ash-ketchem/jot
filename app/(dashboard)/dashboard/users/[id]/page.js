@@ -126,7 +126,7 @@ const page = async ({ params }) => {
   return (
     <>
       <HeaderLogin showBackArrow={true} />
-      <div className="p-2">
+      <div className="p-2 md:w-[70vw] lg:w-[60vw] xl:w-[50vw] w-[90vw]">
         <UserHero
           user={user}
           loggedUser={false}

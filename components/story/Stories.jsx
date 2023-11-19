@@ -45,15 +45,17 @@ const Stories = async ({ loggedUserId }) => {
     )
   );
 
+  const myStoriesLength = storyGroup[0]?.length ?? 0;
+
   storyGroup = storyGroup.filter((group) => group.length > 0);
 
   return (
     <div className="my-0">
-      <StoriesCarouselModal stories={storyGroup} />
+      <StoriesCarouselModal stories={storyGroup} loggedUserId={loggedUserId} />
       <div className="py-2 border-b-[0px] px-1 flex justify-center  sticky top-0 z-30 bg-base-200 mb-2 backdrop-blur-2xl opacity-95 mr-6">
         <div className="flex px-2 py-2 space-x-4  rounded-box w-[100%]  overflow-scroll ">
-          {storyGroup?.length === 0 && <MyStory />}
-          {storyGroup.map(
+          {myStoriesLength === 0 && <MyStory />}
+          {storyGroup?.map(
             (stories, i) =>
               stories?.length > 0 && (
                 <div

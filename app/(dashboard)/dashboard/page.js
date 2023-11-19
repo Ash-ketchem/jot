@@ -50,7 +50,7 @@ const page = async () => {
     ],
   };
 
-  const userPosts = await prisma.post.groupBy({
+  const userPosts = await client.post.groupBy({
     by: ["userId"],
     _count: true,
   });
@@ -377,7 +377,7 @@ const page = async () => {
 
                 <div className="w-[80%] flex justify-around mt-3">
                   {trendingUsers?.map((user) => (
-                    <div className="p-2 space-y-2">
+                    <div className="p-2 space-y-2" key={user?.id}>
                       <Link href={`/user/${user?.id}`} prefetch={true}>
                         <div className="avatar">
                           <div className="w-12 h-12 rounded-full relative">
